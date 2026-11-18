@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { AboutDialog } from "./components/AboutDialog";
-import { ArchitecturePanel } from "./components/ArchitecturePanel";
+import { AboutDialog } from "./components/AboutDialog";import { ArchitecturePanel } from "./components/ArchitecturePanel";
 import { ComparisonView } from "./components/ComparisonView";
 import { ControlDeck } from "./components/ControlDeck";
 import { EnvironmentPanel } from "./components/EnvironmentPanel";
@@ -19,9 +18,12 @@ import { V05Lab } from "./v05/V05Lab";
 import { ResearchPage } from "./research/ResearchPage";
 import { MODE_META } from "./simulation/types";
 
+const viewFromPath = (): SiteView =>
+  window.location.pathname.replace(/\/+$/, "") === "/research" ? "research" : "v0";
+
 export default function App() {
   const controller = useSimulation();
-  const [view, setView] = useState<SiteView>("v0");
+  const [view, setView] = useState<SiteView>(viewFromPath);
   const { snapshot, series, events, running, settings, engine, actions } = controller;
   const [aboutOpen, setAboutOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -59,7 +61,20 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, [toggleRunning, step, microStep, reset, aboutOpen, compareOpen, view]);
 
-  const navigate = (next: SiteView) => setView(next);
+  useEffect(() => {
+    const onPop = () => setView(viewFromPath());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const navigate = (next: SiteView) => {
+    const path = next === "research" ? "/research" : "/";
+    if (window.location.pathname !== path) {
+      window.history.pushState({ view: next }, "", path);
+    }
+    setView(next);
+    window.scrollTo({ top: 0 });
+  };
 
   if (view === "v02") {
     return <V02Lab onNavigate={navigate} />;
@@ -80,9 +95,9 @@ export default function App() {
   if (view === "research") {
     return (
       <ResearchPage
-        onBack={() => setView("v0")}
+        onBack={() => navigate("v0")}
         onNavigate={navigate}
-        onOpenVersion={(version) => setView(version === "v0" ? "v0" : version)}
+        onOpenVersion={(version) => navigate(version === "v0" ? "v0" : version)}
       />
     );
   }
@@ -114,8 +129,8 @@ export default function App() {
           condition={`${snapshot.mode} · ${mode.short}`}
           seed={snapshot.seed}
           detail={`${snapshot.physical.resourcesCollected} resources · ${snapshot.physical.distance} moves`}
-          onResearch={() => setView("research")}
-          onLatest={() => setView("v05")}
+          onResearch={() => navigate("research")}
+          onLatest={() => navigate("v05")}
         />
 
         <div className="rule-double" />

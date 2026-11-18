@@ -118,10 +118,10 @@ export function ResearchPage({
   onNavigate: (view: SiteView) => void;
 }) {
   const [layers, setLayers] = useState<Layers>("plain");
-  const [activeVersion, setActiveVersion] = useState<VersionKey>("v03");
+  const [activeVersion, setActiveVersion] = useState<VersionKey>("v05");
 
   const version = useMemo(
-    () => VERSIONS.find((v) => v.key === activeVersion) ?? VERSIONS[2],
+    () => VERSIONS.find((v) => v.key === activeVersion) ?? VERSIONS[4],
     [activeVersion],
   );
 
@@ -620,10 +620,6 @@ export function ResearchPage({
                 &ldquo;meta-model&rdquo;, &ldquo;attention&rdquo; and &ldquo;strange loop&rdquo; are
                 names for computational objects with measurable behaviour. Nothing in this page is
                 evidence of consciousness, sentience or subjective experience.
-              </p>
-              <p className="mt-2 font-mono text-[10px] leading-relaxed text-lab-faint">
-                docs/RESEARCH_REPORT.md · docs/V02_RESEARCH_REPORT.md · docs/V03_RESEARCH_REPORT.md ·
-                docs/V04_RESEARCH_REPORT.md · docs/V05_RESEARCH_REPORT.md · docs/MODEL.md
               </p>
             </div>
             <button className="btn h-8 px-3.5" onClick={onBack}>
