@@ -3,36 +3,36 @@
 <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#111111"/></marker>
 </defs>
 <rect width="960" height="470" fill="#ffffff"/>
-<text x="28" y="30" font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#5b6169" text-anchor="start">A</text><text x="46" y="30" font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">L1 vulnerability and L2 rescue in the decoupled trap</text>
-<text x="28" y="48" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start" font-style="italic">Escape rate, mean resources and deaths over 100 paired seeds (1,600-tick trap horizon).</text>
+<text x="28" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#5b6169" text-anchor="start">A</text><text x="46" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#111111" text-anchor="start">L1 vulnerability and L2 rescue in the decoupled trap</text>
+<text x="28" y="48" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start" font-style="italic">Escape rate, mean resources and deaths over 100 paired seeds (1,600-tick trap horizon).</text>
 <line x1="210" y1="84" x2="850" y2="84" stroke="#5b6169" stroke-width="0.8" />
 <line x1="210" y1="84" x2="210" y2="346" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="210" y="360" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="400" fill="#5b6169" text-anchor="middle">0%</text>
+<text x="210" y="360" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">0%</text>
 <line x1="370" y1="84" x2="370" y2="346" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="370" y="360" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="400" fill="#5b6169" text-anchor="middle">25%</text>
+<text x="370" y="360" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">25%</text>
 <line x1="530" y1="84" x2="530" y2="346" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="530" y="360" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="400" fill="#5b6169" text-anchor="middle">50%</text>
+<text x="530" y="360" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">50%</text>
 <line x1="690" y1="84" x2="690" y2="346" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="690" y="360" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="400" fill="#5b6169" text-anchor="middle">75%</text>
+<text x="690" y="360" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">75%</text>
 <line x1="850" y1="84" x2="850" y2="346" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="850" y="360" font-family="Helvetica, Arial, sans-serif" font-size="9" font-weight="400" fill="#5b6169" text-anchor="middle">100%</text>
-<text x="196" y="100" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#111111" text-anchor="end">Pragmatic only</text>
+<text x="850" y="360" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">100%</text>
+<text x="196" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="600" fill="#111111" text-anchor="end">Pragmatic only</text>
 <rect x="210" y="80" width="0" height="26" fill="#f3ded8" stroke="#a6402a" stroke-width="1" />
-<text x="218" y="100" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">0%  ·  0.0 res  ·  0 deaths</text>
-<text x="196" y="154" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#111111" text-anchor="end">L1 broken (blind)</text>
+<text x="218" y="100" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">0%  ·  0.0 res  ·  0 deaths</text>
+<text x="196" y="154" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="600" fill="#111111" text-anchor="end">L1 broken (blind)</text>
 <rect x="210" y="134" width="544" height="26" fill="#dbe7dd" stroke="#2f6b45" stroke-width="1" />
-<text x="762" y="154" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">85%  ·  53.4 res  ·  0 deaths</text>
-<text x="196" y="208" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#111111" text-anchor="end">Random walks</text>
+<text x="762" y="154" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">85%  ·  53.4 res  ·  0 deaths</text>
+<text x="196" y="208" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="600" fill="#111111" text-anchor="end">Random walks</text>
 <rect x="210" y="188" width="595.2" height="26" fill="#f2d7cf" stroke="#a6402a" stroke-width="1" />
-<text x="813.2" y="208" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">93%  ·  44.1 res  ·  1 death</text>
-<text x="196" y="262" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#111111" text-anchor="end">V0.3 Decision-VoI</text>
+<text x="813.2" y="208" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">93%  ·  44.1 res  ·  1 death</text>
+<text x="196" y="262" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="600" fill="#111111" text-anchor="end">V0.3 Decision-VoI</text>
 <rect x="210" y="242" width="422.40000000000003" height="26" fill="#dbe7dd" stroke="#2f6b45" stroke-width="1" />
-<text x="640.4000000000001" y="262" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">66%  ·  65.1 res  ·  0 deaths</text>
-<text x="196" y="316" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#111111" text-anchor="end">V0.5 Plateau-VoI</text>
+<text x="640.4000000000001" y="262" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">66%  ·  65.1 res  ·  0 deaths</text>
+<text x="196" y="316" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="600" fill="#111111" text-anchor="end">V0.5 Plateau-VoI</text>
 <rect x="210" y="296" width="473.6" height="26" fill="#dbe7dd" stroke="#2f6b45" stroke-width="1" />
-<text x="691.6" y="316" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">74%  ·  78.1 res  ·  0 deaths</text>
+<text x="691.6" y="316" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">74%  ·  78.1 res  ·  0 deaths</text>
 <rect x="28" y="376" width="904" height="70" fill="#faf8f2" stroke="#e3e0d8" stroke-width="1" />
-<text x="44" y="400" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#111111" text-anchor="start">A causal first-order model creates the trap; a second-order probe escapes it.</text>
-<text x="44" y="420" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with fewer resources.</text>
-<text x="44" y="436" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b6169" text-anchor="start">Decision-VoI probes without mortality in V0.3; the V0.5 plateau-breaking probe raises escape further while keeping zero deaths.</text>
+<text x="44" y="400" font-family="Helvetica, Arial, sans-serif" font-size="15.4" font-weight="700" fill="#111111" text-anchor="start">A causal first-order model creates the trap; a second-order probe escapes it.</text>
+<text x="44" y="420" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with fewer resources.</text>
+<text x="44" y="436" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">Decision-VoI probes without mortality in V0.3; the V0.5 plateau-breaking probe raises escape further while keeping zero deaths.</text>
 </svg>

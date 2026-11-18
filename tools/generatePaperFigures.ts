@@ -193,7 +193,8 @@ function text(
   options: { size?: number; weight?: number; anchor?: string; fill?: string; italic?: boolean } = {},
 ) {
   const { size = 11, weight = 400, anchor = "start", fill = INK, italic = false } = options;
-  return `<text x="${x}" y="${y}" font-family="Helvetica, Arial, sans-serif" font-size="${size}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}"${
+  const fontSize = Math.round(size * 1.4 * 10) / 10;
+  return `<text x="${x}" y="${y}" font-family="Helvetica, Arial, sans-serif" font-size="${fontSize}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}"${
     italic ? ' font-style="italic"' : ""
   }>${esc(value)}</text>`;
 }
@@ -285,10 +286,10 @@ function fig1() {
   body.push(line(28, 410, 932, 410, GRID));
   body.push(text(28, 434, "Operational mechanisms", { size: 10, weight: 700 }));
   const cards = [
-    ["Interoception", "4 noisy channels", "energy, strain, effort, slip"],
+    ["Interoception", "4 noisy channels", "energy · strain · effort · slip"],
     ["Attribution", "action-conditioned", "MOVE vs REST residual contrast"],
-    ["PP-1", "precision-weighted error", "transient gain on single-channel outliers"],
-    ["AST-1", "attention schema", "5-window model of its own precision weights"],
+    ["PP-1", "precision-weighted error", "single-channel outlier gain"],
+    ["AST-1", "attention schema", "5-window precision model"],
   ];
   cards.forEach(([title, sub, detail], i) => {
     const x = 28 + i * 232;
@@ -559,7 +560,7 @@ function fig4() {
   body.push(line(left, top, left, top + height, MUTED, 1));
   body.push(text(left + width / 2, top + height + 34, "PP-1 pulse absorption", { size: 10, anchor: "middle", fill: MUTED }));
   body.push(
-    `<text x="${left - 44}" y="${top + height / 2}" transform="rotate(-90 ${left - 44} ${top + height / 2})" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="${MUTED}" text-anchor="middle">stationary MAE</text>`,
+    `<text x="${left - 44}" y="${top + height / 2}" transform="rotate(-90 ${left - 44} ${top + height / 2})" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="${MUTED}" text-anchor="middle">stationary MAE</text>`,
   );
 
   const tri = [
