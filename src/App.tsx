@@ -14,10 +14,12 @@ import { useSimulation } from "./ui/useSimulation";
 import { V02Lab } from "./v02/V02Lab";
 import { V03Lab } from "./v03/V03Lab";
 import { V04Lab } from "./v04/V04Lab";
+import { V05Lab } from "./v05/V05Lab";
+import { ResearchPage } from "./research/ResearchPage";
 
 export default function App() {
   const controller = useSimulation();
-  const [view, setView] = useState<"v0" | "v02" | "v03" | "v04">("v0");
+  const [view, setView] = useState<"v0" | "v02" | "v03" | "v04" | "v05" | "research">("v0");
   const { snapshot, series, events, running, settings, engine, actions } = controller;
   const [aboutOpen, setAboutOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -67,6 +69,21 @@ export default function App() {
     return <V04Lab onBack={() => setView("v0")} />;
   }
 
+  if (view === "v05") {
+    return <V05Lab onBack={() => setView("v0")} />;
+  }
+
+  if (view === "research") {
+    return (
+      <ResearchPage
+        onBack={() => setView("v0")}
+        onOpenVersion={(version) =>
+          setView(version === "v0" ? "v0" : version)
+        }
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <TopBar
@@ -78,6 +95,8 @@ export default function App() {
         onOpenV02={() => setView("v02")}
         onOpenV03={() => setView("v03")}
         onOpenV04={() => setView("v04")}
+        onOpenV05={() => setView("v05")}
+        onOpenResearch={() => setView("research")}
       />
 
       <main className="mx-auto max-w-[1600px] space-y-3 px-3 py-3 sm:px-4">

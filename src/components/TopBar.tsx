@@ -1,4 +1,4 @@
-import { ArrowLeftRight, Info, Pause, Play } from "lucide-react";
+import { ArrowLeftRight, BookOpen, Info, Pause, Play } from "lucide-react";
 import { MODE_META, type EngineSnapshot } from "../simulation/types";
 import { cn } from "../lib/cn";
 import { TICK_LABEL } from "../ui/format";
@@ -12,6 +12,8 @@ interface TopBarProps {
   onOpenV02: () => void;
   onOpenV03: () => void;
   onOpenV04: () => void;
+  onOpenV05: () => void;
+  onOpenResearch: () => void;
 }
 
 export function TopBar({
@@ -23,6 +25,8 @@ export function TopBar({
   onOpenV02,
   onOpenV03,
   onOpenV04,
+  onOpenV05,
+  onOpenResearch,
 }: TopBarProps) {
   const status = !snapshot.alive ? "terminated" : running ? "running" : "paused";
   const mode = MODE_META[snapshot.mode];
@@ -136,6 +140,13 @@ export function TopBar({
           </button>
           <button className="btn h-8 border-lab-cyan/35 px-2.5 text-lab-cyan" onClick={onOpenV04} title="Open V0.4 precision-gated attention-schema lab">
             V0.4
+          </button>
+          <button className="btn h-8 border-lab-green/35 px-2.5 text-lab-green" onClick={onOpenV05} title="Open V0.5 unified lab">
+            V0.5
+          </button>
+          <button className="btn h-8 border-lab-amber/35 px-2.5 text-lab-amber" onClick={onOpenResearch} title="Open the research and findings page">
+            <BookOpen size={12} />
+            <span className="hidden xl:inline">Research</span>
           </button>
           <button className="icon-btn" onClick={onAbout} aria-label="About this experiment" title="About">
             <Info size={14} />
