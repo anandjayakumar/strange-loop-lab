@@ -22,18 +22,13 @@ export function Panel({
 }: PanelProps) {
   return (
     <section className={cn("panel flex min-w-0 flex-col", className)}>
-      <header className="panel-head">
+      <header className="panel-head" aria-label={`${index}. ${title}`}>
         <div className="min-w-0">
-          <div className="flex items-baseline gap-2">
-            <span className="font-mono text-[10px] tracking-[0.1em] text-lab-amber/80">
-              {index}
-            </span>
-            <h2 className="truncate text-[13px] font-medium tracking-[-0.01em] text-lab-text">
-              {title}
-            </h2>
-          </div>
+          <h2 className="truncate font-serif text-[16px] font-normal leading-tight tracking-[-0.015em] text-lab-text">
+            {title}
+          </h2>
           {subtitle ? (
-            <p className="mt-0.5 max-w-[52ch] truncate font-mono text-[9px] text-lab-faint">
+            <p className="mt-1 max-w-[56ch] truncate text-[10px] leading-snug text-lab-faint">
               {subtitle}
             </p>
           ) : null}
