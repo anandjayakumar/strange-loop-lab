@@ -81,7 +81,7 @@ The agent does not read the physical state. It receives four noisy channels: ene
 
 V0.1 used designer-set priors. Its self-model was learned, but the world was forgiving enough that a \textbf{frozen} model---one that never updated---survived \textbf{99/100} runs and collected \textbf{64.6} resources versus \textbf{61.0} for the learned model (paired difference $-3.5$, $p=0.057$). The frozen model's self-state accuracy was \textbf{0.09}: it was wrong about its own body almost always, and it did not matter.
 
-This is the minimal-implementation trap: an architecture can contain a self-model, a meta-model and a strange loop, and still be behaviourally inert because the environment never charges for being wrong. V0.2 made three changes: randomized uninformed priors, a true metabolic cliff where small prediction errors kill, and a learned meta-model over the self-model's reliability. The audit result is the first substantive finding of the programme: \textbf{stakes, not architecture, are what make self-modeling load-bearing.}
+This is the minimal-implementation trap: an architecture can contain a self-model, a meta-model and a strange loop, and still be behaviourally inert because the environment never charges for being wrong. V0.2 made three changes: randomized uninformed priors, a true metabolic cliff where small prediction errors kill, and a learned meta-model over the self-model's reliability. The audit result is the first substantive finding of the programme: \textbf{stakes, not architecture, are what make self-modeling load-bearing} (Figure~\ref{fig:arch}).
 
 \subsection{V0.2: uninformed priors and learned reliability}
 
@@ -218,7 +218,7 @@ V0.5 plateau-VoI & \textbf{74/100} & \textbf{78.1} & \textbf{0} \\
 \end{tabular}
 \end{table}
 
-Decision-VoI computes the value of sampling a never-observed rough context and compares it with the pessimistic cost bound. Because the probe has decision value only when the resulting belief could change the policy, the agent takes the risk exactly when it matters. VoI versus pragmatic is $\mathbf{+78.14\ [69.29,87.10]}$ resources ($dz=1.69$, $p<0.001$); versus random it is $\mathbf{+34.03\ [24.01,43.69]}$ ($dz=0.68$, $p<0.001$). Random exploration escapes more often but at roughly half the resources and with a death; VoI trades a small amount of escape rate for a large amount of foraging (Table~\ref{tab:trap}).
+Decision-VoI computes the value of sampling a never-observed rough context and compares it with the pessimistic cost bound. Because the probe has decision value only when the resulting belief could change the policy, the agent takes the risk exactly when it matters. VoI versus pragmatic is $\mathbf{+78.14\ [69.29,87.10]}$ resources ($dz=1.69$, $p<0.001$); versus random it is $\mathbf{+34.03\ [24.01,43.69]}$ ($dz=0.68$, $p<0.001$). Random exploration escapes more often but at roughly half the resources and with a death; VoI trades a small amount of escape rate for a large amount of foraging (Table~\ref{tab:trap}, Figure~\ref{fig:trap}).
 
 V0.5's evidence-discounted gate and plateau-breaking probe raise escape to 74/100 and resources to 78.1 with zero deaths. The remaining 26 failures are energy plateaus below even the discounted floor: the agent's energy is too low to afford the probe, so the rest policy is locally optimal. Escape is therefore bounded by physiology, not by belief.
 
@@ -265,11 +265,11 @@ V0.5 & 0.79 (pilot) & 2.04 & 0.577 & \textbf{74/100} \\
 \end{tabular}
 \end{table}
 
-The three targets cannot be maximised at once (Table~\ref{tab:trilemma}). Absorbing the illusion requires trusting the prior, which is the same gain that slows tracking. In V0.4 the cost is explicit: absorption rises from zero to 0.830 while stationary MAE rises from 1.68 to 2.74 and attribution macro-F1 falls from 0.604 to 0.515. V0.5's selective gating recovers part of the tracking cost (MAE 2.04) and part of the diagnostic cost (F1 0.577), but it does not reach V0.3's accuracy, and its absorption is measured only in the 20-seed pilot.
+The three targets cannot be maximised at once (Table~\ref{tab:trilemma}, Figure~\ref{fig:trilemma}). Absorbing the illusion requires trusting the prior, which is the same gain that slows tracking. In V0.4 the cost is explicit: absorption rises from zero to 0.830 while stationary MAE rises from 1.68 to 2.74 and attribution macro-F1 falls from 0.604 to 0.515. V0.5's selective gating recovers part of the tracking cost (MAE 2.04) and part of the diagnostic cost (F1 0.577), but it does not reach V0.3's accuracy, and its absorption is measured only in the 20-seed pilot.
 
 The trilemma is the paper's central negative result. It is a \emph{frontier}, not a failure of implementation: each point is the best achievable given the same precision gain, and moving along the frontier changes which capability is sacrificed.
 
-At the full protocol V0.5 also reaches rolling BSS $\mathbf{0.027\ [0.025,0.028]}$ and latent-failure AUROC $\mathbf{0.785\ [0.773,0.797]}$, and the learned world model beats the neutral ablation by $\mathbf{+4.72\ [0.77,8.68]}$ resources ($dz=0.22$, $p=0.027$). The world-model advantage lost in V0.4 is therefore recovered, but at a tracking and diagnostic cost.
+At the full protocol V0.5 also reaches rolling BSS $\mathbf{0.027\ [0.025,0.028]}$ and latent-failure AUROC $\mathbf{0.785\ [0.773,0.797]}$, and the learned world model beats the neutral ablation by $\mathbf{+4.72\ [0.77,8.68]}$ resources ($dz=0.22$, $p=0.027$). The world-model advantage lost in V0.4 is therefore recovered, but at a tracking and diagnostic cost (Figure~\ref{fig:progression}).
 
 \subsection{The Goodhart check}
 
@@ -316,6 +316,9 @@ Raw per-run JSON is in \texttt{research/}; aggregate reports are in \texttt{docs
 \paragraph{AI assistance disclosure.}
 The code, validation harnesses and manuscript were produced with AI-assisted drafting and statistical auditing. All numbers in the manuscript are generated from the seeded JSON artifacts by the validation harnesses and the figure generator, and were independently re-read from those artifacts during editing. No number was typed from memory.
 
+% Include every reference in the bibliography, including the classical
+% filtering and scoring sources that are positioned rather than cited inline.
+\nocite{*}
 \bibliography{references}
 
 \end{document}
