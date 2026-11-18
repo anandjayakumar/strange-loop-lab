@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Pause, Play, RotateCcw, SkipForward, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { ACTION_COLORS } from "../simulation/config";
 import { V02Engine } from "../simulation/v02/engine";
 import { EXPLORATION_LABELS, SCENARIO_LABELS } from "../simulation/v02/config";
@@ -13,6 +13,9 @@ import {
   type V02Snapshot,
 } from "../simulation/v02/types";
 import { Panel } from "../components/ui/Panel";
+import { LabTransport } from "../components/LabTransport";
+import { SiteHeader, type SiteView } from "../components/SiteHeader";
+import { VersionHero } from "../components/VersionHero";
 import { Plot } from "../components/ui/Plot";
 import { Ring, Stat } from "../components/ui/Primitives";
 import { cn } from "../lib/cn";
@@ -24,7 +27,11 @@ const TABS: { key: Difficulty; label: string }[] = [
   { key: "harsh", label: "Harsh" },
 ];
 
-export function V02Lab({ onBack }: { onBack: () => void }) {
+export function V02Lab({
+  onNavigate,
+}: {
+  onNavigate: (view: SiteView) => void;
+}) {
   const controller = useV02Simulation();
   const { engine, snapshot, series, events, settings, running, flash, actions } = controller;
   const [seedDraft, setSeedDraft] = useState(String(settings.seed));
@@ -38,51 +45,35 @@ export function V02Lab({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-lab-text/85 bg-lab-bg/95 backdrop-blur-md">
-        <div className="mx-auto max-w-[1560px] px-5 sm:px-8">
-          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2 py-3">
-            <div className="flex min-w-0 items-end gap-4">
-              <button className="btn-link mb-1" onClick={onBack} title="Switch to V0">
-                <ArrowLeft size={12} />
-                V0
-              </button>
-              <span className="mb-1.5 hidden h-5 w-px bg-lab-line2 sm:block" />
-              <div className="min-w-0">
-                <div className="kicker">Edition V0.2 · strange loop lab</div>
-                <h1 className="display mt-1 truncate text-[25px] sm:text-[28px]">Learned meta-cognition</h1>
-                <p className="mt-0.5 max-w-[72ch] truncate font-serif text-[12.5px] italic text-lab-faint">
-                  uninformed priors · epistemic reliability · level crossing
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={cn("chip", running ? "text-lab-green" : "text-lab-amber")}>
-                <span className={cn("h-1.5 w-1.5 rounded-full", running ? "bg-lab-green" : "bg-lab-amber")} />
-                {!snapshot.alive ? "terminated" : running ? "running" : "paused"}
-              </span>
-              <span className="chip">
-                seed <span className="num text-lab-text">{settings.seed}</span>
-              </span>
-              <button className="btn btn-primary h-8 px-3.5" onClick={actions.toggleRunning} disabled={!snapshot.alive}>
-                {running ? <Pause size={13} /> : <Play size={13} />}
-                {running ? "Pause" : "Run"}
-              </button>
-              <button className="btn h-8" onClick={actions.step} disabled={!snapshot.alive}>
-                <SkipForward size={13} /> Step
-              </button>
-              <button className="btn h-8" onClick={actions.phase} disabled={!snapshot.alive}>
-                Phase
-              </button>
-              <button className="btn h-8" onClick={actions.reset}>
-                <RotateCcw size={13} /> Reset
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader active="v02" onNavigate={onNavigate} />
 
       <main className="mx-auto max-w-[1560px] space-y-4 px-5 py-5 sm:px-8">
-        <section className="panel">
+        <VersionHero
+          id="v02-hero"
+          label="V0.2"
+          edition="uninformed priors · learned meta-cognition"
+          headline={<>Learned <span className="italic text-lab-amber">meta-cognition</span></>}
+          lede="The first-order self-model is now learned from randomized, uninformed priors, and a second-order model tracks when its own predictions can be trusted. Watch the level crossing: trust rises when beliefs hold, and collapses when they fail."
+          tick={snapshot.tick}
+          energy={snapshot.physical.energy}
+          status={!snapshot.alive ? "terminated" : running ? "running" : "paused"}
+          condition={`${settings.difficulty} · ${settings.priorRegime}`}
+          seed={settings.seed}
+          detail={`${snapshot.physical.resources} resources · ${snapshot.physical.moves} moves`}
+          onResearch={() => onNavigate("research")}
+          onLatest={() => onNavigate("v05")}
+        />
+        <section id="v02-controls" className="panel">
+          <LabTransport
+          running={running}
+          alive={snapshot.alive}
+          phase={snapshot.phase}
+          phaseName={snapshot.phaseName}
+          onToggle={actions.toggleRunning}
+          onStep={actions.step}
+          onPhase={actions.phase}
+          onReset={actions.reset}
+        />
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-lab-line/80 px-3.5 py-2.5">
             <label className="flex items-center gap-2">
               <span className="mono-label">difficulty</span>
@@ -240,7 +231,7 @@ export function V02Lab({ onBack }: { onBack: () => void }) {
         <footer className="border-t border-lab-line/60 px-1 pb-5 pt-3 text-[9px] leading-relaxed text-lab-faint">
           V0.2 is a research instrument, not a consciousness claim. The learned meta-model predicts
           observable first-order error; latent errors, shadow outcomes and regime labels are
-          evaluation-only. V0 remains available through the V0 switch.
+          evaluation-only. V0.1 remains available through the V0.1 switch.
         </footer>
       </main>
     </div>
@@ -332,7 +323,7 @@ function V02Environment({ engine, snapshot }: { engine: V02Engine; snapshot: V02
   }, [engine]);
 
   return (
-    <Panel index="01" title="Environment" subtitle="V0.2 metabolic regime · local 7×7 sensing"
+    <Panel id="v02-environment" index="01" title="Environment" subtitle="V0.2 metabolic regime · local 7×7 sensing"
       right={<span className={cn("chip", snapshot.alive ? "text-lab-green" : "text-lab-red")}>{snapshot.alive ? "live" : "dead"}</span>}
       bodyClassName="p-3">
       <div ref={wrap} className="w-full overflow-hidden rounded-md border border-lab-line/80">
@@ -369,7 +360,7 @@ function MetaPanel({ snapshot }: { snapshot: V02Snapshot }) {
   const meta = snapshot.currentMeta;
   const m = snapshot.metaModel;
   return (
-    <Panel index="02" title="Learned meta-model"
+    <Panel id="v02-meta-model" index="02" title="Learned meta-model"
       subtitle="predicts observable first-order error and tolerance probability"
       right={<span className="chip text-lab-violet">online · observable targets</span>}
       bodyClassName="p-3">
@@ -437,7 +428,7 @@ function StatePanel({ snapshot }: { snapshot: V02Snapshot }) {
   const obs = snapshot.observation;
   const metrics = snapshot.metrics;
   return (
-    <Panel index="03" title="State & self-belief"
+    <Panel id="v02-state" index="03" title="State & self-belief"
       subtitle="instrumented truth is isolated from learning"
       right={<span className="chip">filter {metrics.selfEnergyMae.toFixed(1)}</span>}
       bodyClassName="p-3">
@@ -498,7 +489,7 @@ function StateRow({ label, actual, estimate, error }: { label: string; actual: s
 function MetricsPanel({ snapshot, series }: { snapshot: V02Snapshot; series: readonly V02SeriesPoint[] }) {
   const values = (key: keyof V02SeriesPoint) => series.map((p) => (typeof p[key] === "number" ? (p[key] as number) : null));
   return (
-    <Panel index="04" title="V0.2 measurements"
+    <Panel id="v02-measurements" index="04" title="V0.2 measurements"
       subtitle="estimation, reliability and exploration traces"
       right={<span className="chip">{series.length} ticks</span>}
       bodyClassName="p-3">
@@ -576,7 +567,7 @@ function ExplorationPanel({ snapshot }: { snapshot: V02Snapshot }) {
   const sel = snapshot.selection;
   const maxU = sel ? Math.max(...sel.utilities) : 1;
   return (
-    <Panel index="05" title="Epistemic control"
+    <Panel id="v02-epistemic" index="05" title="Epistemic control"
       subtitle="pragmatic value + λ · information value"
       right={<span className="chip text-lab-amber">{snapshot.explorationMode}</span>}
       bodyClassName="p-3">
@@ -632,7 +623,7 @@ function AttributionPanel({ snapshot }: { snapshot: V02Snapshot }) {
     ["insufficient", a.insufficient],
   ] as const;
   return (
-    <Panel index="06" title="Failure attribution"
+    <Panel id="v02-attribution" index="06" title="Failure attribution"
       subtitle="observable channel signatures · no regime labels"
       right={<span className="chip">{ATTRIBUTION_LABELS[a.top]}</span>}
       bodyClassName="p-3">
@@ -669,7 +660,7 @@ function AttributionPanel({ snapshot }: { snapshot: V02Snapshot }) {
 function EventPanel({ events }: { events: V02Snapshot["events"] }) {
   const list = [...events].reverse().slice(0, 80);
   return (
-    <Panel index="07" title="Event log" subtitle="measured shifts, beliefs and model updates"
+    <Panel id="v02-event-log" index="07" title="Event log" subtitle="measured shifts, beliefs and model updates"
       right={<span className="chip">{events.length}</span>} bodyClassName="p-0">
       <div className="max-h-[320px] overflow-y-auto px-3 py-1 scroll-thin">
         {list.length === 0 ? (

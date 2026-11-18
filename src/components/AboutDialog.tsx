@@ -115,7 +115,7 @@ export function AboutDialog({ open, onClose }: { open: boolean; onClose: () => v
         </div>
         <div className="flex items-center justify-between border-t border-lab-line px-6 py-4">
           <span className="font-mono text-[9px] text-lab-faint">
-            V0 · deterministic browser simulation · no backend
+            V0.1 · deterministic browser simulation · no backend
           </span>
           <button className="btn" onClick={onClose}>
             Close

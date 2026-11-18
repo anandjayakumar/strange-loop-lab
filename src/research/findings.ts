@@ -20,7 +20,7 @@ export interface Discovery {
 }
 
 export const VERSION_LABEL: Record<VersionKey, string> = {
-  v0: "V0",
+  v0: "V0.1",
   v02: "V0.2",
   v03: "V0.3",
   v04: "V0.4",
@@ -42,11 +42,11 @@ export const DISCOVERIES: Discovery[] = [
     title: "Self-modeling only matters when life has cliffs",
     version: "v02",
     plain:
-      "In the forgiving V0 world, an agent that never learns anything about itself survives and forages about as well as one that does — its hand-set priors are good enough. Put the same agent near a metabolic cliff, where small prediction errors kill, and the learned self-model becomes decisive. A model of the self is only worth its cost when being wrong is expensive.",
+      "In the forgiving V0.1 world, an agent that never learns anything about itself survives and forages about as well as one that does — its hand-set priors are good enough. Put the same agent near a metabolic cliff, where small prediction errors kill, and the learned self-model becomes decisive. A model of the self is only worth its cost when being wrong is expensive.",
     stats:
-      "V0: frozen-self 64.6 resources vs learned 61.0 (paired −3.5, p = 0.057); frozen-world 76.6 vs learned 62.9; no-world 28.2 vs learned 61.7 (p < 0.001). Under V0.2 harsh dynamics: frozen-self 22.4 vs learned 32.4 (+10.0 versus frozen), 100/100 survival in both. The sign of the self-model's value reverses between the two worlds.",
+      "V0.1: frozen-self 64.6 resources vs learned 61.0 (paired −3.5, p = 0.057); frozen-world 76.6 vs learned 62.9; no-world 28.2 vs learned 61.7 (p < 0.001). Under V0.2 harsh dynamics: frozen-self 22.4 vs learned 32.4 (+10.0 versus frozen), 100/100 survival in both. The sign of the self-model's value reverses between the two worlds.",
     evidence:
-      "The V0 ablation shows self-modeling is behaviourally inert in a benign world and only changes survival under cliff pressure. The V0.2 result reverses V0's sign.",
+      "The V0.1 ablation shows self-modeling is behaviourally inert in a benign world and only changes survival under cliff pressure. The V0.2 result reverses V0.1's sign.",
     tone: "good",
   },
   {
@@ -312,7 +312,7 @@ export interface VersionDetail {
 export const VERSIONS: VersionDetail[] = [
   {
     key: "v0",
-    name: "V0 — the deterministic self-reference laboratory",
+    name: "V0.1 — the deterministic self-reference laboratory",
     tagline: "Does a self-model change behaviour at all?",
     flow: ["sensors", "self-model", "meta trust", "action"],
     hypothesis:
@@ -564,7 +564,7 @@ export const FRAMEWORKS: FrameworkRow[] = [
     mechanism:
       "MOVE vs REST contrasts isolate causes; metabolic cliffs make prediction errors lethal, which is what gives self-modeling its value.",
     evidence:
-      "V0 frozen-self ≈ learned in a benign world; V0.2 harsh +25.8 resources with learning. Attribution from 1/100 to 0.604 macro-F1.",
+      "V0.1 frozen-self ≈ learned in a benign world; V0.2 harsh +25.8 resources with learning. Attribution from 1/100 to 0.604 macro-F1.",
     tone: "good",
   },
   {

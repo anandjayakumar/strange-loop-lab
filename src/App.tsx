@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, BookOpen } from "lucide-react";
 import { AboutDialog } from "./components/AboutDialog";
 import { ArchitecturePanel } from "./components/ArchitecturePanel";
 import { ComparisonView } from "./components/ComparisonView";
@@ -10,7 +9,8 @@ import { InternalStatePanel } from "./components/InternalStatePanel";
 import { MetricsPanel } from "./components/MetricsPanel";
 import { ReferencePanel } from "./components/ReferencePanel";
 import { SelfModelPanel } from "./components/SelfModelPanel";
-import { TopBar } from "./components/TopBar";
+import { SiteHeader, type SiteView } from "./components/SiteHeader";
+import { VersionHero } from "./components/VersionHero";
 import { useSimulation } from "./ui/useSimulation";
 import { V02Lab } from "./v02/V02Lab";
 import { V03Lab } from "./v03/V03Lab";
@@ -21,7 +21,7 @@ import { MODE_META } from "./simulation/types";
 
 export default function App() {
   const controller = useSimulation();
-  const [view, setView] = useState<"v0" | "v02" | "v03" | "v04" | "v05" | "research">("v0");
+  const [view, setView] = useState<SiteView>("v0");
   const { snapshot, series, events, running, settings, engine, actions } = controller;
   const [aboutOpen, setAboutOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -59,154 +59,104 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, [toggleRunning, step, microStep, reset, aboutOpen, compareOpen, view]);
 
+  const navigate = (next: SiteView) => setView(next);
+
   if (view === "v02") {
-    return <V02Lab onBack={() => setView("v0")} />;
+    return <V02Lab onNavigate={navigate} />;
   }
 
   if (view === "v03") {
-    return <V03Lab onBack={() => setView("v0")} />;
+    return <V03Lab onNavigate={navigate} />;
   }
 
   if (view === "v04") {
-    return <V04Lab onBack={() => setView("v0")} />;
+    return <V04Lab onNavigate={navigate} />;
   }
 
   if (view === "v05") {
-    return <V05Lab onBack={() => setView("v0")} />;
+    return <V05Lab onNavigate={navigate} />;
   }
 
   if (view === "research") {
     return (
       <ResearchPage
         onBack={() => setView("v0")}
+        onNavigate={navigate}
         onOpenVersion={(version) => setView(version === "v0" ? "v0" : version)}
       />
     );
   }
 
   const mode = MODE_META[snapshot.mode];
+  const status = !snapshot.alive ? "terminated" : running ? "running" : "paused";
 
   return (
     <div className="relative min-h-screen">
-      <TopBar
-        snapshot={snapshot}
-        running={running}
-        onAbout={() => setAboutOpen(true)}
-        onCompare={() => setCompareOpen(true)}
-        onToggleRunning={actions.toggleRunning}
-        onOpenV02={() => setView("v02")}
-        onOpenV03={() => setView("v03")}
-        onOpenV04={() => setView("v04")}
-        onOpenV05={() => setView("v05")}
-        onOpenResearch={() => setView("research")}
-      />
+      <SiteHeader active="v0" onNavigate={navigate} />
 
       <main className="relative z-10 mx-auto max-w-[1560px] px-5 pb-2 sm:px-8">
-        {/* ------------------------------------------------------------ hero */}
-        <section className="grid grid-cols-1 gap-x-12 gap-y-8 pb-8 pt-10 lg:grid-cols-12 lg:pt-14">
-          <div className="lg:col-span-8">
-            <div className="kicker">V0 · first-order self-modeling</div>
-            <h2 className="display mt-4 text-[46px] sm:text-[64px] xl:text-[76px]">
+        <VersionHero
+          id="hero"
+          label="V0.1"
+          edition="first-order self-modelling"
+          headline={
+            <>
               An agent that
               <br />
               <span className="italic text-lab-amber">models itself</span>
               <span className="text-lab-line2">.</span>
-            </h2>
-            <p className="mt-6 max-w-[58ch] text-[14.5px] leading-[1.7] text-lab-muted">
-              A deterministic organism in a 30 × 30 world, learning what its own body costs,
-              predicts and can bear. Every feedback edge is visible, switchable and measurable — the
-              interface is the experiment, not a summary of it.
-            </p>
-            <div className="mt-7 flex flex-wrap items-center gap-2.5">
-              <button className="btn btn-primary h-9 px-4" onClick={() => setView("research")}>
-                <BookOpen size={12} />
-                Research &amp; findings
-              </button>
-              <button className="btn h-9 px-4" onClick={() => setView("v05")}>
-                Latest · V0.5
-                <ArrowRight size={12} />
-              </button>
-              <span className="ml-1 hidden font-serif text-[13px] italic text-lab-faint sm:inline">
-                five architectures, one question
-              </span>
-            </div>
-          </div>
-
-          <aside className="lg:col-span-4">
-            <div className="inset p-5">
-              <div className="flex items-baseline justify-between">
-                <span className="label">live telemetry</span>
-                <span className="font-serif text-[12px] italic text-lab-faint">
-                  seed {snapshot.seed}
-                </span>
-              </div>
-              <div className="mt-4 flex items-end justify-between gap-3 border-b border-lab-line pb-4">
-                <div>
-                  <div className="num text-[40px] leading-none text-lab-text">{snapshot.tick}</div>
-                  <div className="label mt-2">ticks survived</div>
-                </div>
-                <div className="text-right">
-                  <div className="num text-[17px] leading-none text-lab-green">
-                    {snapshot.physical.energy.toFixed(1)}
-                  </div>
-                  <div className="label mt-2">energy</div>
-                </div>
-              </div>
-              <dl className="mt-3 space-y-2">
-                {[
-                  ["condition", `${snapshot.mode} · ${mode.short}`],
-                  ["state", snapshot.alive ? (running ? "running" : "paused") : "terminated"],
-                  [
-                    "collected",
-                    `${snapshot.physical.resourcesCollected} resources · ${snapshot.physical.distance} moves`,
-                  ],
-                  ["samples", `${series.length} ticks retained`],
-                ].map(([key, value]) => (
-                  <div key={key} className="flex items-baseline justify-between gap-3">
-                    <dt className="label">{key}</dt>
-                    <dd className="num text-[10.5px] text-lab-text">{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </aside>
-        </section>
+            </>
+          }
+          lede="A deterministic organism in a 30 × 30 world, learning what its own body costs, predicts and can bear. Every feedback edge is visible, switchable and measurable — the interface is the experiment, not a summary of it."
+          tick={snapshot.tick}
+          energy={snapshot.physical.energy}
+          status={status}
+          condition={`${snapshot.mode} · ${mode.short}`}
+          seed={snapshot.seed}
+          detail={`${snapshot.physical.resourcesCollected} resources · ${snapshot.physical.distance} moves`}
+          onResearch={() => setView("research")}
+          onLatest={() => setView("v05")}
+        />
 
         <div className="rule-double" />
 
-        {/* -------------------------------------------------------- controls */}
-        <div className="py-4">
+        <div id="controls" className="py-4">
           <ControlDeck controller={controller} onCompare={() => setCompareOpen(true)} />
         </div>
 
-        {/* ----------------------------------------------------------- stage */}
         <section className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+          <div id="environment" className="lg:col-span-7">
             <EnvironmentPanel engine={engine} snapshot={snapshot} />
             <p className="figure-caption mt-2.5 px-0.5">
               Fig. 01 — The world. Obstacles in graphite, resources in moss, the agent in vermilion
               with its sensor footprint dashed. Hover any cell to read its type.
             </p>
           </div>
-          <div className="space-y-5 lg:col-span-5">
+          <div id="architecture" className="space-y-5 lg:col-span-5">
             <ArchitecturePanel snapshot={snapshot} />
-            <InternalStatePanel snapshot={snapshot} />
+            <div id="internal-state">
+              <InternalStatePanel snapshot={snapshot} />
+            </div>
           </div>
         </section>
 
-        {/* ---------------------------------------------------------- record */}
-        <section className="mt-5">
+        <section id="metrics" className="mt-5">
           <MetricsPanel snapshot={snapshot} series={series} />
         </section>
 
         <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
-          <SelfModelPanel snapshot={snapshot} />
-          <EventLogPanel events={events} />
-          <ReferencePanel snapshot={snapshot} />
+          <div id="self-model">
+            <SelfModelPanel snapshot={snapshot} />
+          </div>
+          <div id="event-log">
+            <EventLogPanel events={events} />
+          </div>
+          <div id="reference">
+            <ReferencePanel snapshot={snapshot} />
+          </div>
         </section>
 
-        {/* ---------------------------------------------------------- footer */}
-        <footer className="mt-12 border-t border-lab-text/85 pt-5">
+        <footer id="about" className="mt-12 border-t border-lab-text/85 pt-5">
           <div className="grid grid-cols-1 gap-8 pb-10 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <p className="font-serif text-[19px] leading-snug text-lab-text">

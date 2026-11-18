@@ -1,5 +1,6 @@
 import { useMemo, useState, type ReactNode } from "react";
-import { ArrowLeft, BookOpen, FlaskConical, ShieldCheck } from "lucide-react";
+import { BookOpen, FlaskConical, ShieldCheck } from "lucide-react";
+import { SiteHeader, type SiteView } from "../components/SiteHeader";
 import {
   DISCOVERIES,
   FRAMEWORKS,
@@ -110,9 +111,11 @@ function SectionHead({
 export function ResearchPage({
   onOpenVersion,
   onBack,
+  onNavigate,
 }: {
   onOpenVersion: (version: VersionKey) => void;
   onBack: () => void;
+  onNavigate: (view: SiteView) => void;
 }) {
   const [layers, setLayers] = useState<Layers>("plain");
   const [activeVersion, setActiveVersion] = useState<VersionKey>("v03");
@@ -124,36 +127,10 @@ export function ResearchPage({
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-lab-text/85 bg-lab-bg/95 backdrop-blur-md">
+      <SiteHeader active="research" onNavigate={onNavigate} />
+
+      <div className="border-b border-lab-line bg-lab-bg/95">
         <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
-          <div className="flex items-center justify-between gap-6 border-b border-lab-line py-2">
-            <div className="flex items-center gap-4">
-              <button className="btn-link" onClick={onBack} title="Back to the lab">
-                <ArrowLeft size={12} />
-                Lab
-              </button>
-              <span className="hidden h-3 w-px bg-lab-line2 sm:block" />
-              <span className="hidden font-serif text-[13px] italic text-lab-faint sm:inline">
-                Strange Loop Lab — research record
-              </span>
-            </div>
-            <nav className="scroll-thin flex items-center gap-4 overflow-x-auto">
-              {VERSIONS.map((v) => (
-                <button
-                  key={v.key}
-                  className="flex shrink-0 items-center gap-1.5 py-1 font-sans text-[9.5px] font-medium uppercase tracking-[0.14em] text-lab-faint transition-colors hover:text-lab-text"
-                  onClick={() => onOpenVersion(v.key)}
-                  title={`Open ${VERSION_LABEL[v.key]}`}
-                >
-                  <span
-                    className="h-[5px] w-[5px] rounded-full"
-                    style={{ background: VERSION_COLOR[v.key] }}
-                  />
-                  {VERSION_LABEL[v.key]}
-                </button>
-              ))}
-            </nav>
-          </div>
           <nav className="scroll-thin flex items-center gap-6 overflow-x-auto py-2">
             {SECTIONS.map((section) => (
               <a
@@ -170,7 +147,7 @@ export function ResearchPage({
             </span>
           </nav>
         </div>
-      </header>
+      </div>
 
       <main className="mx-auto max-w-[1240px] px-5 pb-20 sm:px-8">
         {/* ------------------------------------------------------------- thesis */}
@@ -335,7 +312,7 @@ export function ResearchPage({
             n="02"
             tag="matrix"
             title="The evolution matrix"
-            subtitle="Standardised metrics across V0 → V0.5. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
+            subtitle="Standardised metrics across V0.1 → V0.5. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
           />
           <div className="mb-4 flex flex-wrap items-center gap-5">
             {(["good", "warn", "bad", "neutral"] as Tone[]).map((tone) => (

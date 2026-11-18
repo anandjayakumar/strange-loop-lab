@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "../../lib/cn";
 
 interface PanelProps {
+  id?: string;
   index: string;
   title: string;
   subtitle?: string;
@@ -12,6 +13,7 @@ interface PanelProps {
 }
 
 export function Panel({
+  id,
   index,
   title,
   subtitle,
@@ -22,6 +24,7 @@ export function Panel({
 }: PanelProps) {
   return (
     <section
+      id={id}
       className={cn("panel flex min-w-0 flex-col", className)}
       aria-label={`${index}. ${title}`}
     >
