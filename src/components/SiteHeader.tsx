@@ -38,9 +38,6 @@ export function SiteHeader({ active, onNavigate }: SiteHeaderProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pb-1">
-            <span className="font-sans text-[9px] font-medium uppercase tracking-[0.18em] text-lab-faint">
-              deterministic · seeded · no account
-            </span>
             <button
               onClick={() => onNavigate("research")}
               className={cn(
@@ -84,10 +81,6 @@ export function SiteHeader({ active, onNavigate }: SiteHeaderProps) {
               );
             })}
           </nav>
-
-          <span className="hidden shrink-0 font-serif text-[12px] italic text-lab-faint md:inline">
-            five architectures, one question
-          </span>
         </div>
       </div>
     </header>

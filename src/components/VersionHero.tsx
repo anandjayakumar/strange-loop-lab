@@ -54,9 +54,6 @@ export function VersionHero({
               <ArrowRight size={12} />
             </button>
           ) : null}
-          <span className="ml-1 hidden font-serif text-[13px] italic text-lab-faint sm:inline">
-            five architectures, one question
-          </span>
         </div>
       </div>
 
