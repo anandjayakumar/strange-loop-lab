@@ -39,6 +39,9 @@ export function PaperPage({ onNavigate }: { onNavigate: (target: string) => void
             <h1 className="display mt-3 max-w-[34ch] text-[38px] leading-[0.98] sm:text-[52px]">
               When Self-Models <span className="italic text-lab-amber">Trap Themselves</span>
             </h1>
+            <p className="mt-2 font-sans text-[11px] font-medium uppercase tracking-[0.16em] text-lab-text">
+              Anand Jayakumar
+            </p>
             <p className="mt-3 max-w-[72ch] text-[13.5px] leading-relaxed text-lab-muted">
               Epistemic probing, risk-sensitive metacognition and precision trade-offs in a white-box
               self-referential agent. Five architectures, 100 paired seeds per generation, and a
