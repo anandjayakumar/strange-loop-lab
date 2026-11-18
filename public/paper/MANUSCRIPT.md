@@ -193,6 +193,8 @@ The three targets cannot be maximised at once. Absorbing the illusion requires t
 
 The trilemma is the paper's central negative result. It is a *frontier*, not a failure of implementation: each point is the best achievable given the same precision gain, and moving along the frontier changes which capability is sacrificed.
 
+At the full protocol V0.5 also reaches rolling BSS **0.027 [0.025, 0.028]** and latent-failure AUROC **0.785 [0.773, 0.797]**, and the learned world model beats the neutral ablation by **+4.72 [0.77, 8.68]** resources (dz 0.22, p = 0.027). The world-model advantage lost in V0.4 is therefore recovered, but at a tracking and diagnostic cost.
+
 ### 5.4 The Goodhart check
 
 A local metacognitive score can improve while system outcomes do not. We therefore test whether lower meta-Brier loss predicts more resources across seeds. The correlation is **r = 0.313**, and the induced resource change is **+0.57 [−3.47, 4.73]** (n.s.). Local calibration and system-level success are related but not substitutable. An indicator programme that optimises the local score without checking the system outcome would report progress that the agent does not experience as improved survival.
