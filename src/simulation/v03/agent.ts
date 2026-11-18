@@ -18,9 +18,9 @@ import type {
   MetaPrediction,
   PriorRegime,
   V03Observation,
-  V03Selection,
-  V03StepOutcome,
+  V03Selection,
   ActionPrediction,
+  ObservableStepOutcome,
 } from "./types";
 
 export class V03Agent {
@@ -307,7 +307,7 @@ export class V03Agent {
     };
   }
 
-  learnWorld(outcome: V03StepOutcome): void {
+  learnWorld(outcome: ObservableStepOutcome): void {
     if (!this.worldModelEnabled || !this.worldLearning) return;
     const prediction = this.lastSelectedPrediction;
     if (!prediction) return;
@@ -320,7 +320,7 @@ export class V03Agent {
   }
 
   learnSelf(
-    outcome: V03StepOutcome,
+    outcome: ObservableStepOutcome,
     post: V03Observation,
     preEnergyReading: number,
     rateScale: number,
@@ -350,7 +350,7 @@ export class V03Agent {
   }
 
   learnMeta(
-    outcome: V03StepOutcome,
+    outcome: ObservableStepOutcome,
     post: V03Observation,
     preEnergyReading: number,
     observedError: number,

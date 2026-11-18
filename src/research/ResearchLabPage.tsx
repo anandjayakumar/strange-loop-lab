@@ -177,7 +177,7 @@ export function ResearchLabPage({
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pb-1">
-              <span className="chip">100 paired seeds</span>
+              <span className="chip">19,400 total runs</span>
               <span className="chip">67 tests</span>
               <span className="chip">white-box</span>
               <span className="hidden font-serif text-[12px] italic text-lab-faint md:inline">

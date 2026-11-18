@@ -399,3 +399,10 @@ export const ATTRIBUTION_LABELS: Record<AttributionKind, string> = {
 };
 
 export type { Action, ActionFeatures, CellType, OutcomeSignal, Vec };
+
+/**
+ * The step outcome as the agent may observe it. Ground-truth evaluation fields
+ * (true movement cost and instrumented energy before/after) are removed, so
+ * learning code cannot read them: the isolation is enforced by the compiler.
+ */
+export type ObservableStepOutcome = Omit<V02StepOutcome, "trueCost" | "energyBefore" | "energyAfter">;

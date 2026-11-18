@@ -171,7 +171,7 @@ export function FindingsPage({
               </a>
             ))}
             <span className="ml-auto hidden shrink-0 font-serif text-[12px] italic text-lab-faint md:inline">
-              100 paired seeds · deterministic · computational, not phenomenal
+              19,400 total runs · 100 paired seeds · deterministic · computational, not phenomenal
             </span>
           </nav>
         </div>

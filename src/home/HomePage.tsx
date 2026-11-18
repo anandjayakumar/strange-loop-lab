@@ -10,7 +10,7 @@ import { ARTICLE, LESSON_CALLOUTS, READING_MINUTES, type ArticleSection, type Le
 
 const STATS = [
   ["5", "Evolutionary Generations", "V0 – V0.5"],
-  ["100", "Paired Seeds / Condition", "paired design"],
+  ["100", "Paired Seeds / Condition", "19,400 total runs"],
   ["67", "Automated Verification Tests", "deterministic"],
   ["WB", "White-Box Non-Neural Architecture", "0 neural parameters"],
 ];

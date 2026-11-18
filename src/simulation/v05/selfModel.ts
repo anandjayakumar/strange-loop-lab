@@ -5,8 +5,8 @@ import { PRIOR_RANGES } from "./config";
 import type {
   PriorRegime,
   SelfModelV05Snapshot,
-  V05Observation,
-  V05StepOutcome,
+  V05Observation,
+  ObservableStepOutcome,
 } from "./types";
 
 const WEIGHT_LIMIT = 6;
@@ -306,7 +306,7 @@ export class SelfModelV05 {
   }
 
   learnOutcome(
-    outcome: V05StepOutcome,
+    outcome: ObservableStepOutcome,
     features: ActionFeatures,
     post: V05Observation,
     preEnergyReading: number,
