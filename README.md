@@ -28,6 +28,11 @@ npm run build
 The simulation is pure TypeScript and runs entirely in the browser. No accounts, no network
 requests, no persistence beyond the tab.
 
+`npm run typecheck` runs `tsrs` ([a Rust port of the TypeScript 7 compiler](https://github.com/oxc-project/tsrs))
+with `--noEmit` against `tsconfig.json`; `npm run typecheck:tsc` runs the classic TypeScript
+compiler with the same config as an escape hatch, and `npm run build` typechecks before
+`vite build`.
+
 ---
 
 ## What is in the box
