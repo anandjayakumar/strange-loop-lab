@@ -1,0 +1,230 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+import { V04Engine } from "../simulation/v04/engine";
+import type {
+  Difficulty,
+  ExplorationMode,
+  PriorRegime,
+  Scenario,
+  ShiftKind,
+  V04Options,
+  V04SeriesPoint,
+  V04Snapshot,
+} from "../simulation/v04/types";
+
+export interface V04Settings {
+  seed: number;
+  difficulty: Difficulty;
+  priorRegime: PriorRegime;
+  scenario: Scenario;
+  explorationMode: ExplorationMode;
+  lambda: number;
+  speed: number;
+  beliefTrap: "none" | "pessimistic_cost";
+  metaFeedback: boolean;
+  riskControl: boolean;
+  residualMeta: boolean;
+  worldModelEnabled: boolean;
+  worldLearning: boolean;
+  selfLearning: boolean;
+  selfFeedback: boolean;
+  evidenceLink: boolean;
+}
+
+const DEFAULTS: V04Settings = {
+  seed: 20261118,
+  difficulty: "standard",
+  priorRegime: "uninformed",
+  scenario: "stable",
+  explorationMode: "voi",
+  lambda: 0.35,
+  speed: 8,
+  beliefTrap: "none",
+  metaFeedback: true,
+  riskControl: true,
+  residualMeta: true,
+  worldModelEnabled: true,
+  worldLearning: true,
+  selfLearning: true,
+  selfFeedback: true,
+  evidenceLink: true,
+};
+
+function create(settings: V04Settings): V04Engine {
+  return new V04Engine({
+    seed: settings.seed,
+    difficulty: settings.difficulty,
+    priorRegime: settings.priorRegime,
+    scenario: settings.scenario,
+    explorationMode: settings.explorationMode,
+    lambda: settings.lambda,
+    beliefTrap: settings.beliefTrap,
+    metaFeedback: settings.metaFeedback,
+    riskControl: settings.riskControl,
+    residualMeta: settings.residualMeta,
+    worldModelEnabled: settings.worldModelEnabled,
+    worldLearning: settings.worldLearning,
+    selfLearning: settings.selfLearning,
+    selfFeedback: settings.selfFeedback,
+    evidenceLink: settings.evidenceLink,
+    recordEvents: true,
+    historyLimit: 1800,
+  });
+}
+
+export function useV04Simulation() {
+  const [settings, setSettings] = useState<V04Settings>(DEFAULTS);
+  const settingsRef = useRef(settings);
+  const [engine, setEngine] = useState<V04Engine>(() => create(settings));
+  const engineRef = useRef(engine);
+  const [snapshot, setSnapshot] = useState<V04Snapshot>(() => engine.getSnapshot());
+  const [series, setSeries] = useState<readonly V04SeriesPoint[]>([]);
+  const [events, setEvents] = useState<V04Snapshot["events"]>([]);
+  const [running, setRunningState] = useState(false);
+  const runningRef = useRef(false);
+  const [flash, setFlash] = useState<string | null>(null);
+
+  const setRunning = useCallback((value: boolean) => {
+    runningRef.current = value;
+    setRunningState(value);
+  }, []);
+
+  const publish = useCallback(() => {
+    const current = engineRef.current;
+    setSnapshot(current.getSnapshot());
+    setSeries([...current.getSeries()]);
+    setEvents([...current.getEvents()]);
+  }, []);
+
+  const swap = useCallback((next: V04Engine) => {
+    engineRef.current = next;
+    setEngine(next);
+    setSnapshot(next.getSnapshot());
+    setSeries([...next.getSeries()]);
+    setEvents([...next.getEvents()]);
+  }, []);
+
+  const resetWith = useCallback(
+    (patch: Partial<V04Settings>) => {
+      const next = { ...settingsRef.current, ...patch };
+      settingsRef.current = next;
+      setSettings(next);
+      setRunning(false);
+      swap(create(next));
+    },
+    [setRunning, swap],
+  );
+
+  const reset = useCallback(() => resetWith({}), [resetWith]);
+
+  const setSpeed = useCallback((speed: number) => {
+    const next = { ...settingsRef.current, speed };
+    settingsRef.current = next;
+    setSettings(next);
+  }, []);
+
+  const toggleRunning = useCallback(() => {
+    if (!engineRef.current.physical.alive) return;
+    setRunning(!runningRef.current);
+  }, [setRunning]);
+
+  const step = useCallback(() => {
+    setRunning(false);
+    engineRef.current.step();
+    publish();
+  }, [publish, setRunning]);
+
+  const phase = useCallback(() => {
+    setRunning(false);
+    engineRef.current.advancePhase();
+    publish();
+  }, [publish, setRunning]);
+
+  const trigger = useCallback(
+    (kind: Exclude<ShiftKind, "none">) => {
+      engineRef.current.triggerShift(kind);
+      setFlash(`Triggered ${kind.replace("_", " ")} shift`);
+      publish();
+    },
+    [publish],
+  );
+
+  const injectTrap = useCallback(() => {
+    engineRef.current.injectBeliefTrap("pessimistic_cost");
+    setFlash("Injected pessimistic rough-cost belief");
+    publish();
+  }, [publish]);
+
+  const injectPulse = useCallback(() => {
+    engineRef.current.injectPulse(12, 0, 1);
+    setFlash("PP-1 interoceptive pulse injected");
+    publish();
+  }, [publish]);
+
+  useEffect(() => {
+    if (!flash) return;
+    const id = window.setTimeout(() => setFlash(null), 2200);
+    return () => window.clearTimeout(id);
+  }, [flash]);
+
+  useEffect(() => {
+    let raf = 0;
+    let last = performance.now();
+    let lastPublish = 0;
+    let acc = 0;
+    const frame = (now: number) => {
+      const dt = Math.min(0.2, (now - last) / 1000);
+      last = now;
+      const current = engineRef.current;
+      if (runningRef.current && current.physical.alive) {
+        acc += dt * settingsRef.current.speed;
+        let guard = 0;
+        while (acc >= 1 && guard < 90) {
+          current.step();
+          acc -= 1;
+          guard++;
+          if (!current.physical.alive) break;
+        }
+        if (!current.physical.alive) {
+          runningRef.current = false;
+          setRunningState(false);
+        }
+      } else {
+        acc = 0;
+      }
+      if (now - lastPublish > 78) {
+        const latest = engineRef.current;
+        setSnapshot(latest.getSnapshot());
+        setSeries([...latest.getSeries()]);
+        setEvents([...latest.getEvents()]);
+        lastPublish = now;
+      }
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return {
+    engine,
+    snapshot,
+    series,
+    events,
+    settings,
+    running,
+    flash,
+    actions: {
+      toggleRunning,
+      step,
+      phase,
+      reset,
+      setSpeed,
+      resetWith,
+      trigger,
+      injectTrap,
+      injectPulse,
+    },
+  };
+}
+
+export type V04Controller = ReturnType<typeof useV04Simulation>;
+export type { V04Options };

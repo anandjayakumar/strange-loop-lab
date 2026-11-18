@@ -11,6 +11,7 @@ interface TopBarProps {
   onToggleRunning: () => void;
   onOpenV02: () => void;
   onOpenV03: () => void;
+  onOpenV04: () => void;
 }
 
 export function TopBar({
@@ -21,6 +22,7 @@ export function TopBar({
   onToggleRunning,
   onOpenV02,
   onOpenV03,
+  onOpenV04,
 }: TopBarProps) {
   const status = !snapshot.alive ? "terminated" : running ? "running" : "paused";
   const mode = MODE_META[snapshot.mode];
@@ -131,6 +133,9 @@ export function TopBar({
           </button>
           <button className="btn h-8 border-lab-blue/35 px-2.5 text-lab-blue" onClick={onOpenV03} title="Open V0.3 residual meta-model lab">
             V0.3
+          </button>
+          <button className="btn h-8 border-lab-cyan/35 px-2.5 text-lab-cyan" onClick={onOpenV04} title="Open V0.4 precision-gated attention-schema lab">
+            V0.4
           </button>
           <button className="icon-btn" onClick={onAbout} aria-label="About this experiment" title="About">
             <Info size={14} />

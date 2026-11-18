@@ -16,7 +16,8 @@
     "analyze": "tsx tools/analyze.ts",
     "selfaudit": "tsx tools/selfaudit.ts",
     "validate:v02": "tsx tools/v02validate.ts",
-    "validate:v03": "tsx tools/v03validate.ts"
+    "validate:v03": "tsx tools/v03validate.ts",
+    "validate:v04": "tsx tools/v04validate.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -200,7 +200,7 @@ inspectable coefficients.
 - A/B/C run under identical seeds, including simultaneous background runs.
 - Micro-stepping, reset, model reset and per-edge toggles are implemented.
 - Determinism, dynamics, micro-stepping, V0/V0.2/V0.3 ablations, shadow isolation and learned-meta
-  invariants are covered by 45 tests.
+  invariants are covered by 56 tests.
 
 See `docs/MODEL.md` for the equations and tunable constants.
 
@@ -220,12 +220,17 @@ baseline, risk-sensitive meta-control, action-conditioned temporal attribution, 
 epistemic trap with decision-value-of-information probing, skill-gated world modeling, and the
 PP-1, Goodhart and five-link intervention controls.
 
+`docs/V04_RESEARCH_REPORT.md` contains the V0.4 audit: precision-weighted predictive coding and the
+PP-1 illusion, multi-step directional meta targets, epistemic preparation, strain-to-outcome
+consistency, and the AST-1 attention-schema ablation.
+
 ```bash
 npx tsx tools/validate.ts   # V0: 100 seeds × 13 conditions × 1,200 ticks + corruption cells
 npx tsx tools/analyze.ts    # V0 tables and research/analysis.json
 npx tsx tools/selfaudit.ts  # focused V0 self-estimate audit
 npm run validate:v02        # V0.2: 100 seeds × 23 conditions × 1,000 ticks + shadow probes
 npm run validate:v03        # V0.3: 100 seeds × 52 conditions × 1,000/1,600 ticks
+npm run validate:v04        # V0.4: 100 seeds × 54 conditions × 1,000/1,600 ticks
 ```
 
 Open the dashboard and use **V0.2** or **V0.3** in the header. V0 remains the default and fully
