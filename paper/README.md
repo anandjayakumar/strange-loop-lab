@@ -14,6 +14,9 @@ pdflatex -interaction=nonstopmode main.tex
 pdflatex -interaction=nonstopmode main.tex
 ```
 
+An arXiv-style variant lives in `paper/arxiv/` (see its README). It reuses the
+same figures and bibliography.
+
 The figures are embedded as PDFs (`\includegraphics`), so no Inkscape or
 shell-escape is needed. The SVG sources remain the canonical vector files and
 are what the web app serves.
