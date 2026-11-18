@@ -19,12 +19,10 @@
     @apply bg-lab-bg font-sans text-lab-text antialiased;
     font-size: 14px;
     font-feature-settings: "cv11", "ss01";
+    caret-color: #e2a765;
     background-image:
-      radial-gradient(1100px 620px at 78% -14%, rgba(226, 167, 101, 0.055), transparent 62%),
-      radial-gradient(760px 480px at 4% -2%, rgba(131, 184, 196, 0.03), transparent 58%),
-      linear-gradient(rgba(255, 255, 255, 0.014) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
-    background-size: auto, auto, 64px 64px, 64px 64px;
+      radial-gradient(1100px 620px at 78% -14%, rgba(226, 167, 101, 0.05), transparent 62%),
+      radial-gradient(760px 480px at 4% -2%, rgba(131, 184, 196, 0.028), transparent 58%);
     background-attachment: fixed;
   }
 
@@ -94,8 +92,8 @@
     @apply font-mono text-[9px] uppercase tracking-[0.16em] text-lab-faint;
   }
 
-  .kicker {
-    @apply font-mono text-[9px] uppercase tracking-[0.2em] text-lab-amber/80;
+  .label {
+    @apply font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-lab-faint;
   }
 
   .chip {

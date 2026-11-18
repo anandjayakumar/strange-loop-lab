@@ -47,7 +47,7 @@ export function TopBar({
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-lab-line/70 bg-lab-bg/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-lab-line/70 bg-lab-bg">
       <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2 sm:px-6">
         <a
           className="group flex min-w-0 items-center gap-2.5"

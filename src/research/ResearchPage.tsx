@@ -72,19 +72,16 @@ function LaunchButton({
 }
 
 function SectionHeading({
-  index,
   title,
   subtitle,
 }: {
-  index: string;
   title: string;
   subtitle?: string;
 }) {
   return (
     <div className="mb-6 flex items-end justify-between gap-4 border-b border-lab-line/70 pb-3">
       <div>
-        <div className="kicker">{index}</div>
-        <h2 className="mt-1.5 font-serif text-[26px] font-light leading-tight tracking-[-0.02em] text-lab-text sm:text-[30px]">
+        <h2 className="font-serif text-[26px] font-light leading-tight tracking-[-0.02em] text-lab-text sm:text-[30px]">
           {title}
         </h2>
         {subtitle ? (
@@ -114,14 +111,14 @@ export function ResearchPage({
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-lab-line bg-lab-bg/90 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-lab-line bg-lab-bg">
         <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-2 px-4 py-2.5">
           <div className="flex items-center gap-3">
             <button className="btn btn-ghost h-8 px-2" onClick={onBack} title="Back to the lab">
               ← Lab
             </button>
             <div>
-              <div className="mono-label">Strange Loop Lab · research</div>
+              <div className="label">Strange Loop Lab · research</div>
               <div className="font-serif text-[15px] leading-tight text-lab-text">
                 Research &amp; Findings
               </div>
@@ -162,8 +159,7 @@ export function ResearchPage({
         <section id="thesis" className="scroll-mt-24">
           <div className="panel overflow-hidden">
             <div className="border-b border-lab-line/70 bg-lab-raise/20 px-5 py-8 sm:px-10 sm:py-12">
-              <div className="kicker">Research &amp; findings · V0 → V0.5</div>
-              <h1 className="mt-4 max-w-[24ch] font-serif text-[38px] font-light leading-[1.02] tracking-[-0.03em] text-lab-text sm:text-[56px]">
+              <h1 className="max-w-[24ch] font-serif text-[38px] font-light leading-[1.02] tracking-[-0.03em] text-lab-text sm:text-[56px]">
                 Can a system learn a model of itself — and of its own reliability?
               </h1>
               <p className="mt-5 max-w-[66ch] text-[13.5px] leading-[1.75] text-lab-muted">
@@ -187,7 +183,7 @@ export function ResearchPage({
 
             <div className="grid grid-cols-1 divide-y divide-lab-line/70 md:grid-cols-2 md:divide-x md:divide-y-0">
               <div className="p-5 sm:p-7">
-                <div className="mono-label mb-2 text-lab-green">what was demonstrated</div>
+                <div className="label mb-2 text-lab-green">what was demonstrated</div>
                 <ul className="space-y-2 text-[12px] leading-relaxed text-lab-muted">
                   {[
                     "First-order self-modeling learned from randomized, uninformed priors — no designer-tuned constants.",
@@ -204,7 +200,7 @@ export function ResearchPage({
                 </ul>
               </div>
               <div className="p-5 sm:p-7">
-                <div className="mono-label mb-2 text-lab-red">what was not demonstrated</div>
+                <div className="label mb-2 text-lab-red">what was not demonstrated</div>
                 <ul className="space-y-2 text-[12px] leading-relaxed text-lab-muted">
                   {[
                     "Consciousness, sentience or subjective experience of any kind.",
@@ -233,12 +229,11 @@ export function ResearchPage({
         {/* ---------------------------------------------------------------- discoveries */}
         <section id="discoveries" className="mt-10 scroll-mt-24">
           <SectionHeading
-            index="02 · findings"
             title="Ten discoveries across five versions"
             subtitle="Each card carries a plain-English account and the exact statistical record behind it. Toggle the reading layer; the evidence line is always the audit trail."
           />
           <div className="mb-6 flex flex-wrap items-center gap-3">
-            <span className="mono-label mr-1">reading layer</span>
+            <span className="label mr-1">reading layer</span>
             <div className="inline-flex rounded-md border border-lab-line p-0.5">
               {(
                 [
@@ -263,7 +258,7 @@ export function ResearchPage({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-2">
             {DISCOVERIES.map((discovery) => (
               <DiscoveryCard key={discovery.id} discovery={discovery} layers={layers} />
             ))}
@@ -273,7 +268,6 @@ export function ResearchPage({
         {/* ---------------------------------------------------------------- matrix */}
         <section id="matrix" className="mt-10 scroll-mt-24">
           <SectionHeading
-            index="03 · evolution"
             title="Master cross-version matrix"
             subtitle="Standardised metrics across V0 → V0.5. Green marks a validated breakthrough, amber a partial result or trade-off, red a negative result or regression."
           />
@@ -350,7 +344,6 @@ export function ResearchPage({
         {/* ---------------------------------------------------------------- versions */}
         <section id="versions" className="mt-10 scroll-mt-24">
           <SectionHeading
-            index="04 · deep dives"
             title="Version by version"
             subtitle="What was introduced, the equations that define it, the full ablation record, and what failed — leading into the next version."
           />
@@ -383,7 +376,7 @@ export function ResearchPage({
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <VersionBadge version={version.key} />
-                  <span className="mono-label">{version.launchMode}</span>
+                  <span className="label">{version.launchMode}</span>
                 </div>
                 <h3 className="mt-1.5 font-serif text-2xl leading-tight text-lab-text">
                   {version.name}
@@ -407,10 +400,10 @@ export function ResearchPage({
 
             <div className="grid grid-cols-1 gap-0 lg:grid-cols-12">
               <div className="border-b border-lab-line/60 p-5 lg:col-span-7 lg:border-b-0 lg:border-r">
-                <div className="mono-label mb-1.5">hypothesis</div>
+                <div className="label mb-1.5">hypothesis</div>
                 <p className="text-[12px] leading-relaxed text-lab-muted">{version.hypothesis}</p>
 
-                <div className="mono-label mb-1.5 mt-4">architectural changes</div>
+                <div className="label mb-1.5 mt-4">architectural changes</div>
                 <ul className="space-y-1.5 text-[11.5px] leading-relaxed text-lab-muted">
                   {version.changes.map((change) => (
                     <li key={change} className="flex gap-2">
@@ -420,14 +413,14 @@ export function ResearchPage({
                   ))}
                 </ul>
 
-                <div className="mono-label mb-1.5 mt-4">key equations</div>
+                <div className="label mb-1.5 mt-4">key equations</div>
                 <div className="space-y-1.5">
                   {version.equations.map((eq) => (
                     <div
                       key={eq.label}
                       className="rounded border border-lab-line/70 bg-lab-bg/40 px-2.5 py-2"
                     >
-                      <div className="mono-label mb-1">{eq.label}</div>
+                      <div className="label mb-1">{eq.label}</div>
                       <code className="block overflow-x-auto whitespace-pre font-mono text-[10.5px] text-lab-text/90">
                         {eq.body}
                       </code>
@@ -437,7 +430,7 @@ export function ResearchPage({
               </div>
 
               <div className="p-5 lg:col-span-5">
-                <div className="mono-label mb-2">ablation record</div>
+                <div className="label mb-2">ablation record</div>
                 <div className="divide-y divide-lab-line/50 rounded border border-lab-line/70">
                   {version.stats.map((stat) => (
                     <div
@@ -460,7 +453,7 @@ export function ResearchPage({
 
                 <div className="mt-4 grid grid-cols-1 gap-3">
                   <div>
-                    <div className="mono-label mb-1 text-lab-green">succeeded</div>
+                    <div className="label mb-1 text-lab-green">succeeded</div>
                     <ul className="space-y-1 text-[10.5px] leading-relaxed text-lab-muted">
                       {version.successes.map((s) => (
                         <li key={s} className="flex gap-1.5">
@@ -471,7 +464,7 @@ export function ResearchPage({
                     </ul>
                   </div>
                   <div>
-                    <div className="mono-label mb-1 text-lab-red">failed</div>
+                    <div className="label mb-1 text-lab-red">failed</div>
                     <ul className="space-y-1 text-[10.5px] leading-relaxed text-lab-muted">
                       {version.failures.map((f) => (
                         <li key={f} className="flex gap-1.5">
@@ -501,14 +494,13 @@ export function ResearchPage({
         {/* ---------------------------------------------------------------- frameworks */}
         <section id="frameworks" className="mt-10 scroll-mt-24">
           <SectionHeading
-            index="05 · theory"
             title="Theory map: Hofstadter and the indicator programme"
             subtitle="How the implemented mechanisms map onto cognitive-science frameworks — and where the mapping stops. Every row is a computational mechanism, not a claim about experience."
           />
 
           <div className="panel mb-3 overflow-hidden">
             <div className="border-b border-lab-line/70 px-4 py-3">
-              <div className="mono-label">the five-link strange loop</div>
+              <div className="label">the five-link strange loop</div>
               <p className="mt-1 text-[10.5px] leading-relaxed text-lab-muted">
                 M₁ is the first-order self-model; M₂ is the second-order reliability model. Each link
                 was ablated with a single switch.
@@ -537,12 +529,12 @@ export function ResearchPage({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-2">
             {FRAMEWORKS.map((row) => (
-              <div key={row.framework} className="panel p-4">
+              <div key={row.framework} className="border-t border-lab-line/70 pt-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <div className="mono-label">{row.framework}</div>
+                    <div className="label">{row.framework}</div>
                     <div className="mt-0.5 font-serif text-[15px] leading-tight text-lab-text">
                       {row.indicator}
                     </div>
@@ -561,9 +553,9 @@ export function ResearchPage({
             ))}
           </div>
 
-          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             {GUARDRAILS.map((guardrail) => (
-              <div key={guardrail.title} className="panel p-4">
+              <div key={guardrail.title} className="border-t border-lab-line/70 pt-4">
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={14} className="text-lab-green" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-lab-text">
@@ -611,7 +603,7 @@ function DiscoveryCard({ discovery, layers }: { discovery: Discovery; layers: La
     <article className="group flex flex-col border-t border-lab-line/80 pt-4">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <span className="font-mono text-[10px] tabular-nums text-lab-faint">
+          <span className="font-sans text-[11px] tabular-nums text-lab-faint">
             {String(discovery.index).padStart(2, "0")}
           </span>
           <VersionBadge version={discovery.version} />
@@ -633,10 +625,10 @@ function DiscoveryCard({ discovery, layers }: { discovery: Discovery; layers: La
         ) : null}
         {showStats ? (
           <p
-            className="border-l-2 pl-3 text-[10.5px] leading-[1.7] text-lab-text/80"
-            style={{ borderColor: `${TONE_COLOR[discovery.tone]}55` }}
+            className="border-t border-lab-line/60 pt-2 text-[10.5px] leading-[1.7] text-lab-text/80"
+            
           >
-            <span className="mono-label mr-1.5" style={{ color: TONE_COLOR[discovery.tone] }}>
+            <span className="label mr-1.5" style={{ color: TONE_COLOR[discovery.tone] }}>
               stats
             </span>
             {discovery.stats}
