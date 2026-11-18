@@ -8,6 +8,13 @@ interface ResourceCell {
   lastCollected: number;
 }
 
+export interface WorldOptions {
+  width?: number;
+  height?: number;
+  obstacleDensity?: number;
+  resourceDensity?: number;
+}
+
 const EMPTY = 0;
 const OBSTACLE = 1;
 const RESOURCE = 2;
@@ -26,11 +33,15 @@ export class World {
   private resources = new Map<number, ResourceCell>();
   private resourceIndices: number[] = [];
   readonly seed: number;
+  private readonly obstacleDensity: number;
+  private readonly resourceDensity: number;
 
-  constructor(seed: number) {
+  constructor(seed: number, options: WorldOptions = {}) {
     this.seed = seed;
-    this.width = WORLD.width;
-    this.height = WORLD.height;
+    this.width = options.width ?? WORLD.width;
+    this.height = options.height ?? WORLD.height;
+    this.obstacleDensity = options.obstacleDensity ?? WORLD.obstacleDensity;
+    this.resourceDensity = options.resourceDensity ?? WORLD.resourceDensity;
     this.start = { x: Math.floor(this.width / 2), y: Math.floor(this.height / 2) };
     this.obstacles = new Uint8Array(this.width * this.height);
     this.generate(seed);
@@ -74,6 +85,22 @@ export class World {
     if (!cell) return false;
     cell.lastCollected = tick;
     return true;
+  }
+
+  /** Deep copy for isolated counterfactual probes; never handed to the agent. */
+  clone(): World {
+    const copy = new World(this.seed, {
+      width: this.width,
+      height: this.height,
+      obstacleDensity: this.obstacleDensity,
+      resourceDensity: this.resourceDensity,
+    });
+    copy.obstacles = this.obstacles.slice();
+    copy.resources = new Map(
+      [...this.resources.entries()].map(([key, value]) => [key, { ...value }]),
+    );
+    copy.resourceIndices = [...this.resourceIndices];
+    return copy;
   }
 
   get resourceCount(): number {
@@ -127,7 +154,7 @@ export class World {
           const nearStart =
             Math.abs(x - start.x) <= clearRadius && Math.abs(y - start.y) <= clearRadius;
           if (nearStart) continue;
-          if (rng.next() < WORLD.obstacleDensity) {
+          if (rng.next() < this.obstacleDensity) {
             this.obstacles[this.idx(x, y)] = 1;
           }
         }
@@ -173,7 +200,7 @@ export class World {
       const x = index % width;
       const y = Math.floor(index / width);
       if (x === start.x && y === start.y) continue;
-      const chosen = guaranteed.has(index) || rng.next() < WORLD.resourceDensity;
+      const chosen = guaranteed.has(index) || rng.next() < this.resourceDensity;
       if (!chosen) continue;
       const period = 48 + rng.int(66);
       const offset = rng.int(period);

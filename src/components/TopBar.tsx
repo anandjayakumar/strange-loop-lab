@@ -9,9 +9,17 @@ interface TopBarProps {
   onAbout: () => void;
   onCompare: () => void;
   onToggleRunning: () => void;
+  onOpenV02: () => void;
 }
 
-export function TopBar({ snapshot, running, onAbout, onCompare, onToggleRunning }: TopBarProps) {
+export function TopBar({
+  snapshot,
+  running,
+  onAbout,
+  onCompare,
+  onToggleRunning,
+  onOpenV02,
+}: TopBarProps) {
   const status = !snapshot.alive ? "terminated" : running ? "running" : "paused";
   const mode = MODE_META[snapshot.mode];
   return (
@@ -116,6 +124,9 @@ export function TopBar({ snapshot, running, onAbout, onCompare, onToggleRunning 
             <span className="hidden xl:inline">Compare</span>
           </button>
 
+          <button className="btn h-8 border-lab-violet/35 px-2.5 text-lab-violet" onClick={onOpenV02} title="Open V0.2 learned meta-cognition lab">
+            V0.2
+          </button>
           <button className="icon-btn" onClick={onAbout} aria-label="About this experiment" title="About">
             <Info size={14} />
           </button>
