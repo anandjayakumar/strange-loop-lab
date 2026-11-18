@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { AboutDialog } from "./components/AboutDialog";
 import { ArchitecturePanel } from "./components/ArchitecturePanel";
 import { ComparisonView } from "./components/ComparisonView";
@@ -17,6 +17,7 @@ import { V03Lab } from "./v03/V03Lab";
 import { V04Lab } from "./v04/V04Lab";
 import { V05Lab } from "./v05/V05Lab";
 import { ResearchPage } from "./research/ResearchPage";
+import { MODE_META } from "./simulation/types";
 
 export default function App() {
   const controller = useSimulation();
@@ -78,15 +79,15 @@ export default function App() {
     return (
       <ResearchPage
         onBack={() => setView("v0")}
-        onOpenVersion={(version) =>
-          setView(version === "v0" ? "v0" : version)
-        }
+        onOpenVersion={(version) => setView(version === "v0" ? "v0" : version)}
       />
     );
   }
 
+  const mode = MODE_META[snapshot.mode];
+
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen">
       <TopBar
         snapshot={snapshot}
         running={running}
@@ -100,77 +101,139 @@ export default function App() {
         onOpenResearch={() => setView("research")}
       />
 
-      <main className="mx-auto max-w-[1600px] space-y-4 px-4 py-4 sm:px-6">
-        <section className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 pb-1">
-          <div className="min-w-0">
-            <h1 className="font-serif text-[30px] font-light leading-none tracking-[-0.025em] text-lab-text sm:text-[34px]">
-              The control room
-            </h1>
-            <p className="mt-2 max-w-[62ch] text-[12px] leading-relaxed text-lab-muted">
-              A deterministic agent learning a model of itself, one tick at a time. Every feedback
-              edge below is visible and switchable; nothing is hidden behind the interface.
+      <main className="relative z-10 mx-auto max-w-[1560px] px-5 pb-2 sm:px-8">
+        {/* ------------------------------------------------------------ hero */}
+        <section className="grid grid-cols-1 gap-x-12 gap-y-8 pb-8 pt-10 lg:grid-cols-12 lg:pt-14">
+          <div className="lg:col-span-8">
+            <div className="kicker">V0 · first-order self-modeling</div>
+            <h2 className="display mt-4 text-[46px] sm:text-[64px] xl:text-[76px]">
+              An agent that
+              <br />
+              <span className="italic text-lab-amber">models itself</span>
+              <span className="text-lab-line2">.</span>
+            </h2>
+            <p className="mt-6 max-w-[58ch] text-[14.5px] leading-[1.7] text-lab-muted">
+              A deterministic organism in a 30 × 30 world, learning what its own body costs,
+              predicts and can bear. Every feedback edge is visible, switchable and measurable — the
+              interface is the experiment, not a summary of it.
+            </p>
+            <div className="mt-7 flex flex-wrap items-center gap-2.5">
+              <button className="btn btn-primary h-9 px-4" onClick={() => setView("research")}>
+                <BookOpen size={12} />
+                Research &amp; findings
+              </button>
+              <button className="btn h-9 px-4" onClick={() => setView("v05")}>
+                Latest · V0.5
+                <ArrowRight size={12} />
+              </button>
+              <span className="ml-1 hidden font-serif text-[13px] italic text-lab-faint sm:inline">
+                five architectures, one question
+              </span>
+            </div>
+          </div>
+
+          <aside className="lg:col-span-4">
+            <div className="inset p-5">
+              <div className="flex items-baseline justify-between">
+                <span className="label">live telemetry</span>
+                <span className="font-serif text-[12px] italic text-lab-faint">
+                  seed {snapshot.seed}
+                </span>
+              </div>
+              <div className="mt-4 flex items-end justify-between gap-3 border-b border-lab-line pb-4">
+                <div>
+                  <div className="num text-[40px] leading-none text-lab-text">{snapshot.tick}</div>
+                  <div className="label mt-2">ticks survived</div>
+                </div>
+                <div className="text-right">
+                  <div className="num text-[17px] leading-none text-lab-green">
+                    {snapshot.physical.energy.toFixed(1)}
+                  </div>
+                  <div className="label mt-2">energy</div>
+                </div>
+              </div>
+              <dl className="mt-3 space-y-2">
+                {[
+                  ["condition", `${snapshot.mode} · ${mode.short}`],
+                  ["state", snapshot.alive ? (running ? "running" : "paused") : "terminated"],
+                  [
+                    "collected",
+                    `${snapshot.physical.resourcesCollected} resources · ${snapshot.physical.distance} moves`,
+                  ],
+                  ["samples", `${series.length} ticks retained`],
+                ].map(([key, value]) => (
+                  <div key={key} className="flex items-baseline justify-between gap-3">
+                    <dt className="label">{key}</dt>
+                    <dd className="num text-[10.5px] text-lab-text">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </aside>
+        </section>
+
+        <div className="rule-double" />
+
+        {/* -------------------------------------------------------- controls */}
+        <div className="py-4">
+          <ControlDeck controller={controller} onCompare={() => setCompareOpen(true)} />
+        </div>
+
+        {/* ----------------------------------------------------------- stage */}
+        <section className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <EnvironmentPanel engine={engine} snapshot={snapshot} />
+            <p className="figure-caption mt-2.5 px-0.5">
+              Fig. 01 — The world. Obstacles in graphite, resources in moss, the agent in vermilion
+              with its sensor footprint dashed. Hover any cell to read its type.
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <button className="btn h-8 px-2.5" onClick={() => setView("research")}>
-              <BookOpen size={12} />
-              Research &amp; findings
-            </button>
-            <button className="btn h-8 px-2.5" onClick={() => setView("v05")}>
-              Latest · V0.5
-            </button>
+          <div className="space-y-5 lg:col-span-5">
+            <ArchitecturePanel snapshot={snapshot} />
+            <InternalStatePanel snapshot={snapshot} />
           </div>
         </section>
 
-        <ControlDeck controller={controller} onCompare={() => setCompareOpen(true)} />
+        {/* ---------------------------------------------------------- record */}
+        <section className="mt-5">
+          <MetricsPanel snapshot={snapshot} series={series} />
+        </section>
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <EnvironmentPanel engine={engine} snapshot={snapshot} />
-          </div>
-          <div className="lg:col-span-5">
-            <ArchitecturePanel snapshot={snapshot} />
-          </div>
-        </div>
+        <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <SelfModelPanel snapshot={snapshot} />
+          <EventLogPanel events={events} />
+          <ReferencePanel snapshot={snapshot} />
+        </section>
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-          <div className="lg:col-span-7 xl:col-span-8">
-            <MetricsPanel snapshot={snapshot} series={series} />
-          </div>
-          <div className="lg:col-span-5 xl:col-span-4">
-            <InternalStatePanel snapshot={snapshot} />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SelfModelPanel snapshot={snapshot} />
-          </div>
-          <div className="lg:col-span-4">
-            <EventLogPanel events={events} />
-          </div>
-          <div className="lg:col-span-4">
-            <ReferencePanel snapshot={snapshot} />
-          </div>
-        </div>
-
-        <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-lab-line/60 px-1 pb-5 pt-3">
-          <p className="max-w-[90ch] text-[9px] leading-relaxed text-lab-faint">
-            Strange Loop Lab is inspired by ideas in Douglas Hofstadter's <em>Gödel, Escher,
-            Bach</em>. It is an experimental simulation, not a theory of consciousness. Every
-            estimate is computed locally and every feedback edge is visible and switchable.
-          </p>
-          <div className="flex items-center gap-3 font-mono text-[8px] uppercase tracking-[0.12em] text-lab-faint">
-            <span>
-              seed <span className="text-lab-muted">{settings.seed}</span>
-            </span>
-            <span className="h-3 w-px bg-lab-line" />
-            <button className="transition-colors hover:text-lab-muted" onClick={() => setAboutOpen(true)}>
-              about
-            </button>
-            <button className="transition-colors hover:text-lab-muted" onClick={() => setCompareOpen(true)}>
-              compare
-            </button>
+        {/* ---------------------------------------------------------- footer */}
+        <footer className="mt-12 border-t border-lab-text/85 pt-5">
+          <div className="grid grid-cols-1 gap-8 pb-10 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <p className="font-serif text-[19px] leading-snug text-lab-text">
+                Inspired by Hofstadter&rsquo;s strange loop; built as a falsifiable instrument, not a
+                theory of mind.
+              </p>
+              <p className="mt-3 max-w-[86ch] text-[11.5px] leading-relaxed text-lab-muted">
+                Every estimate on this page is computed locally from the seeded run. This is an
+                experimental simulation: it makes no claim about consciousness, sentience or
+                subjective experience. The mechanisms are predictors and controllers with measurable
+                behaviour.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 lg:col-span-5 lg:items-end">
+              <span className="label">
+                seed <span className="num text-lab-text">{settings.seed}</span>
+              </span>
+              <button className="btn-link" onClick={() => setAboutOpen(true)}>
+                About the project
+              </button>
+              <button className="btn-link" onClick={() => setCompareOpen(true)}>
+                Compare all conditions
+              </button>
+              <span className="font-serif text-[12px] italic text-lab-faint">
+                Strange Loop Lab · MMXXVI
+              </span>
+            </div>
           </div>
         </footer>
       </main>

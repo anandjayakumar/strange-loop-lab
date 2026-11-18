@@ -34,20 +34,20 @@ export const MODE_META: Record<
     name: "No self-model",
     short: "Sensory + world",
     description: "Sensory input and a learned world model. No representation of the agent itself.",
-    accent: "#8b929b",
+    accent: "#6f6657",
   },
   B: {
     name: "Self-model",
     short: "World + self",
     description: "A second, independent model learns the agent's own energy, cost and fatigue dynamics.",
-    accent: "#5fd0e3",
+    accent: "#1d5c67",
   },
   C: {
     name: "Recursive self-model",
     short: "World + self + meta",
     description:
       "A meta-model tracks the self-model's reliability and modulates its learning, prior weight and influence.",
-    accent: "#b49cff",
+    accent: "#634070",
   },
 };
 

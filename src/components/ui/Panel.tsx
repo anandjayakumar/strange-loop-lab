@@ -21,14 +21,17 @@ export function Panel({
   bodyClassName,
 }: PanelProps) {
   return (
-    <section className={cn("panel flex min-w-0 flex-col", className)}>
-      <header className="panel-head" aria-label={`${index}. ${title}`}>
+    <section
+      className={cn("panel flex min-w-0 flex-col", className)}
+      aria-label={`${index}. ${title}`}
+    >
+      <header className="panel-head">
         <div className="min-w-0">
-          <h2 className="truncate font-serif text-[16px] font-normal leading-tight tracking-[-0.015em] text-lab-text">
+          <h2 className="truncate font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-lab-muted">
             {title}
           </h2>
           {subtitle ? (
-            <p className="mt-1 max-w-[56ch] truncate text-[10px] leading-snug text-lab-faint">
+            <p className="mt-1 max-w-[56ch] font-serif text-[13.5px] italic leading-snug text-lab-faint">
               {subtitle}
             </p>
           ) : null}

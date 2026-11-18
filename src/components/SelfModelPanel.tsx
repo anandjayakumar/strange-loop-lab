@@ -60,8 +60,8 @@ export function SelfModelPanel({ snapshot }: { snapshot: EngineSnapshot }) {
           className="chip"
           style={
             snapshot.options.selfFeedback
-              ? { color: "#5fd0e3", borderColor: "rgba(95,208,227,0.25)" }
-              : { color: "#f0a35e", borderColor: "rgba(240,163,94,0.3)" }
+              ? { color: "#1d5c67", borderColor: "rgba(29,92,103,0.25)" }
+              : { color: "#b23f24", borderColor: "rgba(178,63,36,0.3)" }
           }
         >
           {!snapshot.options.selfFeedback
@@ -77,7 +77,7 @@ export function SelfModelPanel({ snapshot }: { snapshot: EngineSnapshot }) {
         <Ring
           value={self.initialized ? self.confidence : 0}
           label="confidence"
-          color="#5fd0e3"
+          color="#1d5c67"
           caption={
             self.initialized
               ? `err ema ${fmt(self.predictionErrorEMA)}`
@@ -88,29 +88,29 @@ export function SelfModelPanel({ snapshot }: { snapshot: EngineSnapshot }) {
           <Ring
             value={meta.trust}
             label="meta trust"
-            color="#b49cff"
+            color="#634070"
             caption={meta.enabled ? "causally active" : "tracking only"}
           />
         ) : (
-          <Ring value={1} label="self influence" color="#b49cff" caption="fixed in Mode B" />
+          <Ring value={1} label="self influence" color="#634070" caption="fixed in Mode B" />
         )}
         <div className="min-w-0 flex-1 space-y-2 self-center">
           <ConfidenceBar
             label="self state accuracy"
             value={snapshot.metrics.selfStateAccuracy ?? 0}
-            color="#5cdb95"
+            color="#39643f"
             right={pct(snapshot.metrics.selfStateAccuracy)}
           />
           <ConfidenceBar
             label="forward prediction"
             value={snapshot.metrics.selfPredictionAccuracy ?? 0}
-            color="#5fd0e3"
+            color="#1d5c67"
             right={pct(snapshot.metrics.selfPredictionAccuracy)}
           />
           <ConfidenceBar
             label="influence on policy"
             value={Math.min(1, learnedInfluence * 1.4)}
-            color="#f0a35e"
+            color="#b23f24"
             right={`KL ${fmt(learnedInfluence, 3)}`}
           />
         </div>
@@ -157,7 +157,7 @@ export function SelfModelPanel({ snapshot }: { snapshot: EngineSnapshot }) {
                 label="learning rate"
                 value={`${self.learnRate.toFixed(3)} (×${lrMultiplier.toFixed(2)})`}
                 ratio={lrMultiplier / 2.1}
-                color="#b49cff"
+                color="#634070"
                 hint={`base ${BASE_LR.toFixed(2)}`}
               />
               <Meter
@@ -172,21 +172,21 @@ export function SelfModelPanel({ snapshot }: { snapshot: EngineSnapshot }) {
                     ? meta.priorWeight
                     : 0.5
                 }
-                color="#b49cff"
+                color="#634070"
                 hint="sensory vs internal"
               />
               <Meter
                 label="meta error ema"
                 value={meta.errorEMA.toFixed(3)}
                 ratio={meta.errorEMA}
-                color="#f0a35e"
+                color="#b23f24"
                 hint={`${meta.observations} updates`}
               />
               <Meter
                 label="predictive r"
                 value={fmt(snapshot.metrics.metaCalibration, 2)}
                 ratio={((snapshot.metrics.metaCalibration ?? 0) + 1) / 2}
-                color="#5cdb95"
+                color="#39643f"
                 hint="trust → accuracy, 15 ticks"
               />
             </div>

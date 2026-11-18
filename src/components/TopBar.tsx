@@ -1,4 +1,4 @@
-import { ArrowLeftRight, BookOpen, Info, Pause, Play } from "lucide-react";
+import { ArrowLeftRight, ArrowUpRight, BookOpen, Info, Pause, Play } from "lucide-react";
 import { MODE_META, type EngineSnapshot } from "../simulation/types";
 import { cn } from "../lib/cn";
 import { TICK_LABEL } from "../ui/format";
@@ -47,145 +47,121 @@ export function TopBar({
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-lab-line/70 bg-lab-bg">
-      <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2 sm:px-6">
-        <a
-          className="group flex min-w-0 items-center gap-2.5"
-          href="/"
-          onClick={(event) => event.preventDefault()}
-          aria-label="Strange Loop Lab, home"
-        >
-          <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0" aria-hidden="true">
-            <circle cx="16" cy="16" r="10.5" fill="none" stroke="#333338" strokeWidth="1" />
-            <path
-              d="M16 5.5 a10.5 10.5 0 1 1 -7.42 17.92"
-              fill="none"
-              stroke="#e2a765"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-            />
-            <path
-              d="M7.9 24.1 A10.5 10.5 0 0 1 5.5 16"
-              fill="none"
-              stroke="#83b8c4"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-            />
-            <circle cx="16" cy="16" r="1.9" fill="#86c9a3" />
-          </svg>
-          <span className="flex items-baseline gap-2">
-            <span className="font-serif text-[21px] leading-none tracking-[-0.02em] text-lab-text">
-              Strange Loop
-            </span>
-            <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-lab-faint">
-              Lab
-            </span>
-          </span>
-        </a>
+    <header className="sticky top-0 z-40 border-b border-lab-text/85 bg-lab-bg/95 backdrop-blur-md">
+      <div className="mx-auto max-w-[1560px] px-5 sm:px-8">
+        {/* Masthead ------------------------------------------------------- */}
+        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3 pb-3 pt-4">
+          <div className="min-w-0">
+            <div className="font-sans text-[9px] font-medium uppercase tracking-[0.28em] text-lab-amber">
+              Computational laboratory · issue 01
+            </div>
+            <h1 className="mt-1 flex items-baseline gap-3">
+              <span className="display text-[27px] sm:text-[32px]">Strange Loop Lab</span>
+              <span className="hidden font-serif text-[13px] italic text-lab-faint sm:inline">
+                a model of a model of a model
+              </span>
+            </h1>
+          </div>
 
-        <span className="mx-1 hidden h-4 w-px bg-lab-line sm:block" />
-
-        <nav className="order-3 flex w-full items-center gap-4 overflow-x-auto pb-1 sm:order-none sm:w-auto sm:pb-0">
-          {NAV.map((item) => {
-            const active = item.key === "v0";
-            return (
-              <button
-                key={item.key}
-                onClick={() => open(item.key)}
-                disabled={active}
-                title={item.title}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <span className="flex items-center gap-2">
+              <span
                 className={cn(
-                  "relative shrink-0 py-1 font-mono text-[10px] tracking-[0.12em] transition-colors",
-                  active
-                    ? "cursor-default text-lab-text"
-                    : "text-lab-faint hover:text-lab-muted",
+                  "h-[7px] w-[7px] rounded-full",
+                  status === "running"
+                    ? "bg-lab-green"
+                    : status === "paused"
+                      ? "bg-lab-amber"
+                      : "bg-lab-red",
                 )}
-              >
-                {item.label}
-                <span
-                  className={cn(
-                    "absolute inset-x-0 -bottom-[9px] h-px",
-                    active ? "bg-lab-amber/70" : "bg-transparent",
-                  )}
-                />
-              </button>
-            );
-          })}
-          <button
-            onClick={onOpenResearch}
-            title="Research and findings"
-            className="flex shrink-0 items-center gap-1.5 py-1 font-mono text-[10px] tracking-[0.12em] text-lab-faint transition-colors hover:text-lab-muted"
-          >
-            <BookOpen size={11} />
-            Research
-          </button>
-        </nav>
-
-        <div className="ml-auto flex items-center gap-2.5">
-          <span className="hidden items-center gap-1.5 sm:flex">
-            <span
-              className={cn(
-                "h-1.5 w-1.5 rounded-full",
-                status === "running"
-                  ? "bg-lab-green glow-dot"
-                  : status === "paused"
-                    ? "bg-lab-amber"
-                    : "bg-lab-red",
-              )}
-              style={status === "running" ? { animation: "soft-pulse 2.4s ease-in-out infinite" } : undefined}
-            />
-            <span className="font-mono text-[9px] tracking-[0.08em] text-lab-faint">{status}</span>
-            <span className="font-mono text-[9px] tabular-nums text-lab-faint">
-              {TICK_LABEL(snapshot.tick)}
+                style={
+                  status === "running"
+                    ? { animation: "soft-pulse 2.4s ease-in-out infinite" }
+                    : undefined
+                }
+              />
+              <span className="font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-lab-muted">
+                {status}
+              </span>
+              <span className="num text-[10px] text-lab-faint">{TICK_LABEL(snapshot.tick)}</span>
             </span>
-          </span>
 
-          <span className="hidden items-center gap-1.5 lg:flex">
-            <span
-              className="font-mono text-[9px] text-lab-faint"
-              style={{ color: mode.accent }}
+            <span className="hidden h-4 w-px bg-lab-line2 sm:block" />
+
+            <span className="hidden items-baseline gap-1.5 sm:flex">
+              <span className="label">condition</span>
+              <span className="font-mono text-[10px] font-medium" style={{ color: mode.accent }}>
+                {snapshot.mode} · {mode.short}
+              </span>
+            </span>
+
+            <span className="hidden items-baseline gap-1.5 lg:flex">
+              <span className="label">seed</span>
+              <span className="num text-[10px] text-lab-muted">{snapshot.seed}</span>
+            </span>
+
+            <button
+              className={cn("btn h-8 px-4", running ? "btn-primary" : "btn-primary")}
+              onClick={onToggleRunning}
+              aria-label={running ? "Pause simulation" : "Resume simulation"}
+              title={running ? "Pause (space)" : "Run (space)"}
             >
-              {snapshot.mode}
-            </span>
-            <span className="font-mono text-[9px] text-lab-faint">{mode.short}</span>
-          </span>
+              {running ? <Pause size={12} /> : <Play size={12} />}
+              <span className="hidden md:inline">{running ? "Pause" : "Run"}</span>
+            </button>
+          </div>
+        </div>
 
-          <span className="hidden items-center gap-1.5 xl:flex">
-            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-lab-faint">
-              seed
-            </span>
-            <span className="font-mono text-[9px] tabular-nums text-lab-muted">{snapshot.seed}</span>
-          </span>
+        {/* Nav rail ------------------------------------------------------- */}
+        <div className="flex items-center justify-between gap-6 border-t border-lab-line py-1.5">
+          <nav className="scroll-thin flex items-center gap-5 overflow-x-auto">
+            {NAV.map((item) => {
+              const active = item.key === "v0";
+              return (
+                <button
+                  key={item.key}
+                  onClick={() => open(item.key)}
+                  disabled={active}
+                  title={item.title}
+                  className={cn(
+                    "group relative shrink-0 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.18em] transition-colors",
+                    active
+                      ? "cursor-default text-lab-text"
+                      : "text-lab-faint hover:text-lab-amber",
+                  )}
+                >
+                  {item.label}
+                  <span
+                    className={cn(
+                      "absolute inset-x-0 bottom-0 h-px transition-colors",
+                      active ? "bg-lab-amber" : "bg-transparent group-hover:bg-lab-line2",
+                    )}
+                  />
+                </button>
+              );
+            })}
+            <span className="h-3 w-px shrink-0 bg-lab-line2" />
+            <button
+              onClick={onOpenResearch}
+              title="Research and findings"
+              className="flex shrink-0 items-center gap-1.5 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-lab-amber transition-opacity hover:opacity-70"
+            >
+              <BookOpen size={11} />
+              Research
+              <ArrowUpRight size={11} />
+            </button>
+          </nav>
 
-          <span className="h-4 w-px bg-lab-line" />
-
-          <button
-            className={cn("btn h-8 px-2.5", running && "btn-primary")}
-            onClick={onToggleRunning}
-            aria-label={running ? "Pause simulation" : "Resume simulation"}
-            title={running ? "Pause (space)" : "Run (space)"}
-          >
-            {running ? <Pause size={12} /> : <Play size={12} />}
-            <span className="hidden md:inline">{running ? "Pause" : "Run"}</span>
-          </button>
-
-          <button
-            className="icon-btn"
-            onClick={onCompare}
-            title="Compare all three modes on this seed"
-            aria-label="Compare modes"
-          >
-            <ArrowLeftRight size={13} />
-          </button>
-
-          <button
-            className="icon-btn"
-            onClick={onAbout}
-            aria-label="About this experiment"
-            title="About"
-          >
-            <Info size={13} />
-          </button>
+          <div className="flex shrink-0 items-center gap-4">
+            <button className="btn-link hidden sm:inline-flex" onClick={onCompare}>
+              <ArrowLeftRight size={11} />
+              Compare
+            </button>
+            <button className="btn-link hidden sm:inline-flex" onClick={onAbout}>
+              <Info size={11} />
+              About
+            </button>
+          </div>
         </div>
       </div>
     </header>

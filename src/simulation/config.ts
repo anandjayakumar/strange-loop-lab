@@ -77,9 +77,9 @@ export const ACTION_ORDER: Record<Action, number> = {
 };
 
 export const ACTION_COLORS: Record<Action, string> = {
-  UP: "#f0a35e",
-  DOWN: "#5fd0e3",
-  LEFT: "#b49cff",
-  RIGHT: "#5cdb95",
-  REST: "#6d7580",
+  UP: "#b23f24",
+  DOWN: "#1d5c67",
+  LEFT: "#634070",
+  RIGHT: "#39643f",
+  REST: "#a89e8d",
 };

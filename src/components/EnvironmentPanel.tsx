@@ -84,11 +84,11 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       const px = (x: number) => offsetX + x * cell;
       const py = (y: number) => offsetY + y * cell;
 
-      ctx.fillStyle = "#0a0b0c";
+      ctx.fillStyle = "#efe9dc";
       ctx.fillRect(offsetX, offsetY, size, size);
 
       // Grid.
-      ctx.strokeStyle = "rgba(255,255,255,0.032)";
+      ctx.strokeStyle = "rgba(23,19,13,0.06)";
       ctx.lineWidth = 0.5;
       for (let i = 0; i <= 30; i++) {
         ctx.beginPath();
@@ -106,23 +106,23 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
         for (let x = 0; x < 30; x++) {
           const type = state.cells[y * 30 + x];
           if (type === 1) {
-            ctx.fillStyle = "#23272c";
+            ctx.fillStyle = "#d8cdb8";
             ctx.fillRect(px(x) + 0.5, py(y) + 0.5, cell - 1, cell - 1);
-            ctx.fillStyle = "rgba(255,255,255,0.035)";
+            ctx.fillStyle = "rgba(255,255,255,0.45)";
             ctx.fillRect(px(x) + 0.5, py(y) + 0.5, cell - 1, Math.max(1, cell * 0.12));
           } else if (type === 2) {
             const cx = px(x) + cell / 2;
             const cy = py(y) + cell / 2;
             const radius = Math.max(1.6, cell * 0.24);
             ctx.save();
-            ctx.shadowColor = "rgba(92,219,149,0.55)";
+            ctx.shadowColor = "rgba(57,100,63,0.35)";
             ctx.shadowBlur = cell * 0.8;
-            ctx.fillStyle = `rgba(92,219,149,${0.58 + 0.32 * pulse})`;
+            ctx.fillStyle = `rgba(57,100,63,${0.5 + 0.28 * pulse})`;
             ctx.beginPath();
             ctx.arc(cx, cy, radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
-            ctx.strokeStyle = "rgba(92,219,149,0.18)";
+            ctx.strokeStyle = "rgba(57,100,63,0.22)";
             ctx.beginPath();
             ctx.arc(cx, cy, radius * 1.85, 0, Math.PI * 2);
             ctx.stroke();
@@ -133,9 +133,9 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       // Hovered cell (read from a ref so hover moves do not restart the draw loop).
       const hover = hoverRef.current;
       if (hover) {
-        ctx.fillStyle = "rgba(255,255,255,0.055)";
+        ctx.fillStyle = "rgba(23,19,13,0.07)";
         ctx.fillRect(px(hover.x), py(hover.y), cell, cell);
-        ctx.strokeStyle = "rgba(255,255,255,0.22)";
+        ctx.strokeStyle = "rgba(23,19,13,0.4)";
         ctx.lineWidth = 1;
         ctx.strokeRect(px(hover.x) + 0.5, py(hover.y) + 0.5, cell - 1, cell - 1);
       }
@@ -143,7 +143,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       // Trail.
       trailRef.current.forEach((point, index) => {
         const alpha = ((index + 1) / trailRef.current.length) * 0.13;
-        ctx.fillStyle = `rgba(240,163,94,${alpha})`;
+        ctx.fillStyle = `rgba(178,63,36,${alpha * 1.6})`;
         const s = cell * 0.22;
         ctx.fillRect(
           px(point.x) + cell / 2 - s / 2,
@@ -159,7 +159,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       // Sensor footprint.
       const sensorRadius = 3.5 * cell;
       ctx.save();
-      ctx.strokeStyle = "rgba(95,208,227,0.13)";
+      ctx.strokeStyle = "rgba(29,92,103,0.3)";
       ctx.setLineDash([2, 4]);
       ctx.beginPath();
       ctx.arc(agentX, agentY, sensorRadius, 0, Math.PI * 2);
@@ -168,7 +168,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
 
       // Predicted target.
       if (state.target && state.selectedAction && state.selectedAction !== "REST") {
-        ctx.strokeStyle = "rgba(240,163,94,0.55)";
+        ctx.strokeStyle = "rgba(178,63,36,0.65)";
         ctx.setLineDash([2, 3]);
         ctx.lineWidth = 1;
         ctx.strokeRect(
@@ -184,11 +184,11 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       const energyRatio = Math.max(0, Math.min(1, state.agent.energy / AGENT.maxEnergy));
       ctx.save();
       ctx.lineWidth = Math.max(1.2, cell * 0.1);
-      ctx.strokeStyle = "rgba(240,163,94,0.22)";
+      ctx.strokeStyle = "rgba(178,63,36,0.28)";
       ctx.beginPath();
       ctx.arc(agentX, agentY, cell * 0.43, 0, Math.PI * 2);
       ctx.stroke();
-      ctx.strokeStyle = state.agent.alive ? "#f0a35e" : "#ff6f6f";
+      ctx.strokeStyle = state.agent.alive ? "#b23f24" : "#9f2c1b";
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.arc(agentX, agentY, cell * 0.43, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * energyRatio);
@@ -196,26 +196,26 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       ctx.restore();
 
       ctx.save();
-      ctx.shadowColor = state.agent.alive ? "rgba(240,163,94,0.7)" : "rgba(255,111,111,0.6)";
+      ctx.shadowColor = state.agent.alive ? "rgba(178,63,36,0.45)" : "rgba(159,44,27,0.4)";
       ctx.shadowBlur = cell * 0.9;
-      ctx.fillStyle = state.agent.alive ? "#101214" : "#1a0f10";
+      ctx.fillStyle = state.agent.alive ? "#b23f24" : "#9f2c1b";
       ctx.beginPath();
       ctx.arc(agentX, agentY, cell * 0.28, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = state.agent.alive ? "rgba(240,163,94,0.85)" : "rgba(255,111,111,0.8)";
+      ctx.strokeStyle = state.agent.alive ? "rgba(178,63,36,0.9)" : "rgba(159,44,27,0.85)";
       ctx.lineWidth = 1.2;
       ctx.stroke();
       ctx.restore();
 
       const glyph = state.agent.lastAction ? ACTION_GLYPH[state.agent.lastAction] : "·";
-      ctx.fillStyle = state.agent.alive ? "#f6c48d" : "#ff8a8a";
-      ctx.font = `${Math.max(8, cell * 0.46)}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "#faf7ef";
+      ctx.font = `600 ${Math.max(8, cell * 0.46)}px "JetBrains Mono", monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(glyph, agentX, agentY + 0.5);
 
       if (!state.agent.alive) {
-        ctx.strokeStyle = "rgba(255,111,111,0.8)";
+        ctx.strokeStyle = "rgba(250,247,239,0.95)";
         ctx.lineWidth = 2;
         const s = cell * 0.7;
         ctx.beginPath();
@@ -226,7 +226,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
         ctx.stroke();
       }
 
-      ctx.strokeStyle = "rgba(255,255,255,0.07)";
+      ctx.strokeStyle = "rgba(23,19,13,0.18)";
       ctx.lineWidth = 1;
       ctx.strokeRect(offsetX + 0.5, offsetY + 0.5, size - 1, size - 1);
     };
@@ -283,7 +283,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
           {panelNote}
         </span>
       }
-      bodyClassName="p-3"
+      bodyClassName="mx-auto w-full max-w-[680px] p-3"
     >
       <div className="mb-2.5 flex flex-wrap items-center gap-2">
         <span className="chip">
@@ -306,7 +306,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
 
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-md border border-lab-line/80 bg-lab-bg"
+        className="relative mx-auto w-full max-w-[640px] overflow-hidden rounded-card border border-lab-line bg-lab-bg"
       >
         <canvas
           ref={canvasRef}
@@ -318,7 +318,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
         />
         {!snapshot.alive ? (
           <div className="pointer-events-none absolute inset-0 grid place-items-center bg-black/35">
-            <div className="rounded border border-lab-red/40 bg-[#160d0e]/95 px-4 py-2 text-center">
+            <div className="rounded border border-lab-red/40 bg-lab-panel px-4 py-2 text-center">
               <div className="font-mono text-[9px] uppercase tracking-[0.16em] text-lab-red">
                 terminated
               </div>
@@ -364,7 +364,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
           <span className="h-1.5 w-1.5 rounded-full bg-lab-green" /> resource
         </span>
         <span className="inline-flex items-center gap-1.5 font-mono text-[8px] text-lab-faint">
-          <span className="h-1.5 w-1.5 rounded-sm bg-[#23272c] ring-1 ring-lab-line2" /> obstacle
+          <span className="h-1.5 w-1.5 rounded-sm bg-[#d8cdb8] ring-1 ring-lab-line2" /> obstacle
         </span>
         <span className="inline-flex items-center gap-1.5 font-mono text-[8px] text-lab-faint">
           <span className="h-1.5 w-1.5 rounded-full bg-lab-amber" /> agent

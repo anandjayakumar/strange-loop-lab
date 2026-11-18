@@ -87,7 +87,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 28,
       w: 146,
       h: 68,
-      color: "#e7e9eb",
+      color: "#17130d",
       value: snapshot.observation
         ? `${localResources} res · ${localObstacles} obs`
         : "awaiting sense",
@@ -100,7 +100,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 28,
       w: 140,
       h: 68,
-      color: "#8b929b",
+      color: "#6f6657",
       value: `${snapshot.memorySize} steps`,
       active: true,
     },
@@ -111,7 +111,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 28,
       w: 140,
       h: 68,
-      color: "#7aa2ff",
+      color: "#26467e",
       value: prediction
         ? `ps ${fmt(prediction.world.pSuccess)} pr ${fmt(prediction.world.pCollect)} pc ${fmt(prediction.world.pCollision)}`
         : "awaiting sample",
@@ -124,7 +124,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 28,
       w: 128,
       h: 68,
-      color: "#f0a35e",
+      color: "#b23f24",
       value: selection
         ? `${selection.action} · pmax ${pct(topProbability)}`
         : "no policy yet",
@@ -137,7 +137,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 148,
       w: 140,
       h: 66,
-      color: "#5fd0e3",
+      color: "#1d5c67",
       value: self
         ? self.initialized
           ? `Ê ${fmt(self.energyEstimate, 1)} · c ${fmt(self.movementCost)}`
@@ -152,7 +152,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 258,
       w: 140,
       h: 66,
-      color: "#b49cff",
+      color: "#634070",
       value: meta
         ? `t ${fmt(meta.trust)} · LR ×${fmt(
             snapshot.options.metaFeedback ? meta.learningRateMultiplier : 1,
@@ -167,7 +167,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       y: 258,
       w: 150,
       h: 66,
-      color: "#5cdb95",
+      color: "#39643f",
       value: `E ${snapshot.physical.energy.toFixed(1)} · F ${snapshot.physical.fatigue.toFixed(2)}`,
       active: true,
     },
@@ -187,7 +187,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "sense-memory",
       d: "M164 62 H188",
-      color: "#8b929b",
+      color: "#6f6657",
       label: "filter",
       lx: 170,
       ly: 56,
@@ -195,7 +195,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "memory-world",
       d: "M328 62 H352",
-      color: "#7aa2ff",
+      color: "#26467e",
       label: "features",
       lx: 332,
       ly: 56,
@@ -203,7 +203,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "world-select",
       d: "M492 62 H606",
-      color: "#f0a35e",
+      color: "#b23f24",
       label: "utilities",
       lx: 530,
       ly: 56,
@@ -211,7 +211,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "self-select",
       d: "M606 159 H686 V96",
-      color: "#5fd0e3",
+      color: "#1d5c67",
       label: "internal value",
       lx: 610,
       ly: 150,
@@ -220,7 +220,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "meta-self",
       d: "M536 258 V214",
-      color: "#b49cff",
+      color: "#634070",
       label: "trust · plasticity",
       lx: 542,
       ly: 236,
@@ -230,7 +230,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "meta-select",
       d: "M606 291 H722 V96",
-      color: "#b49cff",
+      color: "#634070",
       label: "prior weight",
       lx: 638,
       ly: 284,
@@ -240,7 +240,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "sense-self",
       d: "M110 96 V181 H466",
-      color: "#5fd0e3",
+      color: "#1d5c67",
       label: "noisy interoception",
       lx: 190,
       ly: 175,
@@ -249,7 +249,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "self-loop",
       d: "M466 170 H442 A16 16 0 1 0 442 194 H466",
-      color: "#5fd0e3",
+      color: "#1d5c67",
       label: "self-reference",
       lx: 402,
       ly: 218,
@@ -258,7 +258,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "select-env",
       d: "M626 96 V218 H316 V258",
-      color: "#f0a35e",
+      color: "#b23f24",
       label: "execute",
       lx: 560,
       ly: 212,
@@ -266,7 +266,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "env-sense",
       d: "M166 278 H100 V96",
-      color: "#5cdb95",
+      color: "#39643f",
       label: "local view",
       lx: 104,
       ly: 230,
@@ -274,7 +274,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
     {
       id: "env-world",
       d: "M240 258 V224 H416 V96",
-      color: "#7aa2ff",
+      color: "#26467e",
       label: "outcome + error",
       lx: 258,
       ly: 218,
@@ -297,7 +297,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
       }
       bodyClassName="p-3"
     >
-      <div className="overflow-hidden rounded-md border border-lab-line/60 bg-[#0a0c0e]">
+      <div className="overflow-hidden rounded-md border border-lab-line/60 bg-[#f2eee4]">
         <svg
           viewBox="0 0 748 350"
           className="h-auto w-full"
@@ -314,7 +314,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
               markerHeight="5"
               orient="auto-start-reverse"
             >
-              <path d="M0 0 L8 4 L0 8 z" fill="#4b525a" />
+              <path d="M0 0 L8 4 L0 8 z" fill="#a89e8d" />
             </marker>
             <pattern id="arch-dots" width="14" height="14" patternUnits="userSpaceOnUse">
               <circle cx="1" cy="1" r="0.7" fill="rgba(255,255,255,0.045)" />
@@ -330,7 +330,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
                 <path
                   d={edge.d}
                   fill="none"
-                  stroke={active ? edge.color : "#2a2f36"}
+                  stroke={active ? edge.color : "#ded4c1"}
                   strokeWidth={active ? 1.5 : 1}
                   strokeDasharray={edge.dashed || edge.level ? "3 4" : undefined}
                   markerEnd="url(#arch-arrow)"
@@ -340,7 +340,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
                 <text
                   x={edge.lx}
                   y={edge.ly}
-                  fill={active ? edge.color : "#4b525a"}
+                  fill={active ? edge.color : "#a89e8d"}
                   fontSize="7.2"
                   fontFamily="JetBrains Mono, monospace"
                   textAnchor="start"
@@ -363,8 +363,8 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
                   width={node.w}
                   height={node.h}
                   rx="5"
-                  fill={active ? `${node.color}0e` : "#101317"}
-                  stroke={active ? `${node.color}99` : node.active ? "#2a2f36" : "#23272c"}
+                  fill={active ? `${node.color}0e` : "#faf7ef"}
+                  stroke={active ? `${node.color}99` : node.active ? "#ded4c1" : "#cfc3ac"}
                   strokeWidth={active ? 1.2 : 0.9}
                   strokeDasharray={node.active ? undefined : "3 3"}
                 />
@@ -385,7 +385,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
                 <text
                   x={node.x + 17}
                   y={node.y + 15.5}
-                  fill={node.active ? "#e7e9eb" : "#7b828b"}
+                  fill={node.active ? "#17130d" : "#6f6657"}
                   fontSize="9"
                   fontFamily="JetBrains Mono, monospace"
                   letterSpacing="0.04em"
@@ -395,7 +395,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
                 <text
                   x={node.x + 10}
                   y={node.y + 37}
-                  fill={node.active ? "#9aa1aa" : "#4b525a"}
+                  fill={node.active ? "#6f6657" : "#a89e8d"}
                   fontSize="8.2"
                   fontFamily="JetBrains Mono, monospace"
                 >
@@ -404,7 +404,7 @@ export function ArchitecturePanel({ snapshot }: ArchitecturePanelProps) {
                 <text
                   x={node.x + 10}
                   y={node.y + 53}
-                  fill={node.active ? `${node.color}cc` : "#3f454d"}
+                  fill={node.active ? `${node.color}cc` : "#a89e8d"}
                   fontSize="6.8"
                   fontFamily="JetBrains Mono, monospace"
                   letterSpacing="0.08em"

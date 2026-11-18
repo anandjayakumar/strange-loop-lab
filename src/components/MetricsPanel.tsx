@@ -43,53 +43,53 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
           window <span className="text-lab-text">60</span>
         </span>
       }
-      bodyClassName="p-3"
+      bodyClassName="px-4 pb-5 pt-5"
     >
-      <div className="grid grid-cols-2 gap-1.5 md:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-x-5 gap-y-4 md:grid-cols-3 xl:grid-cols-6">
         <Stat
           label="survival"
           value={`${snapshot.tick}`}
           sub={`${snapshot.physical.resourcesCollected} resources · ${snapshot.physical.distance} moves`}
-          color="#e7e9eb"
+          color="#17130d"
         />
         <Stat
           label="energy"
           value={snapshot.physical.energy.toFixed(1)}
           sub={`mean ${fmt(metrics.meanEnergy, 1)} · fatigue ${snapshot.physical.fatigue.toFixed(2)}`}
-          color="#5cdb95"
+          color="#39643f"
         />
         <Stat
           label="world accuracy"
           value={hasData ? pct(metrics.worldAccuracy) : "—"}
           sub={`1 − Brier · ${snapshot.worldModel.learnRate.toFixed(3)} lr`}
-          color="#7aa2ff"
+          color="#26467e"
         />
         <Stat
           label="self accuracy"
           value={pct(metrics.selfStateAccuracy)}
           sub={self ? `forward ${pct(metrics.selfPredictionAccuracy)}` : "no self-model"}
-          color="#5fd0e3"
+          color="#1d5c67"
         />
         <Stat
           label="self influence"
           value={hasData ? fmt(metrics.selfInfluence, 3) : "—"}
           sub="KL(with ‖ without self)"
-          color="#f0a35e"
+          color="#b23f24"
         />
         <Stat
           label="meta calibration"
           value={fmt(metrics.metaCalibration, 2)}
           sub={meta ? `trust ${fmt(meta.trust)}` : "Mode C only"}
-          color="#b49cff"
+          color="#634070"
         />
       </div>
 
-      <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-7 grid grid-cols-1 gap-x-7 gap-y-6 md:grid-cols-2">
         <ChartCard title="energy · actual vs belief">
           <Plot
             series={[
-              { key: "energy", label: "instrumented", color: "#5cdb95", values: energyActual, fill: true },
-              { key: "estimate", label: "self belief", color: "#5fd0e3", values: energyEstimate, dashed: true },
+              { key: "energy", label: "instrumented", color: "#39643f", values: energyActual, fill: true },
+              { key: "estimate", label: "self belief", color: "#1d5c67", values: energyEstimate, dashed: true },
             ]}
             min={0}
             max={100}
@@ -102,17 +102,17 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
         <ChartCard title="prediction accuracy">
           <Plot
             series={[
-              { key: "world", label: "world model", color: "#7aa2ff", values: worldAcc, fill: true },
+              { key: "world", label: "world model", color: "#26467e", values: worldAcc, fill: true },
               {
                 key: "self",
                 label: "self state",
-                color: "#5fd0e3",
+                color: "#1d5c67",
                 values: self ? selfAcc : selfAcc.map(() => null),
               },
               {
                 key: "self-forward",
                 label: "self forward",
-                color: "#5fd0e3",
+                color: "#1d5c67",
                 values: self ? selfForward : selfForward.map(() => null),
                 dashed: true,
               },
@@ -128,8 +128,8 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
         <ChartCard title="level crossing · trust vs prior">
           <Plot
             series={[
-              { key: "trust", label: "meta trust", color: "#b49cff", values: trust, fill: true },
-              { key: "prior", label: "prior weight", color: "#f0a35e", values: prior, dashed: true },
+              { key: "trust", label: "meta trust", color: "#634070", values: trust, fill: true },
+              { key: "prior", label: "prior weight", color: "#b23f24", values: prior, dashed: true },
             ]}
             min={0}
             max={1}
@@ -145,11 +145,11 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
               {
                 key: "lr",
                 label: "effective",
-                color: "#b49cff",
+                color: "#634070",
                 values: self ? learning : learning.map(() => null),
                 fill: true,
               },
-              { key: "base", label: "base", color: "#4b525a", values: baseRate, dashed: true },
+              { key: "base", label: "base", color: "#a89e8d", values: baseRate, dashed: true },
             ]}
             min={0}
             max={0.24}
@@ -165,7 +165,7 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
               {
                 key: "kl",
                 label: "KL nats",
-                color: "#f0a35e",
+                color: "#b23f24",
                 values: self ? influence : influence.map(() => null),
                 fill: true,
               },
@@ -175,7 +175,7 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
             ariaLabel="Kullback-Leibler divergence between policy with and without self-model influence"
             emptyLabel="No influence in Mode A"
           />
-          <div className="mt-1 flex items-center justify-between font-mono text-[8px] text-lab-faint">
+          <div className="mt-1.5 flex items-center justify-between font-sans text-[9px] text-lab-faint">
             <span>adaptation JS {fmt(metrics.adaptation, 3)}</span>
             <span className={metrics.adaptation > 0.18 ? "text-lab-amber" : ""}>
               {metrics.adaptation > 0.18 ? "shift detected" : "stable"}
@@ -183,14 +183,14 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
           </div>
         </ChartCard>
 
-        <div className="rounded-md border border-lab-line/60 bg-lab-raise/25 p-2.5">
+        <div className="border-t border-lab-line pt-2.5">
           <div className="flex items-center justify-between">
             <span className="mono-label">action distribution</span>
             <span className="font-mono text-[8px] text-lab-faint">
               H {fmt(metrics.actionEntropy, 2)}
             </span>
           </div>
-          <div className="mt-2 flex h-2 overflow-hidden rounded-full bg-lab-bg">
+          <div className="mt-2.5 flex h-2 overflow-hidden rounded-sm bg-lab-raise">
             {ACTIONS.map((action) => (
               <div
                 key={action}
@@ -203,7 +203,7 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
               />
             ))}
           </div>
-          <div className="mt-2 grid grid-cols-5 gap-1">
+          <div className="mt-2.5 grid grid-cols-5 gap-1">
             {ACTIONS.map((action) => (
               <div key={action} className="text-center">
                 <div className="font-mono text-[8px] text-lab-faint">{action.slice(0, 2)}</div>
@@ -216,7 +216,7 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
               </div>
             ))}
           </div>
-          <div className="mt-2 flex items-center justify-between border-t border-lab-line/50 pt-1.5 font-mono text-[8px] text-lab-faint">
+          <div className="mt-2.5 flex items-center justify-between border-t border-lab-line pt-1.5 font-sans text-[9px] text-lab-faint">
             <span>
               dominant{" "}
               <span className="text-lab-muted">{dominant[0]}</span>
@@ -226,7 +226,7 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
         </div>
       </div>
 
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-lab-line/60 pt-2 font-mono text-[8px] text-lab-faint">
+      <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-lab-line pt-2.5 font-sans text-[9px] text-lab-faint">
         <span>
           mean trust <span className="text-lab-muted">{fmt(metrics.meanTrust)}</span>
         </span>
@@ -255,8 +255,8 @@ export function MetricsPanel({ snapshot, series }: MetricsPanelProps) {
 
 function ChartCard({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="min-w-0 rounded-md border border-lab-line/60 bg-lab-raise/20 p-2.5">
-      <div className={cn("mb-1.5 font-mono text-[8px] uppercase tracking-[0.12em] text-lab-faint")}>
+    <div className="min-w-0 border-t border-lab-line pt-2.5">
+      <div className={cn("mb-2 font-sans text-[9px] font-medium uppercase tracking-[0.16em] text-lab-muted")}>
         {title}
       </div>
       {children}

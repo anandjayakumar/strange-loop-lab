@@ -6,12 +6,12 @@ import { TICK_LABEL } from "../ui/format";
 import { Panel } from "./ui/Panel";
 
 const KIND_COLOR: Record<EventKind, string> = {
-  env: "#5cdb95",
-  risk: "#ff6f6f",
-  model: "#5fd0e3",
-  meta: "#b49cff",
-  action: "#f0a35e",
-  system: "#8b929b",
+  env: "#39643f",
+  risk: "#9f2c1b",
+  model: "#1d5c67",
+  meta: "#634070",
+  action: "#b23f24",
+  system: "#6f6657",
 };
 
 const FILTERS: { key: EventKind | "all"; label: string }[] = [

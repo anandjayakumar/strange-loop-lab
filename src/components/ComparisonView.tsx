@@ -7,9 +7,9 @@ import { fmt, pct, seriesValues } from "../ui/format";
 import { Plot } from "./ui/Plot";
 
 const MODE_COLOR: Record<Mode, string> = {
-  A: "#8b929b",
-  B: "#5fd0e3",
-  C: "#b49cff",
+  A: "#6f6657",
+  B: "#1d5c67",
+  C: "#634070",
 };
 
 export function ComparisonView({ seed, onClose }: { seed: number; onClose: () => void }) {
@@ -66,7 +66,7 @@ export function ComparisonView({ seed, onClose }: { seed: number; onClose: () =>
     {
       key: "prior",
       label: "prior weight",
-      color: "#f0a35e",
+      color: "#b23f24",
       values: seriesValues(series.C, "priorWeight"),
       dashed: true,
     },
@@ -222,7 +222,7 @@ export function ComparisonView({ seed, onClose }: { seed: number; onClose: () =>
                       <td className="px-2 py-2.5 text-right font-mono text-[10px] tabular-nums text-lab-muted">
                         {pct(summary.worldAccuracy)}
                       </td>
-                      <td className="px-2 py-2.5 text-right font-mono text-[10px] tabular-nums" style={{ color: summary.selfAccuracy === null ? undefined : "#5fd0e3" }}>
+                      <td className="px-2 py-2.5 text-right font-mono text-[10px] tabular-nums" style={{ color: summary.selfAccuracy === null ? undefined : "#1d5c67" }}>
                         {pct(summary.selfAccuracy)}
                       </td>
                       <td className="px-2 py-2.5 text-right font-mono text-[10px] tabular-nums text-lab-muted">

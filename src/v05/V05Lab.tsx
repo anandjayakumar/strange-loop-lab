@@ -118,51 +118,50 @@ export function V05Lab({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="min-h-screen">
-      <header className="relative border-b border-lab-line/80">
-        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3.5 sm:px-6">
-          <button className="icon-btn" onClick={onBack} title="Switch to V0" aria-label="Switch to V0">
-            <ArrowLeft size={14} />
-          </button>
-          <div className="min-w-0">
-            <div className="flex items-baseline gap-2">
-              <h1 className="font-serif text-[26px] leading-none text-lab-text">Strange Loop</h1>
-              <span className="rounded border border-lab-blue/35 bg-lab-blue/10 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.16em] text-lab-blue">
-                V0.5
-              </span>
+      <header className="sticky top-0 z-40 border-b border-lab-text/85 bg-lab-bg/95 backdrop-blur-md">
+        <div className="mx-auto max-w-[1560px] px-5 sm:px-8">
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2 py-3">
+            <div className="flex min-w-0 items-end gap-4">
+              <button className="btn-link mb-1" onClick={onBack} title="Switch to V0">
+                <ArrowLeft size={12} />
+                V0
+              </button>
+              <span className="mb-1.5 hidden h-5 w-px bg-lab-line2 sm:block" />
+              <div className="min-w-0">
+                <div className="kicker">Edition V0.5 · strange loop lab</div>
+                <h1 className="display mt-1 truncate text-[25px] sm:text-[28px]">The unification attempt</h1>
+                <p className="mt-0.5 max-w-[72ch] truncate font-serif text-[12.5px] italic text-lab-faint">
+                  gated prior · pre-absorption attribution · plateau probe
+                </p>
+              </div>
             </div>
-            <p className="mt-1 font-mono text-[9px] text-lab-faint">
-              residual meta-model · temporal attribution · risk &amp; probes
-            </p>
-          </div>
-          <div className="ml-auto flex flex-wrap items-center gap-2">
-            <span className={cn("chip", running ? "text-lab-green" : "text-lab-amber")}>
-              <span className={cn("h-1.5 w-1.5 rounded-full", running ? "bg-lab-green" : "bg-lab-amber")} />
-              {!snapshot.alive ? "terminated" : running ? "running" : "paused"}
-            </span>
-            <span className="chip">
-              seed <span className="text-lab-text">{settings.seed}</span>
-            </span>
-            <button className="btn h-8" onClick={actions.toggleRunning} disabled={!snapshot.alive}>
-              {running ? <Pause size={13} /> : <Play size={13} />}
-              {running ? "Pause" : "Run"}
-            </button>
-            <button className="btn h-8" onClick={actions.step} disabled={!snapshot.alive}>
-              <SkipForward size={13} /> Step
-            </button>
-            <button className="btn h-8" onClick={actions.phase} disabled={!snapshot.alive}>
-              Phase
-            </button>
-            <button className="btn h-8" onClick={actions.reset}>
-              <RotateCcw size={13} /> Reset
-            </button>
-            <button className="btn h-8 border-lab-line2" onClick={onBack}>
-              V0
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={cn("chip", running ? "text-lab-green" : "text-lab-amber")}>
+                <span className={cn("h-1.5 w-1.5 rounded-full", running ? "bg-lab-green" : "bg-lab-amber")} />
+                {!snapshot.alive ? "terminated" : running ? "running" : "paused"}
+              </span>
+              <span className="chip">
+                seed <span className="num text-lab-text">{settings.seed}</span>
+              </span>
+              <button className="btn btn-primary h-8 px-3.5" onClick={actions.toggleRunning} disabled={!snapshot.alive}>
+                {running ? <Pause size={13} /> : <Play size={13} />}
+                {running ? "Pause" : "Run"}
+              </button>
+              <button className="btn h-8" onClick={actions.step} disabled={!snapshot.alive}>
+                <SkipForward size={13} /> Step
+              </button>
+              <button className="btn h-8" onClick={actions.phase} disabled={!snapshot.alive}>
+                Phase
+              </button>
+              <button className="btn h-8" onClick={actions.reset}>
+                <RotateCcw size={13} /> Reset
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1600px] space-y-3 px-3 py-3 sm:px-4">
+      <main className="mx-auto max-w-[1560px] space-y-4 px-5 py-5 sm:px-8">
         <section className="panel">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-lab-line/80 px-3.5 py-2.5">
             <label className="flex items-center gap-2">
@@ -419,19 +418,19 @@ function V05Environment({ engine, snapshot }: { engine: V05Engine; snapshot: V05
       const oy = 0;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, width);
-      ctx.fillStyle = "#0a0b0c";
+      ctx.fillStyle = "#efe9dc";
       ctx.fillRect(0, 0, width, width);
       for (let y = 0; y < 30; y++) {
         for (let x = 0; x < 30; x++) {
           const t = state.cells[y * 30 + x];
           if (t === 1) {
-            ctx.fillStyle = "#24282d";
+            ctx.fillStyle = "#d8cdb8";
             ctx.fillRect(ox + x * cell + 0.5, oy + y * cell + 0.5, cell - 1, cell - 1);
           } else if (t === 2) {
             ctx.save();
-            ctx.shadowColor = "rgba(92,219,149,0.7)";
+            ctx.shadowColor = "rgba(57,100,63,0.7)";
             ctx.shadowBlur = cell;
-            ctx.fillStyle = "#5cdb95";
+            ctx.fillStyle = "#39643f";
             ctx.beginPath();
             ctx.arc(ox + x * cell + cell / 2, oy + y * cell + cell / 2, Math.max(1.5, cell * 0.23), 0, Math.PI * 2);
             ctx.fill();
@@ -442,23 +441,23 @@ function V05Environment({ engine, snapshot }: { engine: V05Engine; snapshot: V05
       const ax = ox + state.agent.x * cell + cell / 2;
       const ay = oy + state.agent.y * cell + cell / 2;
       if (state.target && state.selectedAction !== "REST") {
-        ctx.strokeStyle = "rgba(240,163,94,0.7)";
+        ctx.strokeStyle = "rgba(178,63,36,0.7)";
         ctx.setLineDash([2, 3]);
         ctx.strokeRect(ox + state.target.x * cell + 1, oy + state.target.y * cell + 1, cell - 2, cell - 2);
         ctx.setLineDash([]);
       }
       ctx.save();
-      ctx.shadowColor = state.agent.alive ? "rgba(240,163,94,0.8)" : "rgba(255,111,111,0.8)";
+      ctx.shadowColor = state.agent.alive ? "rgba(178,63,36,0.8)" : "rgba(159,44,27,0.8)";
       ctx.shadowBlur = cell;
-      ctx.fillStyle = "#111416";
+      ctx.fillStyle = "#b23f24";
       ctx.beginPath();
       ctx.arc(ax, ay, Math.max(3, cell * 0.3), 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = state.agent.alive ? "#f0a35e" : "#ff6f6f";
+      ctx.strokeStyle = state.agent.alive ? "#b23f24" : "#9f2c1b";
       ctx.lineWidth = 1.3;
       ctx.stroke();
       ctx.restore();
-      ctx.strokeStyle = "rgba(255,255,255,0.04)";
+      ctx.strokeStyle = "rgba(23,19,13,0.06)";
       ctx.strokeRect(0.5, 0.5, width - 1, width - 1);
     };
     raf = requestAnimationFrame(draw);
@@ -494,7 +493,7 @@ function V05Environment({ engine, snapshot }: { engine: V05Engine; snapshot: V05
       </div>
       <div className="mt-2 flex flex-wrap gap-2 font-mono text-[8px] text-lab-faint">
         <span className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-lab-green" /> resource</span>
-        <span className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-sm bg-[#24282d]" /> obstacle</span>
+        <span className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-sm bg-[#d8cdb8]" /> obstacle</span>
         <span>shift: {snapshot.shift}</span>
         <span>trap: {snapshot.beliefTrap ?? "none"}</span>
         <span>t={snapshot.tick}</span>
@@ -512,8 +511,8 @@ function MetaPanel({ snapshot }: { snapshot: V05Snapshot }) {
       right={<span className="chip text-lab-blue">online · observable targets</span>}
       bodyClassName="p-3">
       <div className="flex items-start gap-3">
-        <Ring value={meta?.toleranceProbability ?? 0.5} label="p(tolerance)" color="#7aa2ff" caption="target τ 0.45" />
-        <Ring value={meta?.uncertainty ?? 1} label="uncertainty" color="#f0a35e" caption="epistemic" />
+        <Ring value={meta?.toleranceProbability ?? 0.5} label="p(tolerance)" color="#26467e" caption="target τ 0.45" />
+        <Ring value={meta?.uncertainty ?? 1} label="uncertainty" color="#b23f24" caption="epistemic" />
         <div className="min-w-0 flex-1 space-y-1.5 self-center">
           <Row label="expected |error|" value={(m.expectedError).toFixed(3)} />
           <Row label="error bound" value={m.errorBound.toFixed(2)} />
@@ -526,8 +525,8 @@ function MetaPanel({ snapshot }: { snapshot: V05Snapshot }) {
       <div className="mt-2 grid grid-cols-4 gap-1.5">
         <Stat label="Brier" value={snapshot.metrics.metaBrier.toFixed(3)} sub="online" />
         <Stat label="ECE" value={snapshot.metrics.metaEce.toFixed(3)} sub="calibration" />
-        <Stat label="rolling BSS" value={signed(snapshot.metrics.rollingBss)} sub="vs baseline" color="#7aa2ff" />
-        <Stat label="latent AUROC" value={fmt(snapshot.metrics.latentAuroc, 2)} sub="eval only" color="#f0a35e" />
+        <Stat label="rolling BSS" value={signed(snapshot.metrics.rollingBss)} sub="vs baseline" color="#26467e" />
+        <Stat label="latent AUROC" value={fmt(snapshot.metrics.latentAuroc, 2)} sub="eval only" color="#b23f24" />
       </div>
       <p className="mt-2 text-[9px] leading-relaxed text-lab-faint">
         Targets are opaque-sample errors from <em>executed</em> actions only. Bias correction and the
@@ -551,7 +550,7 @@ function ReliabilityDiagram({ bins }: { bins: V05Snapshot["metaModel"]["calibrat
   const stripH = 24;
   const maxCount = Math.max(1, ...bins.map((bin) => bin.count));
   return (
-    <div className="mt-2 rounded border border-lab-line/60 bg-[#0a0c0e] p-2">
+    <div className="mt-2 rounded border border-lab-line/60 bg-lab-raise/40 p-2">
       <div className="mb-1 flex items-center justify-between">
         <span className="mono-label">reliability diagram · tolerance</span>
         <span className="font-mono text-[8px] text-lab-faint">predicted x · observed y</span>
@@ -564,13 +563,13 @@ function ReliabilityDiagram({ bins }: { bins: V05Snapshot["metaModel"]["calibrat
             x2={left + innerW}
             y1={top + (1 - tick) * innerH}
             y2={top + (1 - tick) * innerH}
-            stroke="#1e2227"
+            stroke="#e6ddcd"
             strokeWidth="0.7"
           />
         ))}
-        <line x1={left} x2={left + innerW} y1={axisY} y2={axisY} stroke="#2c3138" />
-        <line x1={left} x2={left} y1={top} y2={axisY} stroke="#2c3138" />
-        <line x1={left} x2={left + innerW} y1={axisY} y2={top} stroke="#3a4048" strokeDasharray="3 4" />
+        <line x1={left} x2={left + innerW} y1={axisY} y2={axisY} stroke="#ded4c1" />
+        <line x1={left} x2={left} y1={top} y2={axisY} stroke="#ded4c1" />
+        <line x1={left} x2={left + innerW} y1={axisY} y2={top} stroke="#c6b9a0" strokeDasharray="3 4" />
         {bins.map((bin, index) => {
           const barW = innerW / bins.length;
           const barH = (bin.count / maxCount) * stripH;
@@ -582,7 +581,7 @@ function ReliabilityDiagram({ bins }: { bins: V05Snapshot["metaModel"]["calibrat
               width={Math.max(1, barW - 3)}
               height={barH}
               rx="1"
-              fill={bin.count > 0 ? "#2c3138" : "#161a1e"}
+              fill={bin.count > 0 ? "#ded4c1" : "#f2eee4"}
             />
           );
         })}
@@ -596,20 +595,20 @@ function ReliabilityDiagram({ bins }: { bins: V05Snapshot["metaModel"]["calibrat
               cx={x}
               cy={y}
               r={r}
-              fill="#7aa2ff"
+              fill="#26467e"
               fillOpacity="0.8"
-              stroke="#c3d3ff"
+              stroke="#1a2f57"
               strokeWidth="0.5"
             />
           );
         })}
-        <text x={left + innerW} y={stripTop - 3} textAnchor="end" fill="#5b626b" fontSize="6.5" fontFamily="JetBrains Mono, monospace">
+        <text x={left + innerW} y={stripTop - 3} textAnchor="end" fill="#6f6657" fontSize="6.5" fontFamily="JetBrains Mono, monospace">
           bin count · max {maxCount}
         </text>
-        <text x={left} y={axisY + 9} fill="#5b626b" fontSize="7" fontFamily="JetBrains Mono, monospace">0</text>
-        <text x={left + innerW - 10} y={axisY + 9} fill="#5b626b" fontSize="7" fontFamily="JetBrains Mono, monospace">1</text>
-        <text x="3" y={top + 5} fill="#5b626b" fontSize="7" fontFamily="JetBrains Mono, monospace">1</text>
-        <text x="3" y={axisY} fill="#5b626b" fontSize="7" fontFamily="JetBrains Mono, monospace">0</text>
+        <text x={left} y={axisY + 9} fill="#6f6657" fontSize="7" fontFamily="JetBrains Mono, monospace">0</text>
+        <text x={left + innerW - 10} y={axisY + 9} fill="#6f6657" fontSize="7" fontFamily="JetBrains Mono, monospace">1</text>
+        <text x="3" y={top + 5} fill="#6f6657" fontSize="7" fontFamily="JetBrains Mono, monospace">1</text>
+        <text x="3" y={axisY} fill="#6f6657" fontSize="7" fontFamily="JetBrains Mono, monospace">0</text>
       </svg>
     </div>
   );
@@ -690,18 +689,18 @@ function MetricsPanel({ snapshot, series }: { snapshot: V05Snapshot; series: rea
       bodyClassName="p-3">
       <div className="grid grid-cols-2 gap-1.5 md:grid-cols-4">
         <Stat label="survival" value={`${snapshot.tick}`} sub={`${snapshot.physical.resources} resources`} />
-        <Stat label="self MAE" value={snapshot.metrics.selfEnergyMae.toFixed(2)} sub={`raw ${snapshot.metrics.rawEnergyMae.toFixed(2)}`} color="#5fd0e3" />
-        <Stat label="meta Brier" value={snapshot.metrics.metaBrier.toFixed(3)} sub={`ECE ${snapshot.metrics.metaEce.toFixed(3)}`} color="#7aa2ff" />
-        <Stat label="rolling BSS" value={signed(snapshot.metrics.rollingBss)} sub={`AUROC ${fmt(snapshot.metrics.latentAuroc, 2)}`} color="#f0a35e" />
+        <Stat label="self MAE" value={snapshot.metrics.selfEnergyMae.toFixed(2)} sub={`raw ${snapshot.metrics.rawEnergyMae.toFixed(2)}`} color="#1d5c67" />
+        <Stat label="meta Brier" value={snapshot.metrics.metaBrier.toFixed(3)} sub={`ECE ${snapshot.metrics.metaEce.toFixed(3)}`} color="#26467e" />
+        <Stat label="rolling BSS" value={signed(snapshot.metrics.rollingBss)} sub={`AUROC ${fmt(snapshot.metrics.latentAuroc, 2)}`} color="#b23f24" />
       </div>
       <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="rounded border border-lab-line/60 bg-lab-raise/20 p-2">
           <div className="mono-label mb-1">energy · truth / learned / raw</div>
           <Plot
             series={[
-              { key: "e", label: "truth", color: "#5cdb95", values: values("energy"), fill: true },
-              { key: "est", label: "learned", color: "#5fd0e3", values: values("energyEstimate"), dashed: true },
-              { key: "raw", label: "raw", color: "#8b929b", values: values("rawEnergyReading") },
+              { key: "e", label: "truth", color: "#39643f", values: values("energy"), fill: true },
+              { key: "est", label: "learned", color: "#1d5c67", values: values("energyEstimate"), dashed: true },
+              { key: "raw", label: "raw", color: "#6f6657", values: values("rawEnergyReading") },
             ]}
             min={0}
             max={120}
@@ -714,8 +713,8 @@ function MetricsPanel({ snapshot, series }: { snapshot: V05Snapshot; series: rea
           <div className="mono-label mb-1">error · learned vs raw</div>
           <Plot
             series={[
-              { key: "est", label: "learned", color: "#5fd0e3", values: values("energyError") },
-              { key: "raw", label: "raw", color: "#8b929b", values: values("rawEnergyError"), dashed: true },
+              { key: "est", label: "learned", color: "#1d5c67", values: values("energyError") },
+              { key: "raw", label: "raw", color: "#6f6657", values: values("rawEnergyError"), dashed: true },
             ]}
             min={0}
             formatValue={(v) => v.toFixed(1)}
@@ -726,8 +725,8 @@ function MetricsPanel({ snapshot, series }: { snapshot: V05Snapshot; series: rea
           <div className="mono-label mb-1">meta · tolerance probability / uncertainty</div>
           <Plot
             series={[
-              { key: "p", label: "p(tol)", color: "#7aa2ff", values: values("predictedTolerance") },
-              { key: "u", label: "uncertainty", color: "#f0a35e", values: values("predictionUncertainty"), dashed: true },
+              { key: "p", label: "p(tol)", color: "#26467e", values: values("predictedTolerance") },
+              { key: "u", label: "uncertainty", color: "#b23f24", values: values("predictionUncertainty"), dashed: true },
             ]}
             min={0}
             max={1}
@@ -739,8 +738,8 @@ function MetricsPanel({ snapshot, series }: { snapshot: V05Snapshot; series: rea
           <div className="mono-label mb-1">information / decision value</div>
           <Plot
             series={[
-              { key: "i", label: "information", color: "#5fd0e3", values: values("infoValue") },
-              { key: "v", label: "VoI", color: "#f0a35e", values: values("voi"), dashed: true },
+              { key: "i", label: "information", color: "#1d5c67", values: values("infoValue") },
+              { key: "v", label: "VoI", color: "#b23f24", values: values("voi"), dashed: true },
             ]}
             min={0}
             formatValue={(v) => v.toFixed(2)}
@@ -788,8 +787,8 @@ function ExplorationPanel({ snapshot }: { snapshot: V05Snapshot }) {
       right={<span className="chip text-lab-amber">{snapshot.explorationMode}</span>}
       bodyClassName="p-3">
       <div className="grid grid-cols-2 gap-1.5">
-        <Stat label="info gain" value={snapshot.metrics.infoGain.toFixed(3)} sub="uncertainty reduction" color="#5fd0e3" />
-        <Stat label="VoI" value={snapshot.metrics.meanVoi.toFixed(3)} sub="decision-relevant" color="#f0a35e" />
+        <Stat label="info gain" value={snapshot.metrics.infoGain.toFixed(3)} sub="uncertainty reduction" color="#1d5c67" />
+        <Stat label="VoI" value={snapshot.metrics.meanVoi.toFixed(3)} sub="decision-relevant" color="#b23f24" />
       </div>
       <div className="mt-2 overflow-hidden rounded border border-lab-line/60">
         <div className="grid grid-cols-[30px_1fr_1fr_1fr] gap-1 border-b border-lab-line/60 bg-lab-raise/40 px-2 py-1 font-mono text-[7px] uppercase text-lab-faint">
@@ -847,7 +846,7 @@ function AttributionPanel({ snapshot }: { snapshot: V05Snapshot }) {
                 <span className="tabular-nums text-lab-faint">{(value * 100).toFixed(0)}%</span>
               </div>
               <div className="mt-0.5 h-1.5 overflow-hidden rounded bg-lab-raise">
-                <div className="h-full rounded" style={{ width: `${value * 100}%`, background: a.top === key ? "#7aa2ff" : "#4b525a" }} />
+                <div className="h-full rounded" style={{ width: `${value * 100}%`, background: a.top === key ? "#26467e" : "#a89e8d" }} />
               </div>
             </div>
           );
@@ -881,10 +880,10 @@ function ResidualMetaPanel({ snapshot }: { snapshot: V05Snapshot }) {
       right={<span className="chip text-lab-blue">{m.observations} targets</span>}
       bodyClassName="p-3">
       <div className="grid grid-cols-2 gap-1.5 md:grid-cols-4">
-        <Stat label="rolling base" value={m.rollingBase.toFixed(2)} sub="1-param tracker" color="#8b929b" />
-        <Stat label="residual weight" value={m.residualWeight.toFixed(2)} sub="contextual share" color="#7aa2ff" />
-        <Stat label="expected |error|" value={m.expectedError.toFixed(3)} sub={`bound ${m.errorBound.toFixed(2)}`} color="#5fd0e3" />
-        <Stat label="bias correction" value={signed(m.biasCorrection)} sub={`persistent ${signed(m.persistentBias)}`} color="#f0a35e" />
+        <Stat label="rolling base" value={m.rollingBase.toFixed(2)} sub="1-param tracker" color="#6f6657" />
+        <Stat label="residual weight" value={m.residualWeight.toFixed(2)} sub="contextual share" color="#26467e" />
+        <Stat label="expected |error|" value={m.expectedError.toFixed(3)} sub={`bound ${m.errorBound.toFixed(2)}`} color="#1d5c67" />
+        <Stat label="bias correction" value={signed(m.biasCorrection)} sub={`persistent ${signed(m.persistentBias)}`} color="#b23f24" />
       </div>
       <div className="mt-2 grid grid-cols-2 gap-1.5">
         <div className="rounded border border-lab-line/60 bg-lab-raise/20 p-2">
@@ -909,7 +908,7 @@ function ResidualMetaPanel({ snapshot }: { snapshot: V05Snapshot }) {
       </div>
       <div className="mt-2 grid grid-cols-2 gap-1.5">
         <Stat label="tolerance rate" value={`${(metrics.toleranceRate * 100).toFixed(0)}%`} sub={`target ${(m.toleranceRate * 100).toFixed(0)}%`} />
-        <Stat label="mean influence" value={metrics.meanInfluence.toFixed(2)} sub="meta → self" color="#7aa2ff" />
+        <Stat label="mean influence" value={metrics.meanInfluence.toFixed(2)} sub="meta → self" color="#26467e" />
       </div>
       <p className="mt-2 text-[9px] leading-relaxed text-lab-faint">
         Positive BSS means the contextual/biased head beats the model's own rolling baseline on the
@@ -938,17 +937,17 @@ function RoughTerrainPanel({
       right={<span className={cn("chip", snapshot.beliefTrap ? "text-lab-red" : "text-lab-muted")}>{snapshot.beliefTrap ?? "no trap"}</span>}
       bodyClassName="p-3">
       <div className="grid grid-cols-2 gap-1.5 md:grid-cols-4">
-        <Stat label="rough MAE" value={snapshot.metrics.roughCostMae.toFixed(2)} sub="online" color="#5fd0e3" />
+        <Stat label="rough MAE" value={snapshot.metrics.roughCostMae.toFixed(2)} sub="online" color="#1d5c67" />
         <Stat label="rough obs" value={`${s.roughObservations}`} sub="effort samples" />
-        <Stat label="learned rough" value={s.roughCost.toFixed(2)} sub="energy / resource" color="#7aa2ff" />
+        <Stat label="learned rough" value={s.roughCost.toFixed(2)} sub="energy / resource" color="#26467e" />
         <Stat label="rough ticks" value={`${roughTicks}`} sub="observed terrain" />
       </div>
       <div className="mt-2 rounded border border-lab-line/60 bg-lab-raise/20 p-2">
         <div className="mono-label mb-1">rough cost · true / learned</div>
         <Plot
           series={[
-            { key: "true", label: "true", color: "#5cdb95", values: values("roughCostTrue") },
-            { key: "est", label: "learned", color: "#5fd0e3", values: values("roughCostEstimate"), dashed: true },
+            { key: "true", label: "true", color: "#39643f", values: values("roughCostTrue") },
+            { key: "est", label: "learned", color: "#1d5c67", values: values("roughCostEstimate"), dashed: true },
           ]}
           min={0}
           formatValue={(v) => v.toFixed(1)}
@@ -984,17 +983,17 @@ function RiskPanel({ snapshot, series }: { snapshot: V05Snapshot; series: readon
       right={<span className="chip text-lab-amber">safety blocked {sel?.safetyBlocked ?? 0}/5</span>}
       bodyClassName="p-3">
       <div className="grid grid-cols-2 gap-1.5 md:grid-cols-4">
-        <Stat label="mean info" value={snapshot.metrics.meanInfoValue.toFixed(2)} sub="epistemic value" color="#5fd0e3" />
-        <Stat label="mean VoI" value={snapshot.metrics.meanVoi.toFixed(2)} sub="decision value" color="#f0a35e" />
-        <Stat label="info gain" value={snapshot.metrics.infoGain.toFixed(3)} sub="uncertainty drop" color="#7aa2ff" />
-        <Stat label="safety vetoes" value={`${sel?.safetyBlocked ?? 0}`} sub="blocked actions" color="#ff6f6f" />
+        <Stat label="mean info" value={snapshot.metrics.meanInfoValue.toFixed(2)} sub="epistemic value" color="#1d5c67" />
+        <Stat label="mean VoI" value={snapshot.metrics.meanVoi.toFixed(2)} sub="decision value" color="#b23f24" />
+        <Stat label="info gain" value={snapshot.metrics.infoGain.toFixed(3)} sub="uncertainty drop" color="#26467e" />
+        <Stat label="safety vetoes" value={`${sel?.safetyBlocked ?? 0}`} sub="blocked actions" color="#9f2c1b" />
       </div>
       <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
         <div className="rounded border border-lab-line/60 bg-lab-raise/20 p-2">
           <div className="mono-label mb-1">risk margin · error bound</div>
           <Plot
             series={[
-              { key: "risk", label: "margin", color: "#ff6f6f", values: values("riskMargin"), fill: true },
+              { key: "risk", label: "margin", color: "#9f2c1b", values: values("riskMargin"), fill: true },
             ]}
             formatValue={(v) => v.toFixed(2)}
             legendNote=">0 safe"
@@ -1005,7 +1004,7 @@ function RiskPanel({ snapshot, series }: { snapshot: V05Snapshot; series: readon
           <div className="mono-label mb-1">failure probability · meta</div>
           <Plot
             series={[
-              { key: "fail", label: "p(fail)", color: "#7aa2ff", values: values("metaFailureProbability") },
+              { key: "fail", label: "p(fail)", color: "#26467e", values: values("metaFailureProbability") },
             ]}
             min={0}
             max={1}
@@ -1053,10 +1052,10 @@ function ProbePanel({
       right={<span className="chip text-lab-cyan">{pulsePoints.length} pulse ticks</span>}
       bodyClassName="p-3">
       <div className="grid grid-cols-2 gap-1.5 md:grid-cols-4">
-        <Stat label="pulse ticks" value={`${pulsePoints.length}`} sub="flagged on chart" color="#5fd0e3" />
+        <Stat label="pulse ticks" value={`${pulsePoints.length}`} sub="flagged on chart" color="#1d5c67" />
         <Stat label="last pulse" value={lastPulse === null ? "—" : `t${lastPulse}`} sub="tick index" />
-        <Stat label="raw |err| pulse" value={fmt(meanPulseError, 1)} sub="energy channel" color="#f0a35e" />
-        <Stat label="raw |err| base" value={fmt(meanBaseError, 1)} sub="last 200 ticks" color="#8b929b" />
+        <Stat label="raw |err| pulse" value={fmt(meanPulseError, 1)} sub="energy channel" color="#b23f24" />
+        <Stat label="raw |err| base" value={fmt(meanBaseError, 1)} sub="last 200 ticks" color="#6f6657" />
       </div>
       <div className="mt-2 rounded border border-lab-line/60 bg-lab-raise/20 p-2">
         <div className="mono-label">current channel</div>
@@ -1137,17 +1136,17 @@ function AttentionPanel({ snapshot, series }: { snapshot: V05Snapshot; series: r
         <span className="chip text-lab-blue">{attention.mode}</span>
       </div>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <Stat label="mode" value={attention.mode} sub={`age ${attention.modeAge}`} color="#7aa2ff" />
-        <Stat label="sensor weight" value={attention.weights.energy.toFixed(2)} sub="energy" color="#5fd0e3" />
-        <Stat label="prior weight" value={attention.weights.prior.toFixed(2)} sub="M1 prior" color="#f0a35e" />
-        <Stat label="recovery" value={attention.recovery.toFixed(2)} sub="release bias" color="#5cdb95" />
+        <Stat label="mode" value={attention.mode} sub={`age ${attention.modeAge}`} color="#26467e" />
+        <Stat label="sensor weight" value={attention.weights.energy.toFixed(2)} sub="energy" color="#1d5c67" />
+        <Stat label="prior weight" value={attention.weights.prior.toFixed(2)} sub="M1 prior" color="#b23f24" />
+        <Stat label="recovery" value={attention.recovery.toFixed(2)} sub="release bias" color="#39643f" />
       </div>
       <div className="mt-3">
         <Plot
           series={[
-            { key: "gain", label: "precision gain", color: "#5fd0e3", values: values("precisionGain") },
-            { key: "recovery", label: "recovery", color: "#5cdb95", values: values("attentionRecovery") },
-            { key: "disagreement", label: "disagreement", color: "#ff6f6f", values: values("instantDisagreement") },
+            { key: "gain", label: "precision gain", color: "#1d5c67", values: values("precisionGain") },
+            { key: "recovery", label: "recovery", color: "#39643f", values: values("attentionRecovery") },
+            { key: "disagreement", label: "disagreement", color: "#9f2c1b", values: values("instantDisagreement") },
           ]}
           min={0}
           max={1.2}

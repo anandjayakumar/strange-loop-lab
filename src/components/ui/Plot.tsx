@@ -109,7 +109,7 @@ export function Plot({
             );
           })}
           {legendNote ? (
-            <span className="ml-auto font-mono text-[8px] uppercase tracking-[0.1em] text-lab-faint/70">
+            <span className="ml-auto font-mono text-[8px] uppercase tracking-[0.1em] text-lab-faint">
               {legendNote}
             </span>
           ) : null}
@@ -144,14 +144,14 @@ export function Plot({
                   x2={width - RIGHT}
                   y1={y}
                   y2={y}
-                  stroke="#1e2227"
+                  stroke="#e6ddcd"
                   strokeWidth="0.7"
                 />
                 <text
                   x={LEFT - 5}
                   y={y + 2.6}
                   textAnchor="end"
-                  fill="#5b626b"
+                  fill="#6f6657"
                   fontSize="7.5"
                   fontFamily="JetBrains Mono, monospace"
                 >
@@ -218,7 +218,7 @@ export function Plot({
                       cy={yFor(last)}
                       r="1.8"
                       fill={s.color}
-                      stroke="#0d0f11"
+                      stroke="#faf7ef"
                       strokeWidth="0.8"
                     />
                   );
@@ -229,7 +229,7 @@ export function Plot({
           <text
             x={LEFT}
             y={height - 3}
-            fill="#4b525a"
+            fill="#a89e8d"
             fontSize="7"
             fontFamily="JetBrains Mono, monospace"
           >
@@ -239,7 +239,7 @@ export function Plot({
             x={width - RIGHT}
             y={height - 3}
             textAnchor="end"
-            fill="#4b525a"
+            fill="#a89e8d"
             fontSize="7"
             fontFamily="JetBrains Mono, monospace"
           >

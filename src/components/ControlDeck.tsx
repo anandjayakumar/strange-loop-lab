@@ -64,11 +64,12 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
   const metaActive = mode === "C";
 
   return (
-    <section className="panel">
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-b border-lab-line/80 px-3.5 py-2.5">
+    <section className="border-y border-lab-line">
+      {/* transport --------------------------------------------------------- */}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
         <div className="flex items-center gap-1.5">
           <button
-            className={cn("btn h-9 min-w-[92px] px-3", running ? "btn-primary" : "btn-primary")}
+            className="btn btn-primary h-9 min-w-[92px] px-4"
             onClick={actions.toggleRunning}
             disabled={!snapshot.alive}
             title={running ? "Pause" : "Run"}
@@ -100,10 +101,10 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
           </button>
         </div>
 
-        <div className="hidden h-7 w-px bg-lab-line md:block" />
+        <div className="hidden h-6 w-px bg-lab-line2 sm:block" />
 
-        <div className="flex min-w-[180px] items-center gap-2.5">
-          <span className="mono-label whitespace-nowrap">Speed</span>
+        <div className="flex items-center gap-3">
+          <span className="label whitespace-nowrap">speed</span>
           <input
             type="range"
             min={1}
@@ -111,16 +112,14 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
             step={1}
             value={settings.speed}
             onChange={(event) => actions.changeSpeed(Number(event.target.value))}
-            className="h-1 w-28 cursor-pointer appearance-none rounded-full bg-lab-line2 accent-lab-amber"
+            className="h-1 w-24 cursor-pointer appearance-none rounded-full bg-lab-line2 accent-lab-amber"
             aria-label="Simulation speed in ticks per second"
           />
-          <span className="w-12 font-mono text-[9px] tabular-nums text-lab-muted">
-            {settings.speed} t/s
-          </span>
+          <span className="w-12 num text-[9px] text-lab-muted">{settings.speed} t/s</span>
         </div>
 
         <div className="flex items-center gap-1.5">
-          <span className="mono-label">Seed</span>
+          <span className="label">seed</span>
           <input
             value={seedDraft}
             onChange={(event) => {
@@ -136,8 +135,8 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
             inputMode="numeric"
             aria-label="Random seed"
             className={cn(
-              "h-8 w-[92px] rounded border bg-lab-bg px-2 font-mono text-[10px] tabular-nums text-lab-text outline-none transition-colors focus:border-lab-amber/60",
-              seedError ? "border-lab-red/60" : "border-lab-line",
+              "field h-8 w-[96px]",
+              seedError ? "border-lab-red" : "",
             )}
           />
           <button className="icon-btn" onClick={copySeed} title="Copy seed" aria-label="Copy seed">
@@ -148,9 +147,9 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
           </button>
         </div>
 
-        <div className="ml-auto flex items-center gap-1.5">
-          <span className="mono-label mr-0.5 hidden xl:inline">Condition</span>
-          <div className="flex overflow-hidden rounded-md border border-lab-line bg-lab-bg p-0.5">
+        <div className="ml-auto flex items-center gap-2.5">
+          <span className="label hidden xl:inline">condition</span>
+          <div className="flex gap-1 rounded-full border border-lab-line2 p-0.5">
             {MODES.map((m: Mode) => {
               const meta = MODE_META[m];
               const active = mode === m;
@@ -161,17 +160,13 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
                   title={`${meta.name} — ${meta.description}`}
                   aria-pressed={active}
                   className={cn(
-                    "flex items-center gap-1.5 rounded px-2 py-1.5 font-mono text-[9px] uppercase tracking-[0.08em] transition-colors",
-                    active ? "text-lab-text" : "text-lab-faint hover:text-lab-muted",
+                    "rounded-full px-2.5 py-1.5 font-sans text-[9.5px] font-medium uppercase tracking-[0.1em] transition-colors",
+                    active ? "text-lab-bg" : "text-lab-faint hover:text-lab-text",
                   )}
-                  style={
-                    active
-                      ? { background: `${meta.accent}1c`, boxShadow: `inset 0 0 0 1px ${meta.accent}45` }
-                      : undefined
-                  }
+                  style={active ? { background: meta.accent } : undefined}
                 >
-                  <span style={{ color: active ? meta.accent : undefined }}>{m}</span>
-                  <span className="hidden sm:inline">{meta.short}</span>
+                  {m}
+                  <span className="ml-1.5 hidden sm:inline">{meta.short}</span>
                 </button>
               );
             })}
@@ -179,16 +174,18 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-2 px-3.5 py-2">
+      {/* feedback edges ---------------------------------------------------- */}
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-dashed border-lab-line pb-2.5 pt-2">
+        <span className="label mr-2">feedback edges</span>
         <Toggle
-          label="Self feedback"
-          hint={selfActive ? "self-model → utilities" : "no self-model in A"}
+          label="Self"
+          hint={selfActive ? "self-model → utilities" : "absent in A"}
           checked={selfActive && settings.selfFeedback}
           disabled={!selfActive}
           onChange={() => actions.toggle("selfFeedback")}
         />
         <Toggle
-          label="Meta feedback"
+          label="Meta"
           hint={metaActive ? "trust → level crossing" : "Mode C only"}
           checked={metaActive && settings.metaFeedback}
           disabled={!metaActive}
@@ -208,9 +205,9 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
           disabled={!metaActive}
           onChange={() => actions.toggle("priorWeighting")}
         />
-        <span className="hidden h-5 w-px bg-lab-line lg:block" />
+        <span className="hidden h-5 w-px bg-lab-line2 lg:block" />
         <button
-          className="btn h-7 px-2.5 py-0 normal-case tracking-normal"
+          className="btn h-7 px-3"
           onClick={actions.resetModels}
           title="Reinitialise agent memory and learned models; keep the world and position"
         >
@@ -218,21 +215,21 @@ export function ControlDeck({ controller, onCompare }: ControlDeckProps) {
           Reset models
         </button>
         <button
-          className="btn h-7 px-2.5 py-0 normal-case tracking-normal"
+          className="btn h-7 px-3"
           onClick={onCompare}
           title="Run A/B/C simultaneously on this seed"
         >
           <ArrowLeftRight size={12} />
-          Compare modes
+          Compare
         </button>
 
-        <div className="ml-auto flex items-center gap-2">
-          <span className="hidden font-mono text-[8px] uppercase tracking-[0.12em] text-lab-faint xl:inline">
+        <div className="ml-auto flex items-center gap-3">
+          <span className="hidden text-[9px] font-medium uppercase tracking-[0.14em] text-lab-faint xl:inline">
             space run · → step · m phase · r reset
           </span>
-          <span className="h-3 w-px bg-lab-line" />
-          <span className="font-mono text-[9px] text-lab-muted">
-            <span className="text-lab-amber/80">{String(snapshot.phase + 1).padStart(2, "0")}</span>
+          <span className="hidden h-3 w-px bg-lab-line2 sm:block" />
+          <span className="num text-[9px] text-lab-muted">
+            <span className="text-lab-amber">{String(snapshot.phase + 1).padStart(2, "0")}</span>
             <span className="text-lab-faint"> / 10 · {snapshot.phaseName}</span>
           </span>
         </div>
