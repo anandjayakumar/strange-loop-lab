@@ -15,7 +15,6 @@ import {
 } from "../simulation/v04/types";
 import { Panel } from "../components/ui/Panel";
 import { LabTransport } from "../components/LabTransport";
-import { SiteHeader, type SiteView } from "../components/SiteHeader";
 import { VersionHero } from "../components/VersionHero";
 import { Plot } from "../components/ui/Plot";
 import { Ring, Stat, Toggle } from "../components/ui/Primitives";
@@ -50,7 +49,7 @@ const ATTRIBUTION_KEYS: AttributionKind[] = [
 export function V04Lab({
   onNavigate,
 }: {
-  onNavigate: (view: SiteView) => void;
+  onNavigate: (target: string) => void;
 }) {
   const controller = useV04Simulation();
   const { engine, snapshot, series, events, settings, running, flash, actions } = controller;
@@ -116,8 +115,6 @@ export function V04Lab({
 
   return (
     <div className="min-h-screen">
-      <SiteHeader active="v04" onNavigate={onNavigate} />
-
       <main className="mx-auto max-w-[1560px] space-y-4 px-5 py-5 sm:px-8">
         <VersionHero
           id="v04-hero"
@@ -131,7 +128,7 @@ export function V04Lab({
           condition={`${settings.difficulty} · ${settings.priorRegime}`}
           seed={settings.seed}
           detail={`${snapshot.physical.resources} resources · ${snapshot.physical.moves} moves`}
-          onResearch={() => onNavigate("research")}
+          onResearch={() => onNavigate("findings")}
           onLatest={() => onNavigate("v05")}
         />
         <section id="v04-controls" className="panel">

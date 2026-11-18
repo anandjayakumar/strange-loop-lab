@@ -14,7 +14,6 @@ import {
 } from "../simulation/v02/types";
 import { Panel } from "../components/ui/Panel";
 import { LabTransport } from "../components/LabTransport";
-import { SiteHeader, type SiteView } from "../components/SiteHeader";
 import { VersionHero } from "../components/VersionHero";
 import { Plot } from "../components/ui/Plot";
 import { Ring, Stat } from "../components/ui/Primitives";
@@ -30,7 +29,7 @@ const TABS: { key: Difficulty; label: string }[] = [
 export function V02Lab({
   onNavigate,
 }: {
-  onNavigate: (view: SiteView) => void;
+  onNavigate: (target: string) => void;
 }) {
   const controller = useV02Simulation();
   const { engine, snapshot, series, events, settings, running, flash, actions } = controller;
@@ -45,8 +44,6 @@ export function V02Lab({
 
   return (
     <div className="min-h-screen">
-      <SiteHeader active="v02" onNavigate={onNavigate} />
-
       <main className="mx-auto max-w-[1560px] space-y-4 px-5 py-5 sm:px-8">
         <VersionHero
           id="v02-hero"
@@ -60,7 +57,7 @@ export function V02Lab({
           condition={`${settings.difficulty} · ${settings.priorRegime}`}
           seed={settings.seed}
           detail={`${snapshot.physical.resources} resources · ${snapshot.physical.moves} moves`}
-          onResearch={() => onNavigate("research")}
+          onResearch={() => onNavigate("findings")}
           onLatest={() => onNavigate("v05")}
         />
         <section id="v02-controls" className="panel">

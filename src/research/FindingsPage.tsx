@@ -1,6 +1,6 @@
-import { useMemo, useState, type ReactNode } from "react";
-import { BookOpen, FlaskConical, ShieldCheck } from "lucide-react";
-import { SiteHeader, type SiteView } from "../components/SiteHeader";
+import { useState, type ReactNode } from "react";
+import { ArrowUpRight, BookOpen, Download, FlaskConical, ShieldCheck } from "lucide-react";
+import { hrefFor } from "../lib/router";
 import {
   DISCOVERIES,
   FRAMEWORKS,
@@ -34,9 +34,45 @@ const TONE_LABEL: Record<Tone, string> = {
 const SECTIONS = [
   { id: "thesis", label: "Thesis", n: "00" },
   { id: "discoveries", label: "Discoveries", n: "01" },
-  { id: "matrix", label: "Matrix", n: "02" },
-  { id: "versions", label: "Deep dives", n: "03" },
-  { id: "frameworks", label: "Theory map", n: "04" },
+  { id: "figures", label: "Figures", n: "02" },
+  { id: "matrix", label: "Matrix", n: "03" },
+  { id: "versions", label: "Deep dives", n: "04" },
+  { id: "frameworks", label: "Theory map", n: "05" },
+];
+
+const FIGURES = [
+  {
+    id: "fig1",
+    src: "/paper/figures/fig1_architecture_loop.svg",
+    title: "The five-link strange loop",
+    caption:
+      "Solid edges are the first-order loop L1–L3; dashed edges are the second-order reliability loop L4–L5. Every edge is a switchable ablation, and the bottom strip names the four operational mechanisms measured in later versions.",
+    note: "Architecture · all versions",
+  },
+  {
+    id: "fig2",
+    src: "/paper/figures/fig2_cross_version_progression.svg",
+    title: "Cross-version progression",
+    caption:
+      "Meta-control resource gain (meta-on minus meta-off), latent-failure AUROC, and stationary energy MAE across V0.2–V0.5. Error bars are 95% intervals from the per-seed JSON; lower MAE is better.",
+    note: "Statistics · 100 paired seeds",
+  },
+  {
+    id: "fig3",
+    src: "/paper/figures/fig3_epistemic_trap_escape.svg",
+    title: "Epistemic trap escape",
+    caption:
+      "Escape rate, mean resources and deaths in the decoupled rough-terrain trap. Pragmatic maximisation never samples the feared terrain; decision-VoI and the V0.5 plateau probe escape without mortality.",
+    note: "Experiment · trap horizon",
+  },
+  {
+    id: "fig4",
+    src: "/paper/figures/fig4_trilemma_pareto.svg",
+    title: "The illusion–tracking–diagnostic trilemma",
+    caption:
+      "PP-1 pulse absorption against stationary MAE, with marker area encoding four-way attribution macro-F1. Absorbing the illusion buys calm at a measured cost to tracking and diagnosis; no point dominates the frontier.",
+    note: "Negative result · Pareto frontier",
+  },
 ];
 
 function VersionBadge({ version }: { version: VersionKey }) {
@@ -70,7 +106,7 @@ function LaunchButton({
       title={`Open ${VERSION_LABEL[version]} in the simulator`}
     >
       <FlaskConical size={12} />
-      {label ?? `Launch ${VERSION_LABEL[version]}`}
+      {label ?? `Open ${VERSION_LABEL[version]} in the lab`}
     </button>
   );
 }
@@ -108,27 +144,19 @@ function SectionHead({
   );
 }
 
-export function ResearchPage({
+export function FindingsPage({
   onOpenVersion,
   onBack,
   onNavigate,
 }: {
   onOpenVersion: (version: VersionKey) => void;
   onBack: () => void;
-  onNavigate: (view: SiteView) => void;
+  onNavigate: (view: string) => void;
 }) {
   const [layers, setLayers] = useState<Layers>("plain");
-  const [activeVersion, setActiveVersion] = useState<VersionKey>("v05");
-
-  const version = useMemo(
-    () => VERSIONS.find((v) => v.key === activeVersion) ?? VERSIONS[4],
-    [activeVersion],
-  );
 
   return (
     <div className="min-h-screen">
-      <SiteHeader active="research" onNavigate={onNavigate} />
-
       <div className="border-b border-lab-line bg-lab-bg/95">
         <div className="mx-auto max-w-[1240px] px-5 sm:px-8">
           <nav className="scroll-thin flex items-center gap-6 overflow-x-auto py-2">
@@ -150,11 +178,33 @@ export function ResearchPage({
       </div>
 
       <main className="mx-auto max-w-[1240px] px-5 pb-20 sm:px-8">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-lab-line py-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="label text-lab-amber">Findings</span>
+            <span className="font-serif text-[13px] italic text-lab-faint">
+              cross-version scientific record · V0 → V0.5
+            </span>
+          </div>
+          <a
+            href={hrefFor("/research")}
+            onClick={(event) => {
+              if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              onNavigate("/research");
+            }}
+            className="btn-link"
+          >
+            <FlaskConical size={11} />
+            Open the interactive lab
+            <ArrowUpRight size={11} />
+          </a>
+        </div>
+
         {/* ------------------------------------------------------------- thesis */}
         <section id="thesis" className="scroll-mt-32 pb-14 pt-12 sm:pt-16">
           <div className="grid grid-cols-1 gap-x-14 gap-y-10 lg:grid-cols-12">
             <div className="lg:col-span-8">
-              <div className="kicker">The question · 2026</div>
+              <div className="kicker">Executive summary · the central thesis</div>
               <h1 className="display mt-4 text-[42px] leading-[0.98] sm:text-[58px] xl:text-[64px]">
                 Can a system learn a model of itself — and then a model of{" "}
                 <span className="italic text-lab-amber">when to trust it</span>?
@@ -306,10 +356,56 @@ export function ResearchPage({
           </div>
         </section>
 
+        {/* ------------------------------------------------------------- figures */}
+        <section id="figures" className="mt-20 scroll-mt-32">
+          <SectionHead
+            n="02"
+            tag="publication figures"
+            title="Four figures, every value recomputed"
+            subtitle="The paper's vector figures are rendered here from the same per-seed JSON used by the reports. Open any figure at full size to inspect the plotted values."
+          />
+          <div className="grid grid-cols-1 gap-x-12 gap-y-12 xl:grid-cols-2">
+            {FIGURES.map((figure) => (
+              <figure key={figure.id} id={figure.id} className="scroll-mt-32">
+                <div className="overflow-hidden rounded-card border border-lab-line bg-white p-2">
+                  <img
+                    src={figure.src}
+                    alt={`${figure.title} — ${figure.caption}`}
+                    className="h-auto w-full"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption className="mt-3 border-t border-lab-line pt-2.5">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <span className="font-sans text-[9px] font-medium uppercase tracking-[0.16em] text-lab-amber">
+                      {figure.id} · {figure.note}
+                    </span>
+                    <a
+                      href={figure.src}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-link"
+                    >
+                      <Download size={10} />
+                      Open SVG
+                    </a>
+                  </div>
+                  <div className="mt-1.5 font-serif text-[18px] leading-tight text-lab-text">
+                    {figure.title}
+                  </div>
+                  <p className="mt-1.5 max-w-[78ch] text-[12px] leading-relaxed text-lab-muted">
+                    {figure.caption}
+                  </p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
         {/* ------------------------------------------------------------- matrix */}
         <section id="matrix" className="mt-20 scroll-mt-32">
           <SectionHead
-            n="02"
+            n="03"
             tag="matrix"
             title="The evolution matrix"
             subtitle="Standardised metrics across V0.1 → V0.5. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
@@ -375,43 +471,42 @@ export function ResearchPage({
             </table>
           </div>
           <p className="mt-3 max-w-[80ch] font-serif text-[12px] italic leading-relaxed text-lab-faint">
-            Values are from each version&rsquo;s report. V0.5 figures are from the 40-seed run unless
-            marked pilot. &ldquo;—&rdquo; means the mechanism did not exist in that version.
+            Values are from each version&rsquo;s report at the 100-seed protocol. V0.5 figures use the
+            100-seed run unless marked pilot. &ldquo;—&rdquo; means the mechanism did not exist in
+            that version.
           </p>
         </section>
 
         {/* ----------------------------------------------------------- versions */}
         <section id="versions" className="mt-20 scroll-mt-32">
           <SectionHead
-            n="03"
+            n="04"
             tag="chapters"
             title="Version by version"
             subtitle="What was introduced, the equations that define it, the full ablation record, and what failed — which is what led into the next version."
           />
 
           <div className="scroll-thin mb-6 flex gap-1 overflow-x-auto border-b border-lab-line pb-px">
-            {VERSIONS.map((v) => {
-              const active = activeVersion === v.key;
-              return (
-                <button
-                  key={v.key}
-                  onClick={() => setActiveVersion(v.key)}
-                  className={
-                    "relative shrink-0 px-4 pb-3 pt-2 font-sans text-[10px] font-medium uppercase tracking-[0.16em] transition-colors " +
-                    (active ? "text-lab-text" : "text-lab-faint hover:text-lab-muted")
-                  }
-                >
-                  {VERSION_LABEL[v.key]}
-                  <span
-                    className="absolute inset-x-3 bottom-0 h-[2px]"
-                    style={{ background: active ? VERSION_COLOR[v.key] : "transparent" }}
-                  />
-                </button>
-              );
-            })}
+            {VERSIONS.map((v) => (
+              <a
+                key={v.key}
+                href={`#${v.key}`}
+                className="relative shrink-0 px-4 pb-3 pt-2 font-sans text-[10px] font-medium uppercase tracking-[0.16em] text-lab-faint transition-colors hover:text-lab-amber"
+              >
+                {VERSION_LABEL[v.key]}
+                <span
+                  className="absolute inset-x-3 bottom-0 h-[2px]"
+                  style={{ background: VERSION_COLOR[v.key], opacity: 0.5 }}
+                />
+              </a>
+            ))}
+            <span className="ml-auto hidden shrink-0 self-center font-serif text-[12px] italic text-lab-faint md:inline">
+              five deep dives · each opens its live simulator
+            </span>
           </div>
 
-          <article className="border-t border-lab-text">
+          {VERSIONS.map((version) => (
+          <article key={version.key} id={version.key} className="scroll-mt-28 border-t border-lab-text">
             <header className="flex flex-wrap items-start justify-between gap-4 py-5">
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2.5">
@@ -527,16 +622,17 @@ export function ResearchPage({
               <LaunchButton
                 version={version.key}
                 onOpenVersion={onOpenVersion}
-                label={`Reproduce ${VERSION_LABEL[version.key]}`}
+                label={`Open ${VERSION_LABEL[version.key]} in /research`}
               />
             </footer>
           </article>
+          ))}
         </section>
 
         {/* --------------------------------------------------------- frameworks */}
         <section id="frameworks" className="mt-20 scroll-mt-32">
           <SectionHead
-            n="04"
+            n="05"
             tag="framework"
             title="Theory map: Hofstadter and the indicator programme"
             subtitle="How the implemented mechanisms map onto cognitive-science frameworks — and where the mapping stops. Every row is a computational mechanism, not a claim about experience."

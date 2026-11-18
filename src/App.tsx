@@ -1,212 +1,94 @@
 import { useEffect, useState } from "react";
-import { AboutDialog } from "./components/AboutDialog";import { ArchitecturePanel } from "./components/ArchitecturePanel";
-import { ComparisonView } from "./components/ComparisonView";
-import { ControlDeck } from "./components/ControlDeck";
-import { EnvironmentPanel } from "./components/EnvironmentPanel";
-import { EventLogPanel } from "./components/EventLogPanel";
-import { InternalStatePanel } from "./components/InternalStatePanel";
-import { MetricsPanel } from "./components/MetricsPanel";
-import { ReferencePanel } from "./components/ReferencePanel";
-import { SelfModelPanel } from "./components/SelfModelPanel";
-import { SiteHeader, type SiteView } from "./components/SiteHeader";
-import { VersionHero } from "./components/VersionHero";
-import { useSimulation } from "./ui/useSimulation";
-import { V02Lab } from "./v02/V02Lab";
-import { V03Lab } from "./v03/V03Lab";
-import { V04Lab } from "./v04/V04Lab";
-import { V05Lab } from "./v05/V05Lab";
-import { ResearchPage } from "./research/ResearchPage";
-import { MODE_META } from "./simulation/types";
-
-const viewFromPath = (): SiteView =>
-  window.location.pathname.replace(/\/+$/, "") === "/research" ? "research" : "v0";
+import { SiteHeader } from "./components/SiteHeader";
+import { HomePage } from "./home/HomePage";
+import { PaperPage } from "./paper/PaperPage";
+import { FindingsPage } from "./research/FindingsPage";
+import { ResearchLabPage } from "./research/ResearchLabPage";
+import {
+  navigateTo,
+  parseRoute,
+  subscribeToRoute,
+  type RouteState,
+} from "./lib/router";
 
 export default function App() {
-  const controller = useSimulation();
-  const [view, setView] = useState<SiteView>(viewFromPath);
-  const { snapshot, series, events, running, settings, engine, actions } = controller;
-  const [aboutOpen, setAboutOpen] = useState(false);
-  const [compareOpen, setCompareOpen] = useState(false);
+  const [route, setRoute] = useState<RouteState>(() => parseRoute());
 
-  const { toggleRunning, step, microStep, reset } = actions;
+  useEffect(() => subscribeToRoute(() => setRoute(parseRoute())), []);
 
   useEffect(() => {
-    const handler = (event: KeyboardEvent) => {
-      if (view !== "v0" || aboutOpen || compareOpen) return;
-      const target = event.target as HTMLElement | null;
-      const tag = target?.tagName ?? "";
-      if (
-        tag === "INPUT" ||
-        tag === "TEXTAREA" ||
-        tag === "SELECT" ||
-        tag === "BUTTON" ||
-        tag === "A" ||
-        target?.isContentEditable
-      ) {
-        return;
-      }
-      if (event.code === "Space") {
-        event.preventDefault();
-        toggleRunning();
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        step();
-      } else if (event.key === "m" || event.key === "M") {
-        microStep();
-      } else if (event.key === "r" || event.key === "R") {
-        reset();
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [toggleRunning, step, microStep, reset, aboutOpen, compareOpen, view]);
-
-  useEffect(() => {
-    const onPop = () => setView(viewFromPath());
-    window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
+    // Our router owns scroll position; the browser's restoration would
+    // otherwise override a deep link on reload.
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
   }, []);
 
-  const navigate = (next: SiteView) => {
-    const path = next === "research" ? "/research" : "/";
-    if (window.location.pathname !== path) {
-      window.history.pushState({ view: next }, "", path);
+  useEffect(() => {
+    const titles: Record<RouteState["name"], string> = {
+      home: "Strange Loop Lab — when self-models trap themselves",
+      research: "Interactive simulation lab — Strange Loop Lab",
+      findings: "Scientific findings — Strange Loop Lab",
+      paper: "Manuscript — Strange Loop Lab",
+    };
+    document.title = titles[route.name];
+  }, [route.name]);
+
+  useEffect(() => {
+    if (!route.hash) {
+      window.scrollTo({ top: 0 });
+      return;
     }
-    setView(next);
-    window.scrollTo({ top: 0 });
-  };
 
-  if (view === "v02") {
-    return <V02Lab onNavigate={navigate} />;
-  }
+    let cancelled = false;
+    const scrollToTarget = () => {
+      if (cancelled) return;
+      const target = document.getElementById(route.hash);
+      if (!target) return;
+      // Route changes should land instantly; CSS smooth scrolling would
+      // animate a multi-thousand-pixel jump on long pages.
+      const root = document.documentElement;
+      const previous = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      target.scrollIntoView({ block: "start" });
+      root.style.scrollBehavior = previous;
+    };
 
-  if (view === "v03") {
-    return <V03Lab onNavigate={navigate} />;
-  }
+    // One frame for layout, then a delayed pass in case the browser restores
+    // scroll position after the first paint.
+    const frame = window.requestAnimationFrame(scrollToTarget);
+    const timer = window.setTimeout(scrollToTarget, 120);
+    window.addEventListener("load", scrollToTarget, { once: true });
 
-  if (view === "v04") {
-    return <V04Lab onNavigate={navigate} />;
-  }
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      window.removeEventListener("load", scrollToTarget);
+    };
+  }, [route.name, route.version, route.hash]);
 
-  if (view === "v05") {
-    return <V05Lab onNavigate={navigate} />;
-  }
-
-  if (view === "research") {
-    return (
-      <ResearchPage
-        onBack={() => navigate("v0")}
-        onNavigate={navigate}
-        onOpenVersion={(version) => navigate(version === "v0" ? "v0" : version)}
-      />
-    );
-  }
-
-  const mode = MODE_META[snapshot.mode];
-  const status = !snapshot.alive ? "terminated" : running ? "running" : "paused";
+  const navigate = (target: string) => navigateTo(target);
 
   return (
-    <div className="relative min-h-screen">
-      <SiteHeader active="v0" onNavigate={navigate} />
+    <div className={route.name === "home" ? "editorial-dark" : undefined}>
+      <SiteHeader active={route.name} onNavigate={navigate} dark={route.name === "home"} />
 
-      <main className="relative z-10 mx-auto max-w-[1560px] px-5 pb-2 sm:px-8">
-        <VersionHero
-          id="hero"
-          label="V0.1"
-          edition="first-order self-modelling"
-          headline={
-            <>
-              An agent that
-              <br />
-              <span className="italic text-lab-amber">models itself</span>
-              <span className="text-lab-line2">.</span>
-            </>
-          }
-          lede="A deterministic organism in a 30 × 30 world, learning what its own body costs, predicts and can bear. Every feedback edge is visible, switchable and measurable — the interface is the experiment, not a summary of it."
-          tick={snapshot.tick}
-          energy={snapshot.physical.energy}
-          status={status}
-          condition={`${snapshot.mode} · ${mode.short}`}
-          seed={snapshot.seed}
-          detail={`${snapshot.physical.resourcesCollected} resources · ${snapshot.physical.distance} moves`}
-          onResearch={() => navigate("research")}
-          onLatest={() => navigate("v05")}
-        />
+      {route.name === "home" ? <HomePage onNavigate={navigate} /> : null}
 
-        <div className="rule-double" />
-
-        <div id="controls" className="py-4">
-          <ControlDeck controller={controller} onCompare={() => setCompareOpen(true)} />
-        </div>
-
-        <section className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-          <div id="environment" className="lg:col-span-7">
-            <EnvironmentPanel engine={engine} snapshot={snapshot} />
-            <p className="figure-caption mt-2.5 px-0.5">
-              Fig. 01 — The world. Obstacles in graphite, resources in moss, the agent in vermilion
-              with its sensor footprint dashed. Hover any cell to read its type.
-            </p>
-          </div>
-          <div id="architecture" className="space-y-5 lg:col-span-5">
-            <ArchitecturePanel snapshot={snapshot} />
-            <div id="internal-state">
-              <InternalStatePanel snapshot={snapshot} />
-            </div>
-          </div>
-        </section>
-
-        <section id="metrics" className="mt-5">
-          <MetricsPanel snapshot={snapshot} series={series} />
-        </section>
-
-        <section className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
-          <div id="self-model">
-            <SelfModelPanel snapshot={snapshot} />
-          </div>
-          <div id="event-log">
-            <EventLogPanel events={events} />
-          </div>
-          <div id="reference">
-            <ReferencePanel snapshot={snapshot} />
-          </div>
-        </section>
-
-        <footer id="about" className="mt-12 border-t border-lab-text/85 pt-5">
-          <div className="grid grid-cols-1 gap-8 pb-10 lg:grid-cols-12">
-            <div className="lg:col-span-7">
-              <p className="font-serif text-[19px] leading-snug text-lab-text">
-                Inspired by Hofstadter&rsquo;s strange loop; built as a falsifiable instrument, not a
-                theory of mind.
-              </p>
-              <p className="mt-3 max-w-[86ch] text-[11.5px] leading-relaxed text-lab-muted">
-                Every estimate on this page is computed locally from the seeded run. This is an
-                experimental simulation: it makes no claim about consciousness, sentience or
-                subjective experience. The mechanisms are predictors and controllers with measurable
-                behaviour.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 lg:col-span-5 lg:items-end">
-              <span className="label">
-                seed <span className="num text-lab-text">{settings.seed}</span>
-              </span>
-              <button className="btn-link" onClick={() => setAboutOpen(true)}>
-                About the project
-              </button>
-              <button className="btn-link" onClick={() => setCompareOpen(true)}>
-                Compare all conditions
-              </button>
-              <span className="font-serif text-[12px] italic text-lab-faint">
-                Strange Loop Lab · MMXXVI
-              </span>
-            </div>
-          </div>
-        </footer>
-      </main>
-
-      <AboutDialog open={aboutOpen} onClose={() => setAboutOpen(false)} />
-      {compareOpen ? (
-        <ComparisonView seed={settings.seed} onClose={() => setCompareOpen(false)} />
+      {route.name === "research" ? (
+        <ResearchLabPage version={route.version} onNavigate={navigate} />
       ) : null}
+
+      {route.name === "findings" ? (
+        <FindingsPage
+          onOpenVersion={(version) => navigate(`/research?version=${version}`)}
+          onBack={() => navigate("/research")}
+          onNavigate={navigate}
+        />
+      ) : null}
+
+      {route.name === "paper" ? <PaperPage onNavigate={navigate} /> : null}
     </div>
   );
 }

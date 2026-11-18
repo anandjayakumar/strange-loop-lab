@@ -1,83 +1,163 @@
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { BookOpen, FileText, FlaskConical, Home } from "lucide-react";
 import { cn } from "../lib/cn";
+import { hrefFor } from "../lib/router";
 
-export type SiteView = "v0" | "v02" | "v03" | "v04" | "v05" | "research";
+export type SiteView =
+  | "v0"
+  | "v02"
+  | "v03"
+  | "v04"
+  | "v05"
+  | "research"
+  | "findings"
+  | "paper"
+  | "home";
 
 interface SiteHeaderProps {
   active: SiteView;
-  onNavigate: (view: SiteView) => void;
+  onNavigate: (view: SiteView | string) => void;
+  /** The home page uses an editorial dark surface. */
+  dark?: boolean;
 }
 
 const NAV = [
-  { key: "v0", label: "V0.1", title: "V0.1 — first-order self-modelling" },
-  { key: "v02", label: "V0.2", title: "V0.2 — uninformed priors and learned meta-cognition" },
-  { key: "v03", label: "V0.3", title: "V0.3 — residual meta-model and the decoupled trap" },
-  { key: "v04", label: "V0.4", title: "V0.4 — precision gating and the attention schema" },
-  { key: "v05", label: "V0.5", title: "V0.5 — the unification attempt" },
+  {
+    key: "home",
+    href: "/",
+    label: "Overview",
+    title: "The accessible story",
+    icon: Home,
+  },
+  {
+    key: "research",
+    href: "/research",
+    label: "Research",
+    title: "The interactive simulation lab",
+    icon: FlaskConical,
+  },
+  {
+    key: "findings",
+    href: "/findings",
+    label: "Findings",
+    title: "Cross-version scientific results",
+    icon: BookOpen,
+  },
+  {
+    key: "paper",
+    href: "/paper",
+    label: "Paper",
+    title: "The formal manuscript",
+    icon: FileText,
+  },
 ] as const;
 
-export function SiteHeader({ active, onNavigate }: SiteHeaderProps) {
-  return (
-    <header className="sticky top-0 z-40 border-b border-lab-text/85 bg-lab-bg/95 backdrop-blur-md">
-      <div className="mx-auto max-w-[1560px] px-5 sm:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2 pb-3 pt-4">
-          <div className="min-w-0">
-            <div className="font-sans text-[9px] font-medium uppercase tracking-[0.28em] text-lab-amber">
-              Computational laboratory · issue 01
-            </div>
-            <button
-              className="mt-1 flex items-baseline gap-3 text-left"
-              onClick={() => onNavigate("v0")}
-              aria-label="Strange Loop Lab, home"
-            >
-              <span className="display text-[27px] sm:text-[32px]">Strange Loop Lab</span>
-              <span className="hidden font-serif text-[13px] italic text-lab-faint sm:inline">
-                a model of a model of a model
-              </span>
-            </button>
-          </div>
+const activeKey = (view: SiteView) =>
+  view === "home"
+    ? "home"
+    : view === "findings"
+      ? "findings"
+      : view === "paper"
+        ? "paper"
+        : "research";
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 pb-1">
-            <button
-              onClick={() => onNavigate("research")}
+export function SiteHeader({ active, onNavigate, dark = false }: SiteHeaderProps) {
+  const current = activeKey(active);
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-40 border-b backdrop-blur-md",
+        dark
+          ? "border-white/15 bg-[#0d0c0a]/95 text-[#f2eee4]"
+          : "border-lab-text/85 bg-lab-bg/95",
+      )}
+    >
+      <div className="mx-auto max-w-[1560px] px-5 sm:px-8">
+        <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3 pb-3 pt-4">
+          <div className="min-w-0">
+            <div
               className={cn(
-                "flex items-center gap-1.5 font-sans text-[10px] font-medium uppercase tracking-[0.18em] transition-colors",
-                active === "research" ? "text-lab-text" : "text-lab-amber hover:opacity-70",
+                "font-sans text-[9px] font-medium uppercase tracking-[0.28em]",
+                dark ? "text-[#e0a267]" : "text-lab-amber",
               )}
             >
-              <BookOpen size={11} />
-              Research
-              <ArrowUpRight size={11} />
-            </button>
+              Computational laboratory · issue 01
+            </div>
+            <a
+              href={hrefFor("/")}
+              className="mt-1 flex items-baseline gap-3 text-left"
+              aria-label="Strange Loop Lab, home"
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onNavigate("home");
+              }}
+            >
+              <span
+                className={cn(
+                  "display text-[27px] sm:text-[32px]",
+                  dark ? "text-[#f6f1e6]" : "",
+                )}
+              >
+                Strange Loop Lab
+              </span>
+              <span
+                className={cn(
+                  "hidden font-serif text-[13px] italic sm:inline",
+                  dark ? "text-[#a89d8a]" : "text-lab-faint",
+                )}
+              >
+                a model of a model of a model
+              </span>
+            </a>
           </div>
-        </div>
 
-        <div className="flex items-center justify-between gap-6 border-t border-lab-line py-1.5">
-          <nav className="scroll-thin flex items-center gap-5 overflow-x-auto" aria-label="Versions">
-            {NAV.map((item) => {
-              const isActive = item.key === active;
+          <nav aria-label="Sections" className="flex flex-wrap items-center gap-x-1 gap-y-1 pb-0.5">
+            {NAV.map((item, index) => {
+              const isActive = item.key === current;
+              const Icon = item.icon;
               return (
-                <button
+                <a
                   key={item.key}
-                  onClick={() => onNavigate(item.key)}
-                  disabled={isActive}
+                  href={hrefFor(item.href)}
                   title={item.title}
                   aria-current={isActive ? "page" : undefined}
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    onNavigate(item.key);
+                  }}
                   className={cn(
-                    "group relative shrink-0 py-1 font-sans text-[10px] font-medium uppercase tracking-[0.18em] transition-colors",
-                    isActive
-                      ? "cursor-default text-lab-text"
-                      : "text-lab-faint hover:text-lab-amber",
+                    "group relative flex items-center gap-1.5 px-3 py-2 font-sans text-[10px] font-medium uppercase tracking-[0.16em] transition-colors",
+                    dark
+                      ? isActive
+                        ? "text-[#f6f1e6]"
+                        : "text-[#b7ac99] hover:text-[#e0a267]"
+                      : isActive
+                        ? "text-lab-text"
+                        : "text-lab-faint hover:text-lab-amber",
                   )}
                 >
+                  <span
+                    className={cn(
+                      "num text-[8px]",
+                      dark ? "text-[#7f7563]" : "text-lab-line2",
+                    )}
+                  >
+                    0{index + 1}
+                  </span>
+                  <Icon size={11} />
                   {item.label}
                   <span
                     className={cn(
-                      "absolute inset-x-0 bottom-0 h-px transition-colors",
-                      isActive ? "bg-lab-amber" : "bg-transparent group-hover:bg-lab-line2",
+                      "absolute inset-x-2 bottom-0 h-px transition-colors",
+                      isActive
+                        ? dark
+                          ? "bg-[#e0a267]"
+                          : "bg-lab-amber"
+                        : "bg-transparent group-hover:bg-lab-line2",
                     )}
                   />
-                </button>
+                </a>
               );
             })}
           </nav>

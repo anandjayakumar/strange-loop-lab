@@ -70,7 +70,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "If the only reason to test a feared place is the food you expect to find there, fear always wins: the expected meal is smaller than the imagined cost. Adding a value for information — and letting the agent rest up when it is too weak to run the test — makes the diagnostic trip worth taking. The agent deliberately probes the terrain it has been avoiding, discovers the true cost, and returns to foraging.",
     stats:
-      "V0.3–V0.5 trap benchmark: pragmatic 0/100 escape (0.0 resources); uncertainty bonus 0/100; decision-VoI 66/100 with 65.1 resources; V0.5 plateau preparation 32/40 (80%) with 71.3 resources and 0 deaths; random 86–97.5% escape but 40.9–46.9 resources. VoI vs pragmatic +65.08 [55.94, 74.27], dz 1.39, p < 0.001; VoI vs random +20.27 resources, dz 0.41, p < 0.001.",
+      "V0.3-V0.5 trap benchmark: pragmatic 0/100 escape (0.0 resources); uncertainty bonus 0/100; decision-VoI 66/100 with 65.1 resources; V0.5 plateau preparation 74/100 (74%) with 78.1 resources and 0 deaths; random 93/100 with 44.1 resources and 1 death. VoI vs pragmatic +78.14 [69.29, 87.10], dz 1.69, p < 0.001; VoI vs random +34.03 resources [24.01, 43.69], dz 0.68, p < 0.001.",
     evidence:
       "Random exploration also escapes by luck — the brief's expectation that it would fail is not supported — but it is markedly less resource-efficient.",
     tone: "good",
@@ -83,7 +83,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "Simply turning down the self-model's influence when the meta-model is unsure sounds prudent, but it made V0.2 forage less and die more: the agent ignored its own warning lights exactly when they mattered. What worked was more surgical — correct the known bias, become pessimistic only near the cliff, and keep probing when far from it.",
     stats:
-      "V0.2: meta-on 32.4 vs meta-off 39.8, a −7.42 resource deficit. V0.3: meta-on beat meta-off in all eight regimes, +12.34 to +28.82 resources, dz 0.45–1.13, all p < 0.001; severe-prior survival 100/100 vs 93/100. V0.5 preserved the effect: +12.78 to +19.52, p ≤ 0.008.",
+      "V0.2: meta-on 32.4 vs meta-off 39.3, a −6.84 paired resource deficit. V0.3: meta-on beat meta-off in all eight regimes, +12.34 to +28.82 resources, dz 0.45–1.13, all p < 0.001; severe-prior survival 100/100 vs 93/100. V0.5 preserved the effect: +13.75 to +28.37, all p < 0.001.",
     evidence:
       "V0.3 report §4; V0.5 report §3. The pessimistic cliff term itself was resource-neutral versus naive scaling; the gain comes from using meta signals at all.",
     tone: "good",
@@ -110,7 +110,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "On a single step, a real change in the world and a glitch in a sensor look identical. Separating them requires comparing what happens when the agent moves with what happens when it rests: a physical shift shows up in movement, a sensor fault shows up in both. V0.2 had no such contrast and blamed almost everything on the fatigue sensor.",
     stats:
-      "V0.2 single-step attribution: physical 1/100, energy sensor 0/100, fatigue sensor 86/100, shared 0/100. V0.3 MOVE/REST temporal attribution: macro-F1 0.604, energy 88/100, shared 89/100, physical 63/100, fatigue 63/100. V0.5 recovered to 0.566 in the 40-seed run after the precision trade-off; a 20-seed pilot with the milder gate reached 0.764.",
+      "V0.2 single-step attribution: physical 1/100, energy sensor 0/100, fatigue sensor 86/100, shared 0/100. V0.3 MOVE/REST temporal attribution: macro-F1 0.604, energy 88/100, shared 89/100, physical 63/100, fatigue 63/100. V0.5 recovered to 0.577 at 100 seeds after the precision trade-off; a 20-seed pilot with the milder gate reached 0.764.",
     evidence:
       "V0.3 report §5; V0.5 report §4. The confusable pair is physical vs fatigue, because a physical shift is absorbed by the self-model within ~10 ticks while sensor variance persists.",
     tone: "warn",
@@ -123,7 +123,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "A big contextual model fitted online cannot beat a one-number running average early in the game: it has too many parameters and too little data. The fix was architectural — keep the running average as a floor and add a small, automatically shrunk contextual correction on top.",
     stats:
-      "V0.2 rolling BSS −0.12 and latent AUROC 0.47. V0.3 residual meta-model: rolling BSS +0.016 … +0.024 in every condition (p < 0.001 vs the baseline-only ablation) and latent persistent-failure AUROC 0.679–0.797 (V0.2: 0.471). V0.5: BSS 0.018–0.026, AUROC 0.751–0.824.",
+      "V0.2 rolling BSS −0.12 and latent AUROC 0.47. V0.3 residual meta-model: rolling BSS +0.016 … +0.024 in every condition (p < 0.001 vs the baseline-only ablation) and latent persistent-failure AUROC 0.679–0.797 (V0.2: 0.471). V0.5: BSS 0.027 [0.025, 0.028], AUROC 0.785 [0.773, 0.797] standard and 0.683–0.810 across shifts.",
     evidence:
       "V0.3 report §3; V0.4 report §4 (multi-step directional target); V0.5 report §3.",
     tone: "good",
@@ -136,7 +136,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "A learned world model was worse than no world model at all in V0.2: early in training its predictions are noise, and acting on noise costs food. The fix is to let the model speak only to the extent that it has demonstrated skill, so it starts as a neutral prior and earns influence.",
     stats:
-      "V0.2: neutral no-world 40.5 vs learned 32.4, a paired −8.11 [−13.17, −3.25] deficit. V0.3: learned − neutral +7.64 [3.64, 11.36], dz 0.38, p < 0.001; learned − frozen +7.64 [3.72, 11.59], p = 0.001. V0.4 lost the advantage (−0.26, p = 1.0) after the precision filter changed the trajectory; V0.5 recovered +2.45 but not significantly (p = 0.331).",
+      "V0.2: neutral no-world 40.5 vs learned 32.4, a paired -8.11 [-13.17, -3.25] deficit. V0.3: learned - neutral +7.64 [3.64, 11.36], dz 0.38, p < 0.001; learned - frozen +7.64 [3.72, 11.59], p = 0.001. V0.4 lost the advantage (-0.26, p = 1.0) after the precision filter changed the trajectory; V0.5 recovered +4.72 [0.77, 8.68], dz 0.22, p = 0.027 at 100 seeds.",
     evidence:
       "V0.3 report §7; V0.4 report §8; V0.5 report §3. Under skill gating an un-updated model is behaviourally identical to no model, so 'frozen' and 'no-world' coincide.",
     tone: "warn",
@@ -162,7 +162,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "Making the agent absorb a one-tick sensory lie requires it to trust its prior more than its senses. That same setting makes it slower to track real changes and blinds the module that diagnoses sensor faults. V0.5 showed the three cannot all be maximised at once with a single gain: every attempt to buy back tracking or attribution gave back absorption.",
     stats:
-      "V0.3 → V0.4: absorption ≈ 0 → 0.830 [0.811, 0.848], but stationary MAE 1.68 → 2.74 (raw sensing 1.93) and attribution macro-F1 0.604 → 0.515. V0.5 selective gating: absorption 0.79, MAE 2.04, attribution 0.566 (40 seeds); a milder gate reached attribution 0.764 at the cost of lower absorption. No configuration met all three targets simultaneously.",
+      "V0.3 → V0.4: absorption ≈ 0 → 0.830 [0.811, 0.848], but stationary MAE 1.68 → 2.74 (raw sensing 1.93) and attribution macro-F1 0.604 → 0.515. V0.5 selective gating: absorption 0.79 (pilot), MAE 2.04, attribution 0.577 (100 seeds); a milder gate reached attribution 0.764 at the cost of lower absorption. No configuration met all three targets simultaneously.",
     evidence:
       "V0.4 report §9; V0.5 report §3–§4. This is the project's clearest negative theoretical result.",
     tone: "bad",
@@ -212,7 +212,7 @@ export const MATRIX: MatrixRow[] = [
       v02: { text: "−8.11 (paradox)", tone: "bad" },
       v03: { text: "+7.64", tone: "good" },
       v04: { text: "−0.26 (n.s.)", tone: "bad" },
-      v05: { text: "+2.45 (n.s.)", tone: "warn" },
+      v05: { text: "+4.72 (p = 0.027)", tone: "good" },
     },
   },
   {
@@ -222,7 +222,7 @@ export const MATRIX: MatrixRow[] = [
       v02: { text: "−0.12", tone: "bad" },
       v03: { text: "+0.016…+0.024", tone: "good" },
       v04: { text: "+0.018…+0.027", tone: "good" },
-      v05: { text: "+0.018…+0.026", tone: "good" },
+      v05: { text: "0.027", tone: "good" },
     },
   },
   {
@@ -232,17 +232,17 @@ export const MATRIX: MatrixRow[] = [
       v02: { text: "0.47", tone: "bad" },
       v03: { text: "0.679–0.797", tone: "good" },
       v04: { text: "0.680–0.813", tone: "good" },
-      v05: { text: "0.751–0.824", tone: "good" },
+      v05: { text: "0.683–0.810", tone: "good" },
     },
   },
   {
     metric: "Meta-control Δ (meta-on − meta-off)",
     values: {
       v0: { text: "—", tone: "neutral" },
-      v02: { text: "−7.42", tone: "bad" },
+      v02: { text: "−6.84", tone: "bad" },
       v03: { text: "+12.3…+28.8", tone: "good" },
       v04: { text: "+15.4", tone: "good" },
-      v05: { text: "+12.8…+19.5", tone: "good" },
+      v05: { text: "+13.8…+28.4", tone: "good" },
     },
   },
   {
@@ -252,7 +252,7 @@ export const MATRIX: MatrixRow[] = [
       v02: { text: "0.25 (1/100 physical)", tone: "bad" },
       v03: { text: "0.604", tone: "good" },
       v04: { text: "0.515", tone: "bad" },
-      v05: { text: "0.566", tone: "warn" },
+      v05: { text: "0.577", tone: "warn" },
     },
   },
   {
@@ -262,7 +262,7 @@ export const MATRIX: MatrixRow[] = [
       v02: { text: "0 / — / 0", tone: "bad" },
       v03: { text: "0 / 86 / 66", tone: "good" },
       v04: { text: "0 / 86 / 65", tone: "good" },
-      v05: { text: "0 / 97.5 / 80 (40 seeds)", tone: "warn" },
+      v05: { text: "0 / 93 / 74 (100 seeds)", tone: "warn" },
     },
   },
   {
@@ -371,7 +371,7 @@ export const VERSIONS: VersionDetail[] = [
       { label: "Meta Brier / BSS", value: "0.199 / +0.133" },
       { label: "Rolling BSS", value: "−0.12", tone: "bad" },
       { label: "Latent AUROC", value: "0.47", tone: "bad" },
-      { label: "Meta-on vs off", value: "−7.42", tone: "bad" },
+      { label: "Meta-on vs off", value: "−6.84", tone: "bad" },
       { label: "Attribution physical / energy / fatigue / shared", value: "1 / 0 / 86 / 0 per 100", tone: "bad" },
     ],
     successes: [
@@ -381,7 +381,7 @@ export const VERSIONS: VersionDetail[] = [
     ],
     failures: [
       "Lost to a 1-parameter rolling baseline (BSS −0.12); latent AUROC 0.47.",
-      "Meta-feedback hurt foraging and energy (−7.42, −8.98).",
+      "Meta-feedback hurt foraging and energy (−6.84, −8.98).",
       "Pessimistic traps dissolved for the wrong reason: moving anywhere supplied corrective evidence.",
       "Single-step attribution collapsed to fatigue-sensor (86/100).",
       "Neutral no-world out-foraged the learned world.",
@@ -500,11 +500,11 @@ export const VERSIONS: VersionDetail[] = [
     stats: [
       { label: "Stationary MAE", value: "2.04", note: "raw 1.92", tone: "warn" },
       { label: "PP-1 absorption", value: "0.79 (pilot)", tone: "warn" },
-      { label: "Attribution macro-F1", value: "0.566", tone: "warn" },
-      { label: "Trap escape", value: "32/40 (80%)", note: "71.3 resources, 0 deaths", tone: "good" },
-      { label: "Meta-on vs off", value: "+12.8…+19.5", note: "p ≤ 0.008", tone: "good" },
-      { label: "Learned world − neutral", value: "+2.45 (n.s.)", tone: "bad" },
-      { label: "Rolling BSS / AUROC", value: "0.018–0.026 / 0.751–0.824", tone: "good" },
+      { label: "Attribution macro-F1", value: "0.577", tone: "warn" },
+      { label: "Trap escape", value: "74/100 (74%)", note: "78.1 resources, 0 deaths", tone: "good" },
+      { label: "Meta-on vs off", value: "+13.8…+28.4", note: "p ≤ 0.001", tone: "good" },
+      { label: "Learned world − neutral", value: "+4.72 (p = 0.027)", tone: "good" },
+      { label: "Rolling BSS / AUROC", value: "0.027 / 0.683–0.810", tone: "good" },
     ],
     successes: [
       "Recovered most of V0.3's tracking, attribution and trap resources.",
@@ -514,8 +514,8 @@ export const VERSIONS: VersionDetail[] = [
     failures: [
       "No simultaneous Pareto improvement: absorption, MAE and attribution remain coupled.",
       "Contextual meta transfer did not appear in the conditional regime.",
-      "Learned-world advantage only partially recovered (n.s.).",
-      "Trap escape reached 80%, not the 90% target.",
+      "Learned-world advantage recovered to +4.72 resources (p = 0.027), still far below V0.3.",
+      "Trap escape reached 74/100, not the 90% target.",
     ],
     verdict: "The honest endpoint: the architecture is unified in code, but the measured objectives are not jointly maximisable with one precision gain.",
     launchMode: "standard · selective gating · conditional regime",
@@ -555,7 +555,7 @@ export const FRAMEWORKS: FrameworkRow[] = [
     mechanism:
       "Persistent-failure head and risk-sensitive control estimate whether the first-order model is reliable now, and condition action on that estimate.",
     evidence:
-      "Residual meta BSS +0.016…+0.026 and latent AUROC 0.679–0.824; meta-on beats meta-off by +12.3…+28.8 resources (p < 0.001).",
+      "Residual meta BSS +0.016…+0.027 and latent AUROC 0.679–0.810; meta-on beats meta-off by +12.3…+28.4 resources (p < 0.001).",
     tone: "good",
   },
   {

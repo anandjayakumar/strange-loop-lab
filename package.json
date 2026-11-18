@@ -18,7 +18,8 @@
     "validate:v02": "tsx tools/v02validate.ts",
     "validate:v03": "tsx tools/v03validate.ts",
     "validate:v04": "tsx tools/v04validate.ts",
-    "validate:v05": "tsx tools/v05validate.ts"
+    "validate:v05": "tsx tools/v05validate.ts",
+    "paper:figures": "tsx tools/generatePaperFigures.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
