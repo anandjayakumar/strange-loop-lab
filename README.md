@@ -199,8 +199,8 @@ inspectable coefficients.
 - Mode C's meta-model moves trust and causally modulates learning rate and prior weight.
 - A/B/C run under identical seeds, including simultaneous background runs.
 - Micro-stepping, reset, model reset and per-edge toggles are implemented.
-- Determinism, dynamics, micro-stepping, V0/V0.2 ablations, shadow isolation and learned-meta
-  invariants are covered by 34 tests.
+- Determinism, dynamics, micro-stepping, V0/V0.2/V0.3 ablations, shadow isolation and learned-meta
+  invariants are covered by 45 tests.
 
 See `docs/MODEL.md` for the equations and tunable constants.
 
@@ -215,12 +215,18 @@ negative results. The default simulation is unchanged; research options are opt-
 learned meta-cognitive calibration, epistemic exploration, regime shifts, isolated shadow probes
 and the ten-question assessment.
 
+`docs/V03_RESEARCH_REPORT.md` contains the V0.3 audit: residual meta-modeling against a rolling
+baseline, risk-sensitive meta-control, action-conditioned temporal attribution, a context-decoupled
+epistemic trap with decision-value-of-information probing, skill-gated world modeling, and the
+PP-1, Goodhart and five-link intervention controls.
+
 ```bash
 npx tsx tools/validate.ts   # V0: 100 seeds × 13 conditions × 1,200 ticks + corruption cells
 npx tsx tools/analyze.ts    # V0 tables and research/analysis.json
 npx tsx tools/selfaudit.ts  # focused V0 self-estimate audit
 npm run validate:v02        # V0.2: 100 seeds × 23 conditions × 1,000 ticks + shadow probes
+npm run validate:v03        # V0.3: 100 seeds × 52 conditions × 1,000/1,600 ticks
 ```
 
-Open the dashboard and use **V0.2** in the header. V0 remains the default and fully
-reproducible; V0.2 is a separate opt-in research stack.
+Open the dashboard and use **V0.2** or **V0.3** in the header. V0 remains the default and fully
+reproducible; V0.2 and V0.3 are separate opt-in research stacks.

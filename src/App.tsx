@@ -12,10 +12,11 @@ import { SelfModelPanel } from "./components/SelfModelPanel";
 import { TopBar } from "./components/TopBar";
 import { useSimulation } from "./ui/useSimulation";
 import { V02Lab } from "./v02/V02Lab";
+import { V03Lab } from "./v03/V03Lab";
 
 export default function App() {
   const controller = useSimulation();
-  const [view, setView] = useState<"v0" | "v02">("v0");
+  const [view, setView] = useState<"v0" | "v02" | "v03">("v0");
   const { snapshot, series, events, running, settings, engine, actions } = controller;
   const [aboutOpen, setAboutOpen] = useState(false);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -57,6 +58,10 @@ export default function App() {
     return <V02Lab onBack={() => setView("v0")} />;
   }
 
+  if (view === "v03") {
+    return <V03Lab onBack={() => setView("v0")} />;
+  }
+
   return (
     <div className="min-h-screen">
       <TopBar
@@ -66,6 +71,7 @@ export default function App() {
         onCompare={() => setCompareOpen(true)}
         onToggleRunning={actions.toggleRunning}
         onOpenV02={() => setView("v02")}
+        onOpenV03={() => setView("v03")}
       />
 
       <main className="mx-auto max-w-[1600px] space-y-3 px-3 py-3 sm:px-4">
