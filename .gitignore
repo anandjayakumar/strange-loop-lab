@@ -7,3 +7,6 @@ dist-ssr
 coverage
 
 .wrangler/
+
+.opencode/
+paper/arxiv/submission/

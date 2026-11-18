@@ -239,5 +239,12 @@ npm run validate:v04        # V0.4: 100 seeds × 54 conditions × 1,000/1,600 ti
 npm run validate:v05        # V0.5: unified precision/attribution/trap validation
 ```
 
-Open the dashboard and use **V0.2** or **V0.3** in the header. V0 remains the default and fully
-reproducible; V0.2 and V0.3 are separate opt-in research stacks.
+Open the dashboard and use the header to switch between **V0.1, V0.2, V0.3, V0.4** and **V0.5**. Each
+version is a separate opt-in research stack; the research record, figures and manuscript are reachable
+from **Findings** and **Paper**.
+
+## Licence
+
+- **Code:** MIT — see [LICENSE](LICENSE).
+- **Manuscript and figures:** CC BY 4.0 — see [paper/LICENSE](paper/LICENSE).
+- **arXiv style file:** MIT, upstream (see `paper/arxiv/License.txt`).
