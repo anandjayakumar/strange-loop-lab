@@ -3,7 +3,6 @@ import {
   BookOpen,
   FlaskConical,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import {
   DISCOVERIES,
@@ -22,17 +21,10 @@ import {
 type Layers = "plain" | "stats" | "both";
 
 const TONE_COLOR: Record<Tone, string> = {
-  good: "#5cdb95",
-  warn: "#f0a35e",
-  bad: "#ff6f6f",
-  neutral: "#8b929b",
-};
-
-const TONE_BG: Record<Tone, string> = {
-  good: "rgba(92,219,149,0.10)",
-  warn: "rgba(240,163,94,0.10)",
-  bad: "rgba(255,111,111,0.10)",
-  neutral: "rgba(139,146,155,0.06)",
+  good: "#86c9a3",
+  warn: "#e2a765",
+  bad: "#d97c73",
+  neutral: "#a5a29c",
 };
 
 const SECTIONS = [
@@ -89,14 +81,14 @@ function SectionHeading({
   subtitle?: string;
 }) {
   return (
-    <div className="mb-4 flex items-end justify-between gap-4 border-b border-lab-line/70 pb-3">
+    <div className="mb-6 flex items-end justify-between gap-4 border-b border-lab-line/70 pb-3">
       <div>
-        <div className="mono-label">{index}</div>
-        <h2 className="mt-1 font-serif text-2xl leading-tight text-lab-text sm:text-[28px]">
+        <div className="kicker">{index}</div>
+        <h2 className="mt-1.5 font-serif text-[26px] font-light leading-tight tracking-[-0.02em] text-lab-text sm:text-[30px]">
           {title}
         </h2>
         {subtitle ? (
-          <p className="mt-1 max-w-[72ch] text-[11px] leading-relaxed text-lab-muted">
+          <p className="mt-2 max-w-[70ch] text-[12px] leading-[1.7] text-lab-muted">
             {subtitle}
           </p>
         ) : null}
@@ -122,7 +114,7 @@ export function ResearchPage({
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-lab-line bg-lab-bg/92 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-lab-line bg-lab-bg/90 backdrop-blur">
         <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-2 px-4 py-2.5">
           <div className="flex items-center gap-3">
             <button className="btn btn-ghost h-8 px-2" onClick={onBack} title="Back to the lab">
@@ -146,15 +138,18 @@ export function ResearchPage({
               </a>
             ))}
           </nav>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-3">
             {VERSIONS.map((v) => (
               <button
                 key={v.key}
-                className="btn h-8 px-2"
+                className="flex h-7 items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.1em] text-lab-faint transition-colors hover:text-lab-muted"
                 onClick={() => onOpenVersion(v.key)}
                 title={`Open ${VERSION_LABEL[v.key]}`}
-                style={{ color: VERSION_COLOR[v.key], borderColor: `${VERSION_COLOR[v.key]}44` }}
               >
+                <span
+                  className="h-1 w-1 rounded-full"
+                  style={{ background: VERSION_COLOR[v.key] }}
+                />
                 {VERSION_LABEL[v.key]}
               </button>
             ))}
@@ -166,23 +161,28 @@ export function ResearchPage({
         {/* ---------------------------------------------------------------- thesis */}
         <section id="thesis" className="scroll-mt-24">
           <div className="panel overflow-hidden">
-            <div className="border-b border-lab-line/70 bg-lab-raise/30 px-5 py-6 sm:px-8 sm:py-8">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="chip text-lab-amber">five versions · 100 paired seeds</span>
-                <span className="chip">V0 → V0.5</span>
-                <span className="chip text-lab-green">computational, not phenomenal</span>
-              </div>
-              <h1 className="mt-4 max-w-[26ch] font-serif text-4xl leading-[1.05] text-lab-text sm:text-5xl">
+            <div className="border-b border-lab-line/70 bg-lab-raise/20 px-5 py-8 sm:px-10 sm:py-12">
+              <div className="kicker">Research &amp; findings · V0 → V0.5</div>
+              <h1 className="mt-4 max-w-[24ch] font-serif text-[38px] font-light leading-[1.02] tracking-[-0.03em] text-lab-text sm:text-[56px]">
                 Can a system learn a model of itself — and of its own reliability?
               </h1>
-              <p className="mt-4 max-w-[78ch] text-[13px] leading-relaxed text-lab-muted">
+              <p className="mt-5 max-w-[66ch] text-[13.5px] leading-[1.75] text-lab-muted">
                 Strange Loop Lab is a deterministic computational laboratory inspired by
-                Hofstadter&apos;s strange loop and by the indicator-property programme for
+                Hofstadter&rsquo;s strange loop and by the indicator-property programme for
                 consciousness science. Across five versions it asks one question: if an agent learns
                 a model of its own body, then a second-order model of when that first model can be
-                trusted, do those models <em>causally</em> change what it does, what it learns, and
-                whether it survives?
+                trusted, do those models <em className="text-lab-text/90">causally</em> change what
+                it does, what it learns, and whether it survives?
               </p>
+              <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 font-mono text-[9px] uppercase tracking-[0.14em] text-lab-faint">
+                <span>100 paired seeds</span>
+                <span className="h-3 w-px bg-lab-line" />
+                <span>deterministic</span>
+                <span className="h-3 w-px bg-lab-line" />
+                <span>seeded statistics</span>
+                <span className="h-3 w-px bg-lab-line" />
+                <span className="text-lab-green/80">computational, not phenomenal</span>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 divide-y divide-lab-line/70 md:grid-cols-2 md:divide-x md:divide-y-0">
@@ -237,27 +237,30 @@ export function ResearchPage({
             title="Ten discoveries across five versions"
             subtitle="Each card carries a plain-English account and the exact statistical record behind it. Toggle the reading layer; the evidence line is always the audit trail."
           />
-          <div className="mb-4 flex flex-wrap items-center gap-2">
+          <div className="mb-6 flex flex-wrap items-center gap-3">
             <span className="mono-label mr-1">reading layer</span>
-            {(
-              [
-                ["plain", "Plain English"],
-                ["stats", "Statistical proof"],
-                ["both", "Both"],
-              ] as [Layers, string][]
-            ).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setLayers(key)}
-                className={
-                  layers === key
-                    ? "btn btn-primary h-7 px-2 text-[9px]"
-                    : "btn h-7 px-2 text-[9px]"
-                }
-              >
-                {label}
-              </button>
-            ))}
+            <div className="inline-flex rounded-md border border-lab-line p-0.5">
+              {(
+                [
+                  ["plain", "Plain English"],
+                  ["stats", "Statistical proof"],
+                  ["both", "Both"],
+                ] as [Layers, string][]
+              ).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setLayers(key)}
+                  className={
+                    "rounded px-2.5 py-1 font-mono text-[9px] tracking-[0.06em] transition-colors " +
+                    (layers === key
+                      ? "bg-lab-raise text-lab-text"
+                      : "text-lab-faint hover:text-lab-muted")
+                  }
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
@@ -321,11 +324,8 @@ export function ResearchPage({
                       return (
                         <td key={v.key} className="px-2 py-2 text-center">
                           <span
-                            className="inline-flex flex-col items-center rounded px-1.5 py-1 font-mono text-[9.5px] leading-tight"
-                            style={{
-                              color: TONE_COLOR[cell.tone],
-                              background: TONE_BG[cell.tone],
-                            }}
+                            className="inline-flex flex-col items-center px-1.5 py-1 font-mono text-[9.5px] leading-tight"
+                            style={{ color: TONE_COLOR[cell.tone] }}
                             title={cell.note}
                           >
                             {cell.text}
@@ -354,23 +354,26 @@ export function ResearchPage({
             title="Version by version"
             subtitle="What was introduced, the equations that define it, the full ablation record, and what failed — leading into the next version."
           />
-          <div className="mb-4 flex flex-wrap gap-1.5">
+          <div className="mb-5 flex flex-wrap gap-5 border-b border-lab-line/60">
             {VERSIONS.map((v) => (
               <button
                 key={v.key}
                 onClick={() => setActiveVersion(v.key)}
-                className="btn h-8 px-2.5"
-                style={
-                  activeVersion === v.key
-                    ? {
-                        color: VERSION_COLOR[v.key],
-                        borderColor: `${VERSION_COLOR[v.key]}66`,
-                        background: `${VERSION_COLOR[v.key]}14`,
-                      }
-                    : undefined
+                className={
+                  "relative shrink-0 pb-2.5 pt-1 font-mono text-[10px] tracking-[0.14em] transition-colors " +
+                  (activeVersion === v.key
+                    ? "text-lab-text"
+                    : "text-lab-faint hover:text-lab-muted")
                 }
               >
                 {VERSION_LABEL[v.key]}
+                <span
+                  className="absolute inset-x-0 bottom-0 h-px"
+                  style={{
+                    background:
+                      activeVersion === v.key ? VERSION_COLOR[v.key] : "transparent",
+                  }}
+                />
               </button>
             ))}
           </div>
@@ -444,7 +447,7 @@ export function ResearchPage({
                       <span className="text-[10.5px] leading-snug text-lab-muted">{stat.label}</span>
                       <span
                         className="shrink-0 text-right font-mono text-[10.5px] tabular-nums"
-                        style={{ color: stat.tone ? TONE_COLOR[stat.tone] : "#e7e9eb" }}
+                        style={{ color: stat.tone ? TONE_COLOR[stat.tone] : "#eeedea" }}
                       >
                         {stat.value}
                         {stat.note ? (
@@ -605,47 +608,44 @@ function DiscoveryCard({ discovery, layers }: { discovery: Discovery; layers: La
   const showPlain = layers !== "stats";
   const showStats = layers !== "plain";
   return (
-    <article
-      className="panel flex flex-col p-4"
-      style={{ borderTop: `2px solid ${TONE_COLOR[discovery.tone]}` }}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span
-            className="flex h-6 w-6 items-center justify-center rounded font-mono text-[10px]"
-            style={{
-              color: TONE_COLOR[discovery.tone],
-              background: TONE_BG[discovery.tone],
-            }}
-          >
+    <article className="group flex flex-col border-t border-lab-line/80 pt-4">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="font-mono text-[10px] tabular-nums text-lab-faint">
             {String(discovery.index).padStart(2, "0")}
           </span>
           <VersionBadge version={discovery.version} />
         </div>
-        <Sparkles size={13} style={{ color: TONE_COLOR[discovery.tone] }} />
+        <span
+          className="h-1.5 w-1.5 rounded-full"
+          style={{ background: TONE_COLOR[discovery.tone] }}
+          title={discovery.tone}
+        />
       </div>
 
-      <h3 className="mt-2 font-serif text-[17px] leading-snug text-lab-text">
+      <h3 className="mt-2.5 font-serif text-[18.5px] font-light leading-[1.25] tracking-[-0.01em] text-lab-text">
         {discovery.title}
       </h3>
 
-      <div className="mt-2 space-y-2">
+      <div className="mt-2.5 space-y-3">
         {showPlain ? (
-          <p className="text-[11.5px] leading-relaxed text-lab-muted">
-            <span className="mono-label mr-1.5">plain</span>
-            {discovery.plain}
-          </p>
+          <p className="text-[12px] leading-[1.7] text-lab-muted">{discovery.plain}</p>
         ) : null}
         {showStats ? (
-          <p className="rounded border border-lab-line/60 bg-lab-bg/40 px-2.5 py-2 text-[10.5px] leading-relaxed text-lab-text/85">
-            <span className="mono-label mr-1.5">stats</span>
+          <p
+            className="border-l-2 pl-3 text-[10.5px] leading-[1.7] text-lab-text/80"
+            style={{ borderColor: `${TONE_COLOR[discovery.tone]}55` }}
+          >
+            <span className="mono-label mr-1.5" style={{ color: TONE_COLOR[discovery.tone] }}>
+              stats
+            </span>
             {discovery.stats}
           </p>
         ) : null}
       </div>
 
-      <p className="mt-auto pt-2 text-[9px] leading-relaxed text-lab-faint">
-        <span className="text-lab-muted">audit · </span>
+      <p className="mt-auto pt-3 text-[9px] leading-relaxed text-lab-faint/80">
+        <span className="uppercase tracking-[0.12em] text-lab-faint/60">audit · </span>
         {discovery.evidence}
       </p>
     </article>
@@ -667,17 +667,17 @@ function LoopDiagram() {
           <path d="M 0 0 L 10 5 L 0 10 z" fill="#5b626b" />
         </marker>
         <marker id="arrowUp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#b49cff" />
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#b4a2d8" />
         </marker>
       </defs>
 
-      <g stroke="#2c3138" strokeWidth="1.2" fill="none" markerEnd="url(#arrow)">
+      <g stroke="#333338" strokeWidth="1.2" fill="none" markerEnd="url(#arrow)">
         <path d="M 138 150 H 214" />
         <path d="M 306 150 H 384" />
         <path d="M 476 150 H 554" />
         <path d="M 600 122 C 560 92, 510 78, 470 70" strokeDasharray="3 5" />
       </g>
-      <g stroke="#b49cff" strokeWidth="1" fill="none" markerEnd="url(#arrowUp)" strokeDasharray="3 4">
+      <g stroke="#b4a2d8" strokeWidth="1" fill="none" markerEnd="url(#arrowUp)" strokeDasharray="3 4">
         <path d="M 560 45 C 470 20, 200 20, 100 45" />
         <path d="M 100 60 C 110 95, 130 118, 140 132" />
       </g>
@@ -685,8 +685,8 @@ function LoopDiagram() {
       <text x="176" y="142" fill="#5b626b" fontSize="9" fontFamily="monospace">L1</text>
       <text x="344" y="142" fill="#5b626b" fontSize="9" fontFamily="monospace">L2</text>
       <text x="514" y="142" fill="#5b626b" fontSize="9" fontFamily="monospace">L3</text>
-      <text x="540" y="90" fill="#b49cff" fontSize="9" fontFamily="monospace">L4</text>
-      <text x="300" y="30" fill="#b49cff" fontSize="9" fontFamily="monospace">L5</text>
+      <text x="540" y="90" fill="#b4a2d8" fontSize="9" fontFamily="monospace">L4</text>
+      <text x="300" y="30" fill="#b4a2d8" fontSize="9" fontFamily="monospace">L5</text>
 
       {nodes.map((node) => (
         <g key={node.label}>
@@ -696,20 +696,20 @@ function LoopDiagram() {
             width="92"
             height="48"
             rx="6"
-            fill="#121518"
-            stroke={node.label === "M₂" ? "#b49cff66" : "#2c3138"}
+            fill="#151518"
+            stroke={node.label === "M₂" ? "#b4a2d866" : "#333338"}
           />
           <text
             x={node.x}
             y={node.y - 3}
             textAnchor="middle"
-            fill={node.label === "M₂" ? "#b49cff" : "#e7e9eb"}
+            fill={node.label === "M₂" ? "#b4a2d8" : "#eeedea"}
             fontSize="12"
             fontFamily="monospace"
           >
             {node.label}
           </text>
-          <text x={node.x} y={node.y + 12} textAnchor="middle" fill="#8b929b" fontSize="7.5" fontFamily="monospace">
+          <text x={node.x} y={node.y + 12} textAnchor="middle" fill="#a5a29c" fontSize="7.5" fontFamily="monospace">
             {node.sub}
           </text>
         </g>

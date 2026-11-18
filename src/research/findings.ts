@@ -28,11 +28,11 @@ export const VERSION_LABEL: Record<VersionKey, string> = {
 };
 
 export const VERSION_COLOR: Record<VersionKey, string> = {
-  v0: "#f0a35e",
-  v02: "#b49cff",
-  v03: "#7aa2ff",
-  v04: "#5fd0e3",
-  v05: "#5cdb95",
+  v0: "#e2a765",
+  v02: "#b4a2d8",
+  v03: "#8ca8d4",
+  v04: "#83b8c4",
+  v05: "#86c9a3",
 };
 
 export const DISCOVERIES: Discovery[] = [

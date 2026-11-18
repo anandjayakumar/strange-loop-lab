@@ -99,10 +99,10 @@ export default function App() {
         onOpenResearch={() => setView("research")}
       />
 
-      <main className="mx-auto max-w-[1600px] space-y-3 px-3 py-3 sm:px-4">
+      <main className="mx-auto max-w-[1600px] space-y-4 px-4 py-4 sm:px-6">
         <ControlDeck controller={controller} onCompare={() => setCompareOpen(true)} />
 
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           <div className="lg:col-span-5 xl:col-span-4">
             <EnvironmentPanel engine={engine} snapshot={snapshot} />
           </div>
@@ -111,7 +111,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           <div className="lg:col-span-5 xl:col-span-4">
             <InternalStatePanel snapshot={snapshot} />
           </div>
@@ -120,7 +120,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SelfModelPanel snapshot={snapshot} />
           </div>

@@ -16,6 +16,14 @@ interface TopBarProps {
   onOpenResearch: () => void;
 }
 
+const NAV = [
+  { key: "v0", label: "V0", title: "V0 — deterministic self-reference laboratory" },
+  { key: "v02", label: "V0.2", title: "V0.2 — uninformed priors and learned meta-cognition" },
+  { key: "v03", label: "V0.3", title: "V0.3 — residual meta-model and the decoupled trap" },
+  { key: "v04", label: "V0.4", title: "V0.4 — precision gating and the attention schema" },
+  { key: "v05", label: "V0.5", title: "V0.5 — the unification attempt" },
+] as const;
+
 export function TopBar({
   snapshot,
   running,
@@ -30,48 +38,91 @@ export function TopBar({
 }: TopBarProps) {
   const status = !snapshot.alive ? "terminated" : running ? "running" : "paused";
   const mode = MODE_META[snapshot.mode];
-  return (
-    <header className="relative border-b border-lab-line/80">
-      <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-x-5 gap-y-3 px-4 py-3.5 sm:px-6">
-        <div className="flex min-w-0 items-center gap-3">
-          <div className="relative grid h-10 w-10 shrink-0 place-items-center">
-            <svg viewBox="0 0 40 40" className="h-10 w-10 -rotate-12" aria-hidden="true">
-              <circle cx="20" cy="20" r="13" fill="none" stroke="#2c3138" strokeWidth="1.2" />
-              <path
-                d="M20 7 a13 13 0 1 1 -9.19 22.19"
-                fill="none"
-                stroke="#f0a35e"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M9.9 30.1 A13 13 0 0 1 7 20"
-                fill="none"
-                stroke="#5fd0e3"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-              <circle cx="20" cy="20" r="2.6" fill="#5cdb95" />
-              <path d="M17.5 7.2 L20 4.8 L22.5 7.2" fill="none" stroke="#f0a35e" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div className="min-w-0">
-            <div className="flex items-baseline gap-2">
-              <h1 className="truncate font-serif text-[26px] leading-none tracking-[-0.01em] text-lab-text">
-                Strange Loop
-              </h1>
-              <span className="rounded border border-lab-line bg-lab-raise px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.18em] text-lab-amber/90">
-                Lab
-              </span>
-            </div>
-            <p className="mt-1 truncate font-mono text-[9px] tracking-[0.02em] text-lab-faint">
-              self-reference · tangled hierarchy · a model of the modeler
-            </p>
-          </div>
-        </div>
 
-        <div className="ml-auto flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-2 rounded-md border border-lab-line bg-lab-panel px-2.5 py-1.5">
+  const open = (key: (typeof NAV)[number]["key"]) => {
+    if (key === "v02") onOpenV02();
+    else if (key === "v03") onOpenV03();
+    else if (key === "v04") onOpenV04();
+    else if (key === "v05") onOpenV05();
+  };
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-lab-line/70 bg-lab-bg/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-[1600px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-2 sm:px-6">
+        <a
+          className="group flex min-w-0 items-center gap-2.5"
+          href="/"
+          onClick={(event) => event.preventDefault()}
+          aria-label="Strange Loop Lab, home"
+        >
+          <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0" aria-hidden="true">
+            <circle cx="16" cy="16" r="10.5" fill="none" stroke="#333338" strokeWidth="1" />
+            <path
+              d="M16 5.5 a10.5 10.5 0 1 1 -7.42 17.92"
+              fill="none"
+              stroke="#e2a765"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            />
+            <path
+              d="M7.9 24.1 A10.5 10.5 0 0 1 5.5 16"
+              fill="none"
+              stroke="#83b8c4"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            />
+            <circle cx="16" cy="16" r="1.9" fill="#86c9a3" />
+          </svg>
+          <span className="flex items-baseline gap-2">
+            <span className="font-serif text-[21px] leading-none tracking-[-0.02em] text-lab-text">
+              Strange Loop
+            </span>
+            <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-lab-faint">
+              Lab
+            </span>
+          </span>
+        </a>
+
+        <span className="mx-1 hidden h-4 w-px bg-lab-line sm:block" />
+
+        <nav className="order-3 flex w-full items-center gap-4 overflow-x-auto pb-1 sm:order-none sm:w-auto sm:pb-0">
+          {NAV.map((item) => {
+            const active = item.key === "v0";
+            return (
+              <button
+                key={item.key}
+                onClick={() => open(item.key)}
+                disabled={active}
+                title={item.title}
+                className={cn(
+                  "relative shrink-0 py-1 font-mono text-[10px] tracking-[0.12em] transition-colors",
+                  active
+                    ? "cursor-default text-lab-text"
+                    : "text-lab-faint hover:text-lab-muted",
+                )}
+              >
+                {item.label}
+                <span
+                  className={cn(
+                    "absolute inset-x-0 -bottom-[9px] h-px",
+                    active ? "bg-lab-amber/70" : "bg-transparent",
+                  )}
+                />
+              </button>
+            );
+          })}
+          <button
+            onClick={onOpenResearch}
+            title="Research and findings"
+            className="flex shrink-0 items-center gap-1.5 py-1 font-mono text-[10px] tracking-[0.12em] text-lab-faint transition-colors hover:text-lab-muted"
+          >
+            <BookOpen size={11} />
+            Research
+          </button>
+        </nav>
+
+        <div className="ml-auto flex items-center gap-2.5">
+          <span className="hidden items-center gap-1.5 sm:flex">
             <span
               className={cn(
                 "h-1.5 w-1.5 rounded-full",
@@ -81,75 +132,59 @@ export function TopBar({
                     ? "bg-lab-amber"
                     : "bg-lab-red",
               )}
-              style={status === "running" ? { animation: "soft-pulse 1.6s ease-in-out infinite" } : undefined}
+              style={status === "running" ? { animation: "soft-pulse 2.4s ease-in-out infinite" } : undefined}
             />
-            <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-lab-muted">
-              {status}
-            </span>
-            <span className="h-3 w-px bg-lab-line" />
-            <span className="font-mono text-[9px] tabular-nums text-lab-faint">
+            <span className="font-mono text-[9px] tracking-[0.08em] text-lab-faint">{status}</span>
+            <span className="font-mono text-[9px] tabular-nums text-lab-faint/70">
               {TICK_LABEL(snapshot.tick)}
             </span>
-          </div>
+          </span>
 
-          <div
-            className="hidden items-center gap-2 rounded-md border px-2.5 py-1.5 sm:flex"
-            style={{
-              borderColor: `${mode.accent}35`,
-              background: `${mode.accent}0d`,
-            }}
-          >
+          <span className="hidden items-center gap-1.5 lg:flex">
             <span
-              className="grid h-4 w-4 place-items-center rounded-sm font-mono text-[9px]"
-              style={{ background: `${mode.accent}22`, color: mode.accent }}
+              className="font-mono text-[9px] text-lab-faint"
+              style={{ color: mode.accent }}
             >
               {snapshot.mode}
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.08em] text-lab-muted">
-              {mode.short}
-            </span>
-          </div>
+            <span className="font-mono text-[9px] text-lab-faint">{mode.short}</span>
+          </span>
 
-          <div className="hidden items-center gap-1.5 rounded-md border border-lab-line bg-lab-panel px-2.5 py-1.5 lg:flex">
-            <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-lab-faint">
+          <span className="hidden items-center gap-1.5 xl:flex">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-lab-faint/70">
               seed
             </span>
             <span className="font-mono text-[9px] tabular-nums text-lab-muted">{snapshot.seed}</span>
-          </div>
+          </span>
+
+          <span className="h-4 w-px bg-lab-line" />
 
           <button
-            className="btn h-8 px-2.5"
+            className={cn("btn h-8 px-2.5", running && "btn-primary")}
             onClick={onToggleRunning}
             aria-label={running ? "Pause simulation" : "Resume simulation"}
             title={running ? "Pause (space)" : "Run (space)"}
           >
-            {running ? <Pause size={13} /> : <Play size={13} />}
-            <span className="hidden xl:inline">{running ? "Pause" : "Run"}</span>
+            {running ? <Pause size={12} /> : <Play size={12} />}
+            <span className="hidden md:inline">{running ? "Pause" : "Run"}</span>
           </button>
 
-          <button className="btn h-8 px-2.5" onClick={onCompare} title="Compare all three modes on this seed">
+          <button
+            className="icon-btn"
+            onClick={onCompare}
+            title="Compare all three modes on this seed"
+            aria-label="Compare modes"
+          >
             <ArrowLeftRight size={13} />
-            <span className="hidden xl:inline">Compare</span>
           </button>
 
-          <button className="btn h-8 border-lab-violet/35 px-2.5 text-lab-violet" onClick={onOpenV02} title="Open V0.2 learned meta-cognition lab">
-            V0.2
-          </button>
-          <button className="btn h-8 border-lab-blue/35 px-2.5 text-lab-blue" onClick={onOpenV03} title="Open V0.3 residual meta-model lab">
-            V0.3
-          </button>
-          <button className="btn h-8 border-lab-cyan/35 px-2.5 text-lab-cyan" onClick={onOpenV04} title="Open V0.4 precision-gated attention-schema lab">
-            V0.4
-          </button>
-          <button className="btn h-8 border-lab-green/35 px-2.5 text-lab-green" onClick={onOpenV05} title="Open V0.5 unified lab">
-            V0.5
-          </button>
-          <button className="btn h-8 border-lab-amber/35 px-2.5 text-lab-amber" onClick={onOpenResearch} title="Open the research and findings page">
-            <BookOpen size={12} />
-            <span className="hidden xl:inline">Research</span>
-          </button>
-          <button className="icon-btn" onClick={onAbout} aria-label="About this experiment" title="About">
-            <Info size={14} />
+          <button
+            className="icon-btn"
+            onClick={onAbout}
+            aria-label="About this experiment"
+            title="About"
+          >
+            <Info size={13} />
           </button>
         </div>
       </div>

@@ -17,24 +17,34 @@
 
   body {
     @apply bg-lab-bg font-sans text-lab-text antialiased;
+    font-size: 14px;
     font-feature-settings: "cv11", "ss01";
     background-image:
-      radial-gradient(1000px 600px at 82% -12%, rgba(240, 163, 94, 0.055), transparent 62%),
-      radial-gradient(800px 500px at 8% 0%, rgba(95, 208, 227, 0.04), transparent 60%);
+      radial-gradient(1100px 620px at 78% -14%, rgba(226, 167, 101, 0.055), transparent 62%),
+      radial-gradient(760px 480px at 4% -2%, rgba(131, 184, 196, 0.03), transparent 58%),
+      linear-gradient(rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+    background-size: auto, auto, 64px 64px, 64px 64px;
     background-attachment: fixed;
   }
 
   ::selection {
-    background: rgba(240, 163, 94, 0.28);
+    background: rgba(226, 167, 101, 0.24);
+    color: #fff;
   }
 
   :focus-visible {
     outline: none;
-    box-shadow: 0 0 0 1px #08090a, 0 0 0 2px rgba(240, 163, 94, 0.65);
+    box-shadow: 0 0 0 1px #0a0a0b, 0 0 0 2px rgba(226, 167, 101, 0.6);
   }
 
   h1, h2, h3, h4 {
-    letter-spacing: -0.02em;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   button {
@@ -42,7 +52,7 @@
   }
 
   input[type="range"] {
-    accent-color: #f0a35e;
+    accent-color: #e2a765;
   }
 
   ::-webkit-scrollbar {
@@ -53,18 +63,19 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #272c32;
+    background: #2a2a2e;
     border-radius: 999px;
-    border: 2px solid #08090a;
+    border: 2px solid #0a0a0b;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #3a4048;
+    background: #3a3a3f;
   }
 }
 
 @layer components {
   .panel {
-    @apply relative rounded-[10px] border border-lab-line bg-lab-panel shadow-panel;
+    @apply relative rounded-lg border border-lab-line bg-lab-panel;
+    box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.018) inset;
   }
 
   .panel-head {
@@ -72,27 +83,31 @@
   }
 
   .panel-title {
-    @apply font-mono text-[10px] uppercase tracking-[0.18em] text-lab-muted;
+    @apply font-mono text-[10px] uppercase tracking-[0.16em] text-lab-muted;
   }
 
   .panel-note {
-    @apply font-mono text-[9px] tracking-[0.06em] text-lab-faint;
+    @apply font-mono text-[9px] tracking-[0.04em] text-lab-faint;
   }
 
   .mono-label {
     @apply font-mono text-[9px] uppercase tracking-[0.16em] text-lab-faint;
   }
 
+  .kicker {
+    @apply font-mono text-[9px] uppercase tracking-[0.2em] text-lab-amber/80;
+  }
+
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded border border-lab-line bg-lab-raise/70 px-2 py-1 font-mono text-[10px] text-lab-muted;
+    @apply inline-flex items-center gap-1.5 rounded-full border border-lab-line bg-transparent px-2 py-[3px] font-mono text-[9.5px] tracking-[0.02em] text-lab-muted;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-lab-line bg-lab-raise px-3 py-2 font-mono text-[10px] uppercase tracking-[0.1em] text-lab-muted transition-colors hover:border-lab-line2 hover:bg-[#171b1f] hover:text-lab-text disabled:cursor-not-allowed disabled:opacity-35;
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-lab-line bg-transparent px-3 py-2 font-mono text-[10px] uppercase tracking-[0.1em] text-lab-muted transition-colors hover:border-lab-line2 hover:bg-lab-raise hover:text-lab-text disabled:cursor-not-allowed disabled:opacity-35;
   }
 
   .btn-primary {
-    @apply border-lab-amber/40 bg-lab-amber/15 text-lab-amber hover:border-lab-amber/60 hover:bg-lab-amber/20 hover:text-lab-amber;
+    @apply border-lab-amber/30 bg-lab-amber/[0.07] text-lab-amber hover:border-lab-amber/50 hover:bg-lab-amber/[0.12] hover:text-lab-amber;
   }
 
   .btn-ghost {
@@ -100,11 +115,19 @@
   }
 
   .icon-btn {
-    @apply inline-flex h-8 w-8 items-center justify-center rounded border border-lab-line bg-lab-raise text-lab-muted transition-colors hover:border-lab-line2 hover:text-lab-text disabled:cursor-not-allowed disabled:opacity-35;
+    @apply inline-flex h-8 w-8 items-center justify-center rounded-md border border-lab-line bg-transparent text-lab-muted transition-colors hover:border-lab-line2 hover:bg-lab-raise hover:text-lab-text disabled:cursor-not-allowed disabled:opacity-35;
   }
 
   .stat-value {
     @apply font-mono text-lg tabular-nums text-lab-text;
+  }
+
+  .rule {
+    @apply border-t border-lab-line/70;
+  }
+
+  .link-quiet {
+    @apply underline decoration-lab-line2 decoration-1 underline-offset-[3px] transition-colors hover:text-lab-text hover:decoration-lab-amber/60;
   }
 
   .hairline {
@@ -113,7 +136,7 @@
 
   .scroll-thin {
     scrollbar-width: thin;
-    scrollbar-color: #2c3138 transparent;
+    scrollbar-color: #2a2a2e transparent;
   }
 
   .flow-line {
@@ -122,7 +145,7 @@
   }
 
   .glow-dot {
-    box-shadow: 0 0 0 3px rgba(92, 219, 149, 0.08), 0 0 12px rgba(92, 219, 149, 0.35);
+    box-shadow: 0 0 0 3px rgba(134, 201, 163, 0.06), 0 0 10px rgba(134, 201, 163, 0.25);
   }
 }
 
