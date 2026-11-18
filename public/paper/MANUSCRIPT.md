@@ -232,7 +232,11 @@ npm run typecheck && npm test && npm run build
 
 Raw per-run JSON is in `research/`; aggregate reports are in `docs/`. The UI exposes the same numbers with plain-English and statistical layers.
 
-**AI assistance disclosure.** The code, validation harnesses and manuscript were produced with AI-assisted drafting and statistical auditing. All numbers in the manuscript are generated from the seeded JSON artifacts by the validation harnesses and the figure generator, and were independently re-read from those artifacts during editing. No number was typed from memory.
+**Data and code availability.** The interactive laboratory is at https://strangeloops.pages.dev. The complete source, the five engines, their tests, the validation harnesses, the per-run JSON artifacts in `research/`, the reports in `docs/`, and the figure generator are maintained as one repository; an archived snapshot is available from the author on request. Every figure and statistic in this manuscript can be regenerated from the JSON with `npm run paper:figures` and the validation commands listed above.
+
+**Use of AI tools.** Generative AI tools were used in this work as follows. (i) An agentic coding environment (OpenCode, 2026; model identifiers and dates are retained in the project transcript) drafted and edited TypeScript for the engines, validation harnesses, UI and figure generator, and ran the validators. (ii) The same environment drafted and edited prose, tables and the LaTeX/Markdown sources, and assisted in checking reported values against the JSON artifacts. (iii) All figures are produced by deterministic TypeScript from the JSON; no generative image model produced, altered or enhanced any figure or datum. The author specified the research question, design and acceptance criteria, reviewed every change, verified the references against their published sources, and takes full responsibility for all content. Every reported number was regenerated from the checked-in JSON; the 67-test suite and the type check pass on the archived code.
+
+**Declarations.** *Funding:* none. *Competing interests:* none. *Author contributions:* Anand Jayakumar conceived the study, designed the architectures and protocols, implemented and reviewed the code, ran and audited the validations, and wrote the manuscript. *Ethics:* no human participants or animals were involved, and no personal data were processed.
 
 ---
 
