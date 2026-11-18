@@ -74,14 +74,6 @@ export function SiteHeader({ active, onNavigate, dark = false }: SiteHeaderProps
       <div className="mx-auto max-w-[1560px] px-5 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3 pb-3 pt-4">
           <div className="min-w-0">
-            <div
-              className={cn(
-                "font-sans text-[9px] font-medium uppercase tracking-[0.28em]",
-                dark ? "text-[#e0a267]" : "text-lab-amber",
-              )}
-            >
-              Computational laboratory · issue 01
-            </div>
             <a
               href={hrefFor("/")}
               className="mt-1 flex items-baseline gap-3 text-left"
@@ -99,14 +91,6 @@ export function SiteHeader({ active, onNavigate, dark = false }: SiteHeaderProps
                 )}
               >
                 Strange Loop Lab
-              </span>
-              <span
-                className={cn(
-                  "hidden font-serif text-[13px] italic sm:inline",
-                  dark ? "text-[#a89d8a]" : "text-lab-faint",
-                )}
-              >
-                a model of a model of a model
               </span>
             </a>
           </div>

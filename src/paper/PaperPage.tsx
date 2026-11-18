@@ -47,15 +47,6 @@ export function PaperPage({ onNavigate }: { onNavigate: (target: string) => void
               self-referential agent. Five architectures, 100 paired seeds per generation, and a
               measured Pareto trilemma.
             </p>
-            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.16em] text-lab-faint">
-              <span>19,400 total runs</span>
-              <span className="h-3 w-px bg-lab-line2" />
-              <span>100 paired seeds</span>
-              <span className="h-3 w-px bg-lab-line2" />
-              <span>deterministic</span>
-              <span className="h-3 w-px bg-lab-line2" />
-              <span>computational, not phenomenal</span>
-            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">

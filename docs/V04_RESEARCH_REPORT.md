@@ -5,8 +5,8 @@
 sentience or subjective experience. "Attention" means precision weighting in a predictive filter;
 "attention schema" means a predictor of the agent's own precision allocation.
 
-**Lineage:** V0 (`6438bea`) → V0.2 (`975299e`) → V0.3 (`e68669c`) → V0.4 (`v0.4-attention-schema`).
-V0, V0.2 and V0.3 engines, dashboards, tests and reports are preserved. V0.4 lives in
+**Lineage:** V0.1 (`6438bea`) → V0.2 (`975299e`) → V0.3 (`e68669c`) → V0.4 (`v0.4-attention-schema`).
+V0.1, V0.2 and V0.3 engines, dashboards, tests and reports are preserved. V0.4 lives in
 `src/simulation/v04` and is benchmarked against V0.3 on the same 100 seeds.
 
 ---
@@ -223,7 +223,7 @@ Meta-control is preserved: full 40.1 vs meta-off 24.7 (+15.40, dz 0.52, p<0.001)
 ## 10. Verification
 
 - `npm run typecheck` — clean.
-- `npm test` — 56 tests (45 preserved V0/V0.2/V0.3 + 11 V0.4).
+- `npm test` — 56 tests (45 preserved V0.1/V0.2/V0.3 + 11 V0.4).
 - `npm run build` — succeeds.
 - `npm run validate:v04` — 5400 runs, ~5 minutes.
 

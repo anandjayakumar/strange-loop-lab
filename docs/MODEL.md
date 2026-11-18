@@ -198,7 +198,7 @@ of self influence.
 
 - **Self state accuracy**: `1 − mean(|Ê − E| / 25)` over a 60-tick window. `E` is instrumented.
   This is a scaled absolute error, not a probability. The validation report compares it with the
-  raw interoceptive sample at the same sense phase; V0's filtered energy belief is actually
+  raw interoceptive sample at the same sense phase; V0.1's filtered energy belief is actually
   *worse* (MAE 3.24/4.54 vs 1.92), so self accuracy is not evidence of a good filter.
 - **Self forward prediction**: engine-side comparison of predicted energy delta and success
   against instrumented outcomes: `1 − (0.6 normalized delta error + 0.4 Brier)`.

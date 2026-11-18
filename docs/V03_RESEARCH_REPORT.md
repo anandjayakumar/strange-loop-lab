@@ -7,8 +7,8 @@ a second-order predictor that estimates the reliability of a first-order predict
 means a parameterised predictor of the agent's own energy and fatigue dynamics. Both are ordinary
 statistical objects.
 
-**Lineage:** V0 (`main`, `6438bea`) → V0.2 (`v0.2-learned-meta`, `975299e`) → V0.3
-(`v0.3-second-order`). V0 and V0.2 code paths, tests, dashboards and reports are preserved
+**Lineage:** V0.1 (`main`, `6438bea`) → V0.2 (`v0.2-learned-meta`, `975299e`) → V0.3
+(`v0.3-second-order`). V0.1 and V0.2 code paths, tests, dashboards and reports are preserved
 unchanged. V0.3 lives in `src/simulation/v03` and is benchmarked directly against V0.2 on the same
 seeds in the same run.
 
@@ -133,7 +133,7 @@ are rare.
 - **Reproduce:** `npx tsx tools/v03validate.ts` (or `npm run validate:v03`); `SEEDS`, `HORIZON`,
   `TRAP_HORIZON` environment variables override the defaults. Raw per-run data:
   `research/v03-results.json`; aggregates: `research/v03-analysis.json`.
-- **Dashboard:** `npm run dev`, then the **V0.3** button in the top bar (V0 and V0.2 remain
+- **Dashboard:** `npm run dev`, then the **V0.3** button in the top bar (V0.1 and V0.2 remain
   reachable). The V0.3 dashboard exposes every ablation as a toggle, the reliability diagram,
   attribution bars, risk margin, rough-cost learning, the PP-1 pulse button and the trap button.
 
@@ -446,7 +446,7 @@ the simulator.
 ## 10. Verification
 
 - `npm run typecheck` — clean.
-- `npm test` — 45 tests (34 preserved V0/V0.2 + 11 new V0.3).
+- `npm test` — 45 tests (34 preserved V0.1/V0.2 + 11 new V0.3).
 - `npm run build` — production build succeeds.
 - `npm run validate:v03` — 5200 runs (52 conditions × 100 seeds) in ~4 minutes.
 

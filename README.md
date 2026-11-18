@@ -195,7 +195,7 @@ inspectable coefficients.
 - Exactly two meta levels.
 - The self-model can be wrong, is measured against ground truth outside itself, and can recover.
 
-## V0 status
+## V0.1 status
 
 - Agent survives and navigates under fatigue-dependent cost, success and energy weight.
 - World model learns from online prediction errors.
@@ -204,14 +204,14 @@ inspectable coefficients.
 - Mode C's meta-model moves trust and causally modulates learning rate and prior weight.
 - A/B/C run under identical seeds, including simultaneous background runs.
 - Micro-stepping, reset, model reset and per-edge toggles are implemented.
-- Determinism, dynamics, micro-stepping, V0/V0.2/V0.3 ablations, shadow isolation and learned-meta
+- Determinism, dynamics, micro-stepping, V0.1/V0.2/V0.3 ablations, shadow isolation and learned-meta
   invariants are covered by 67 tests.
 
 See `docs/MODEL.md` for the equations and tunable constants.
 
 ## Scientific validation
 
-`docs/RESEARCH_REPORT.md` contains the V0 audit: 100 paired seeds, 13 ablation/corruption
+`docs/RESEARCH_REPORT.md` contains the V0.1 audit: 100 paired seeds, 13 ablation/corruption
 conditions, causal ablations, corruption recovery, confidence/meta calibration and honest
 negative results. The default simulation is unchanged; research options are opt-in
 (`ResearchOptions` in `src/simulation/types.ts`).
@@ -230,9 +230,9 @@ PP-1 illusion, multi-step directional meta targets, epistemic preparation, strai
 consistency, and the AST-1 attention-schema ablation.
 
 ```bash
-npx tsx tools/validate.ts   # V0: 100 seeds × 13 conditions × 1,200 ticks + corruption cells
-npx tsx tools/analyze.ts    # V0 tables and research/analysis.json
-npx tsx tools/selfaudit.ts  # focused V0 self-estimate audit
+npx tsx tools/validate.ts   # V0.1: 100 seeds × 13 conditions × 1,200 ticks + corruption cells
+npx tsx tools/analyze.ts    # V0.1 tables and research/analysis.json
+npx tsx tools/selfaudit.ts  # focused V0.1 self-estimate audit
 npm run validate:v02        # V0.2: 100 seeds × 23 conditions × 1,000 ticks + shadow probes
 npm run validate:v03        # V0.3: 100 seeds × 52 conditions × 1,000/1,600 ticks
 npm run validate:v04        # V0.4: 100 seeds × 54 conditions × 1,000/1,600 ticks

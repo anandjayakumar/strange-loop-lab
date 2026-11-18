@@ -16,7 +16,7 @@ export interface LabVersion {
 export const LAB_VERSIONS: LabVersion[] = [
   {
     id: "v0",
-    label: "V0",
+    label: "V0.1",
     name: "Baseline Control Loop",
     short: "Informed priors, docile world",
     era: "first-order self-modelling",

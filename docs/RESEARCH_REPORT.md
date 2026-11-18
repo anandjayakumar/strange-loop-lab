@@ -1,20 +1,20 @@
-# Strange Loop Lab V0 — Scientific Validation Report
+# Strange Loop Lab V0.1 — Scientific Validation Report
 
 **Date:** 2026-11-18  
-**Subject:** V0 simulation, commit state as validated in this workspace  
-**Question:** Does V0 demonstrate a genuine computational strange loop, or a conventional
+**Subject:** V0.1 simulation, commit state as validated in this workspace  
+**Question:** Does V0.1 demonstrate a genuine computational strange loop, or a conventional
 adaptive control system with additional self-monitoring variables?
 
 ## Executive conclusion
 
-V0 contains a **real, inspectable, causally active first-order self-model** and a **causally
+V0.1 contains a **real, inspectable, causally active first-order self-model** and a **causally
 active second-order reliability loop**. The self-model is not reading ground truth, it changes
 action selection, it can be wrong, and it corrects from noisy observations. The meta-model moves
 its trust signal, suppresses an unreliable self-model, and changes lower-level parameters.
 The energy belief is nevertheless **worse than the raw interoceptive sample** (MAE 3.24/4.54
 versus 1.92), so this is not evidence of a superior internal estimator.
 
-However, the validation does **not** support the stronger claim that V0 exhibits a genuine
+However, the validation does **not** support the stronger claim that V0.1 exhibits a genuine
 Hofstadter-style strange loop. The second level is a **hand-designed scalar gain scheduler**, not
 a learned or calibrated model of the self-model. Its trust signal is not calibrated against
 actual self-model accuracy, adds negligible predictive value, and usually detects a corrupted
@@ -27,7 +27,7 @@ policy is encoded in hand-tuned priors and utility weights, not learned from exp
 observations across four feedback configurations, with paired non-parametric tests, bootstrap
 confidence intervals and effect sizes.
 
-**Verdict:** V0 is best described as a **hierarchical adaptive controller with a self-monitoring
+**Verdict:** V0.1 is best described as a **hierarchical adaptive controller with a self-monitoring
 variable and a causal second-order gain loop**. It demonstrates a minimal computational
 self-reference mechanism, but not an emergent strange loop in the strong sense, and not a system
 whose self-model is necessary for its competence. It is also not evidence of consciousness,
@@ -256,7 +256,7 @@ or correction. This is an important negative result for the "strange loop" inter
   the self-model.
 
 **Answer:** Yes, the priors and utility weights materially shape the observed "adaptive"
-behaviour. V0's results cannot be attributed to learning from a blank slate.
+behaviour. V0.1's results cannot be attributed to learning from a blank slate.
 
 ### 1.9 Citation map
 
@@ -733,7 +733,7 @@ better state estimator than the sensor it is supposed to filter.
 1. **Cold-start / prior-randomisation study.** Sample self priors and utility weights from broad
    distributions, or start all self coefficients at neutral values. Measure whether the loop
    still learns useful self-knowledge and whether the meta-loop adds value. Include the raw
-   interoceptive sample as a baseline estimator, because V0's filter is worse than it.
+   interoceptive sample as a baseline estimator, because V0.1's filter is worse than it.
 2. **Learn the meta-model.** Replace the fixed trust mapping with an online predictor of future
    self-model error using features (fatigue, energy, action entropy, recent slips). Evaluate
    held-out calibration (Brier, ECE, AUC) against self-confidence and against the hand mapping.

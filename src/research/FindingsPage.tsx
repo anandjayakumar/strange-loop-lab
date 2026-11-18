@@ -170,9 +170,6 @@ export function FindingsPage({
                 {section.label}
               </a>
             ))}
-            <span className="ml-auto hidden shrink-0 font-serif text-[12px] italic text-lab-faint md:inline">
-              19,400 total runs · 100 paired seeds · deterministic · computational, not phenomenal
-            </span>
           </nav>
         </div>
       </div>
@@ -182,7 +179,7 @@ export function FindingsPage({
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="label text-lab-amber">Findings</span>
             <span className="font-serif text-[13px] italic text-lab-faint">
-              cross-version scientific record · V0 → V0.5
+              cross-version scientific record · V0.1 → V0.5
             </span>
           </div>
           <a
@@ -204,18 +201,24 @@ export function FindingsPage({
         <section id="thesis" className="scroll-mt-32 pb-14 pt-12 sm:pt-16">
           <div className="grid grid-cols-1 gap-x-14 gap-y-10 lg:grid-cols-12">
             <div className="lg:col-span-8">
-              <div className="kicker">Executive summary · the central thesis</div>
+              <div className="kicker">Executive summary · what the record shows</div>
               <h1 className="display mt-4 text-[42px] leading-[0.98] sm:text-[58px] xl:text-[64px]">
                 Can a system learn a model of itself — and then a model of{" "}
                 <span className="italic text-lab-amber">when to trust it</span>?
               </h1>
-              <p className="editorial-drop mt-7 max-w-[64ch] text-[14.5px] leading-[1.75] text-lab-muted">
-                Strange Loop Lab is a deterministic computational laboratory inspired by
-                Hofstadter&rsquo;s strange loop and by the indicator-property programme for
-                consciousness science. Across five versions it asks one question: if an agent learns
-                a model of its own body, then a second-order model of when that first model can be
-                trusted, do those models <em className="text-lab-text">causally</em> change what it
-                does, what it learns, and whether it survives?
+              <p className="mt-5 max-w-[62ch] font-serif text-[19px] italic leading-snug text-lab-amber">
+                The short answer: yes — but the loop that makes a self-model useful is the same loop
+                that makes it hard to correct.
+              </p>
+              <p className="editorial-drop mt-6 max-w-[64ch] text-[14.5px] leading-[1.75] text-lab-muted">
+                Strange Loop Lab is a deterministic, non-neural laboratory built around one question:
+                when an agent learns a model of its own body (M₁) and then a second-order model of when
+                that model can be trusted (M₂), do those models <em className="text-lab-text">causally</em>{" "}
+                change what it does, what it learns and whether it survives? Across five architectures
+                and 19,400 seeded runs, the answer is conditional. A self-model is behaviourally inert
+                when errors are cheap, harmful when doubt is symmetric, and decisive when the agent can
+                act on an asymmetric, risk-sensitive estimate of its own reliability. The same loop that
+                makes the model useful — trusting it enough to act — is what makes it hard to correct.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-lab-line pt-3">
                 {[

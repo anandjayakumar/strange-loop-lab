@@ -25,7 +25,7 @@ describe("V0.3 second-order simulator", () => {
     expect(a.getSeries()).toEqual(b.getSeries());
   });
 
-  it("keeps V0 and V0.2 untouched and still deterministic", async () => {
+  it("keeps V0.1 and V0.2 untouched and still deterministic", async () => {
     const { V02Engine } = await import("../src/simulation/v02/engine");
     const a = new V02Engine({ seed: 5, recordEvents: false, historyLimit: 100 });
     const b = new V02Engine({ seed: 5, recordEvents: false, historyLimit: 100 });

@@ -2,7 +2,7 @@
 
 **Date:** 2026-11-18  
 **Branch:** `v0.2-learned-meta`  
-**Status:** V0.2 experimental research report. V0 remains intact and selectable from the V0.2
+**Status:** V0.2 experimental research report. V0.1 remains intact and selectable from the V0.2
 dashboard.
 
 ## Executive summary
@@ -21,7 +21,7 @@ diagram, cross-channel failure-attribution readout and information/decision-valu
   [10.34, 16.17]**, p < 0.001) while self MAE remained 1.69; priors matter, but the
   self-model still learns.
 - **World-model learning** mattered: frozen world learning produced **6.6** resources versus
-  **32.4** with learning (difference **+25.83 [21.86, 29.84]**, p < 0.001), reversing V0's
+  **32.4** with learning (difference **+25.83 [21.86, 29.84]**, p < 0.001), reversing V0.1's
   frozen-world advantage.
 - **Self learning and self feedback mattered for resources**: removing self learning changed
   resources by **+10.01 [6.84, 13.27]** (full minus frozen), and removing self feedback by
@@ -81,9 +81,9 @@ consciousness, awareness, identity or subjective experience.
 
 ---
 
-## 1. What changed from V0
+## 1. What changed from V0.1
 
-V0 remains exactly reproducible through the original `SimulationEngine`, dashboard and
+V0.1 remains exactly reproducible through the original `SimulationEngine`, dashboard and
 `docs/RESEARCH_REPORT.md`. V0.2 is a separate stack:
 
 ```
@@ -102,14 +102,14 @@ src/v02/
   V02Lab.tsx
 ```
 
-The V0.2 dashboard is reachable with the **V0.2** button in the V0 header and returns through
-the **V0** button in the V0.2 header. V0.2 research options are not exposed as V0 changes.
+The V0.2 dashboard is reachable with the **V0.2** button in the V0.1 header and returns through
+the **V0.1** button in the V0.2 header. V0.2 research options are not exposed as V0.1 changes.
 
-**V0 baseline preserved.** The V0 code, tests, 27-test invariants, dashboard, `docs/MODEL.md`
-and `docs/RESEARCH_REPORT.md` remain in place. The V0 audit's standard baseline was: B mean
+**V0.1 baseline preserved.** The V0.1 code, tests, 27-test invariants, dashboard, `docs/MODEL.md`
+and `docs/RESEARCH_REPORT.md` remain in place. The V0.1 audit's standard baseline was: B mean
 energy 82.3, resources 61.0, self energy MAE 3.24; C mean energy 50.3, resources 62.9, self MAE
 4.54. V0.2 uses a different, scarcer environment and therefore is **not** an apples-to-apples
-comparison; the preserved V0 mode remains the reference when identical environment rules are
+comparison; the preserved V0.1 mode remains the reference when identical environment rules are
 needed.
 
 ---
@@ -131,7 +131,7 @@ needed.
 `worldWeight` interval. No true environment parameter is used to construct either model.
 
 Two regimes are exposed: `uninformed` and `severe`. The latter widens all ranges substantially.
-This is the direct response to the V0 audit's designer-prior leakage.
+This is the direct response to the V0.1 audit's designer-prior leakage.
 
 ### 2.2 Metabolic environment
 
@@ -177,7 +177,7 @@ gain *= (1.08 - 0.15 * priorWeight)
 estimate = estimate + gain * (biasCorrectedReading - estimate)
 ```
 
-The measurement-dominant gain is deliberate: V0's forward model was allowed to drag the belief
+The measurement-dominant gain is deliberate: V0.1's forward model was allowed to drag the belief
 away from a usable direct channel. V0.2 keeps the forward model for prediction and meta scoring
 but does not let it dominate current-state correction. Cost and rest are learned from the effort
 and energy channels; fatigue is tracked from the strain channel and action history; success and
@@ -371,11 +371,11 @@ first condition has more.
 **Interpretation**
 
 - **World learning now matters, unlike V0.** Removing it collapsed resources from 32.4 to 6.6
-  and energy by 11.4. This fixes the specific V0 frozen-world-over-learned-world result. However,
+  and energy by 11.4. This fixes the specific V0.1 frozen-world-over-learned-world result. However,
   the **neutral no-world** condition (40.5 resources) is still better than the learned-world
   condition; the world model is not uniformly beneficial.
 - **Self feedback and self learning each improve resource collection** by roughly 9–10 resources,
-  with large paired effects. This is a stronger V0.2 result than V0, where self-model effects
+  with large paired effects. This is a stronger V0.2 result than V0.1, where self-model effects
   were mostly energy conservatism.
 - **Meta feedback reduces resources and energy** relative to meta-off. The learned meta-model's
   causal gate is active but not performance-improving in this configuration.
@@ -592,8 +592,8 @@ npm test
 SEEDS=100 HORIZON=1000 SHADOW=1 npx tsx tools/v02validate.ts
 ```
 
-V0 baseline: `docs/RESEARCH_REPORT.md`, `tools/validate.ts`, and the V0 dashboard remain
-available. V0.2 does not rewrite V0 behavior; the research configuration is opt-in.
+V0.1 baseline: `docs/RESEARCH_REPORT.md`, `tools/validate.ts`, and the V0.1 dashboard remain
+available. V0.2 does not rewrite V0.1 behavior; the research configuration is opt-in.
 
 ---
 

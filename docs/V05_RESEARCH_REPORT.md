@@ -3,7 +3,7 @@
 **Status:** research report. Scope: computational mechanisms only; no claim of consciousness or
 subjective experience.
 
-**Lineage:** V0 (`6438bea`) → V0.2 (`975299e`) → V0.3 (`e68669c`) → V0.4 (`69b4eb3`) → V0.5
+**Lineage:** V0.1 (`6438bea`) → V0.2 (`975299e`) → V0.3 (`e68669c`) → V0.4 (`69b4eb3`) → V0.5
 (`v0.5-unified`). All prior engines, tests, dashboards and reports are preserved.
 
 ## 1. What V0.5 changes
@@ -32,7 +32,7 @@ V0.5 is a unification pass over V0.3 (tracking/attribution/foraging) and V0.4 (P
 
 **100 paired seeds** (1–100), horizon 900 ticks, trap horizon 1,600 ticks, 52 conditions;
 5,200 runs in 330 s. Statistics: paired bootstrap CIs, permutation tests, Cohen's dz, Holm within
-families, all seeded. The same N = 100 protocol is used by the V0, V0.2, V0.3 and V0.4 reports.
+families, all seeded. The same N = 100 protocol is used by the V0.1, V0.2, V0.3 and V0.4 reports.
 Reproduce: `npm run validate:v05` (defaults to `SEEDS=100`).
 
 ## 3. Results (100 paired seeds, horizon 900/1600)
@@ -78,7 +78,7 @@ advantage (**+4.72 resources, p = 0.027**), which was not significant in the 40-
 
 | Version | Stationary MAE | PP-1 absorption | Attribution macro-F1 | Trap escape | Meta-on gain | Learned world |
 | --- | --- | --- | --- | --- | --- | --- |
-| V0 | — | — | — | — | — | — |
+| V0.1 | — | — | — | — | — | — |
 | V0.2 | 1.67 | — | ~0.25 (1/100 physical, 86/100 fatigue) | 0/100 | −6.8 | worse than neutral |
 | V0.3 | 1.68 | ≈0 | 0.604 | 66/100 | +12.3…+28.8 | +7.64 |
 | V0.4 | 2.74 | 0.830 | 0.515 | 65/100 | +15.4 | −0.26 |

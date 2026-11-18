@@ -9,7 +9,7 @@ import { hrefFor } from "../lib/router";
 import { ARTICLE, LESSON_CALLOUTS, READING_MINUTES, type ArticleSection, type LessonCallout } from "./article";
 
 const STATS = [
-  ["5", "Evolutionary Generations", "V0 – V0.5"],
+  ["5", "Evolutionary Generations", "V0.1 – V0.5"],
   ["100", "Paired Seeds / Condition", "19,400 total runs"],
   ["67", "Automated Verification Tests", "deterministic"],
   ["WB", "White-Box Non-Neural Architecture", "0 neural parameters"],
@@ -36,7 +36,7 @@ function RouteButton({
       }}
       className={
         variant === "solid"
-          ? "inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#e0a267] px-5 font-sans text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#f0c08f]"
+          ? "route-solid inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#e0a267] px-5 font-sans text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#f0c08f]"
           : "inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#ece6da]/25 px-5 font-sans text-[10.5px] font-medium uppercase tracking-[0.12em] text-[#d8d0c1] transition-colors hover:border-[#e0a267] hover:text-[#f6f1e6]"
       }
     >
@@ -229,15 +229,6 @@ export function HomePage({ onNavigate }: { onNavigate: (target: string) => void 
                   </a>
                 ))}
               </nav>
-              <div className="mt-5 rounded-[3px] border border-[#ece6da]/12 bg-[#14120e] p-3.5">
-                <div className="font-sans text-[8px] font-semibold uppercase tracking-[0.18em] text-[#e0a267]">
-                  Reading layers
-                </div>
-                <p className="mt-1.5 font-serif text-[12px] italic leading-snug text-[#8f8574]">
-                  The narrative is the accessible layer. Each lesson ends with its measured result
-                  and a route into the live simulator or the statistical record.
-                </p>
-              </div>
             </div>
           </aside>
 

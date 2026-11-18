@@ -6,7 +6,7 @@ More recently, in 2023, a coalition of nineteen leading neuroscientists, philoso
 
 We set out to test both ideas in the cleanest way possible. 
 
-Rather than using a massive, inscrutable Large Language Model—where it is impossible to tell genuine self-monitoring from clever text mimicry—we built **Strange Loop Lab**: a completely transparent, "white-box" digital organism living in a 2D survival world. Every thought, belief, error, and confidence score inside the organism’s brain is a simple, readable mathematical equation. And to keep ourselves honest, we ran every experiment across 100 identical parallel universes (random seeds), ruthlessly trying to break our own system across five evolutionary generations (**V0 through V0.5**).
+Rather than using a massive, inscrutable Large Language Model—where it is impossible to tell genuine self-monitoring from clever text mimicry—we built **Strange Loop Lab**: a completely transparent, "white-box" digital organism living in a 2D survival world. Every thought, belief, error, and confidence score inside the organism’s brain is a simple, readable mathematical equation. And to keep ourselves honest, we ran every experiment across 100 identical parallel universes (random seeds), ruthlessly trying to break our own system across five evolutionary generations (**V0.1 through V0.5**).
 
 What we discovered was a series of surprising lessons about why brains need self-models, how self-awareness creates its own psychological traps, and why even the smartest mind faces unavoidable trade-offs.
 
