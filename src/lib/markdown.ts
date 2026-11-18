@@ -85,6 +85,17 @@ export function renderMarkdown(source: string): string {
       continue;
     }
 
+    const image = line.match(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+    if (image) {
+      html.push(
+        `<figure class="paper-figure"><img src="${escapeHtml(image[2])}" alt="${escapeHtml(
+          image[1],
+        )}" /><figcaption>${renderInline(image[1])}</figcaption></figure>`,
+      );
+      index += 1;
+      continue;
+    }
+
     if (line.trimStart().startsWith("|") && isTableDivider(lines[index + 1] ?? "")) {
       const head = splitRow(line);
       index += 2;

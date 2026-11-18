@@ -1,8 +1,5 @@
 # When Self-Models Trap Themselves: Epistemic Probing, Risk-Sensitive Metacognition, and Precision Trade-Offs in a White-Box Self-Referential Agent
 
-**Strange Loop Lab** · deterministic computational laboratory · 2026
-
----
 
 ## Abstract
 
@@ -68,6 +65,8 @@ But the second-order loop is miswired. Meta-on minus meta-off is **−6.84 [−1
 V0.2 also shows that the meta-model can *rank* latent failures (rolling BSS −0.12, latent AUROC 0.471, below chance) without being able to use that ranking causally. Reliability estimation and reliability *control* are separate problems.
 
 ---
+
+![Figure 1. The five-link strange loop and its multi-channel architecture. L1–L3 form the first-order loop; L4–L5 the second-order reliability loop, with precision, prior weight and plasticity as feedback.](/paper/figures/fig1_architecture_loop.svg)
 
 ## 3. Closing the second-order loop: residual metacognition and risk-sensitive control (V0.3)
 
@@ -157,6 +156,8 @@ L5 is the control link: removing meta feedback drops escape to 4/100 and resourc
 | V0.3 decision-VoI | 66/100 | 65.1 | 0 |
 | V0.5 plateau-VoI | **74/100** | **78.1** | **0** |
 
+![Figure 3. The decoupled epistemic trap: escape rate, mean resources and deaths for pragmatic, L1-broken, random, V0.3 decision-VoI and V0.5 plateau-VoI strategies.](/paper/figures/fig3_epistemic_trap_escape.svg)
+
 Decision-VoI computes the value of sampling a never-observed rough context and compares it with the pessimistic cost bound. Because the probe has decision value only when the resulting belief could change the policy, the agent takes the risk exactly when it matters. VoI versus pragmatic is **+78.14 [69.29, 87.10]** resources (dz 1.69, p < 0.001); versus random it is **+34.03 [24.01, 43.69]** (dz 0.68, p < 0.001). Random exploration escapes more often but at roughly half the resources and with a death; VoI trades a small amount of escape rate for a large amount of foraging.
 
 V0.5's evidence-discounted gate and plateau-breaking probe raise escape to 74/100 and resources to 78.1 with zero deaths. The remaining 26 failures are energy plateaus below even the discounted floor: the agent's energy is too low to afford the probe, so the rest policy is locally optimal. Escape is therefore bounded by physiology, not by belief.
@@ -189,11 +190,15 @@ In V0.4, schema-on versus schema-off recovery is **0.237 vs 0.181** (40 paired g
 | V0.4 | **0.830 [0.811, 0.848]** | 2.74 | 0.515 | 65/100 |
 | V0.5 | 0.79 (20-seed pilot) | 2.04 | 0.577 | **74/100** |
 
+![Figure 4. The illusion–tracking–diagnostic trilemma. PP-1 absorption against stationary MAE, with marker area encoding attribution macro-F1; inset shows AST-1 post-glitch recovery (dz = 1.13).](/paper/figures/fig4_trilemma_pareto.svg)
+
 The three targets cannot be maximised at once. Absorbing the illusion requires trusting the prior, which is the same gain that slows tracking. In V0.4 the cost is explicit: absorption rises from zero to 0.830 while stationary MAE rises from 1.68 to 2.74 and attribution macro-F1 falls from 0.604 to 0.515. V0.5's selective gating recovers part of the tracking cost (MAE 2.04) and part of the diagnostic cost (F1 0.577), but it does not reach V0.3's accuracy, and its absorption is measured only in the 20-seed pilot because the 100-seed harness still runs the legacy illusion probe.
 
 The trilemma is the paper's central negative result. It is a *frontier*, not a failure of implementation: each point is the best achievable given the same precision gain, and moving along the frontier changes which capability is sacrificed.
 
 At the full protocol V0.5 also reaches rolling BSS **0.027 [0.025, 0.028]** and latent-failure AUROC **0.785 [0.773, 0.797]**, and the learned world model beats the neutral ablation by **+4.72 [0.77, 8.68]** resources (dz 0.22, p = 0.027). The world-model advantage lost in V0.4 is therefore recovered, but at a tracking and diagnostic cost.
+
+![Figure 2. Cross-version progression at 100 paired seeds: meta-control resource gain with 95% intervals, latent-failure AUROC, and stationary energy MAE against the raw interoceptive reference (1.92).](/paper/figures/fig2_cross_version_progression.svg)
 
 ### 5.4 The Goodhart check
 
@@ -245,13 +250,3 @@ Raw per-run JSON is in `research/`; aggregate reports are in `docs/`. The UI exp
 14. Brier, G. W. (1950). Verification of forecasts expressed in terms of probability. *Monthly Weather Review, 78*(1), 1–3.
 
 ---
-
-## Figure captions
-
-**Figure 1.** The five-link strange loop and its multi-channel architecture. L1–L3 form the first-order loop (M₁ → action → evidence → M₁ update). L4–L5 form the second-order loop (M₁ ↔ M₂), in which the meta-model reads the first-order model's errors and feeds back precision, prior weight and plasticity. Interoception, action-conditioned attribution, PP-1 and AST-1 are the operational mechanisms measured in this paper.
-
-**Figure 2.** Cross-version progression at 100 paired seeds. (A) Meta-control resource gain (meta-on − meta-off) with 95% intervals: V0.2 is negative, V0.3–V0.5 positive; the V0.3 shift regimes span +12.34 to +28.82. (B) Latent-failure AUROC: below chance in V0.2, stable near 0.79 from V0.3. (C) Stationary energy MAE against the raw interoceptive reference (1.92); V0.4 pays the illusion cost, V0.5 recovers part of it.
-
-**Figure 3.** The decoupled epistemic trap. Pragmatic maximisation never samples the feared terrain and starves. Breaking L1 removes the phobia but yields a blind reactive walk with fewer resources. Random exploration escapes more but at lower resources and with a death. Decision-VoI escapes without mortality; the V0.5 plateau probe raises escape and resources while keeping zero deaths.
-
-**Figure 4.** The illusion–tracking–diagnostic trilemma. PP-1 absorption is plotted against stationary MAE, with marker area encoding four-way attribution macro-F1. V0.4 buys absorption with tracking and attribution; V0.5 recovers part of both without dominating V0.3. Inset: AST-1 post-glitch recovery, schema on versus off (dz = 1.13, p < 0.001, 40 paired glitch runs).
