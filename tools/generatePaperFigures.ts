@@ -15,6 +15,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "..");
@@ -643,6 +644,48 @@ for (const [name, content] of figures) {
 fs.writeFileSync(path.join(OUT_DIR, "figure-data.json"), `${JSON.stringify(audit, null, 2)}\n`);
 fs.writeFileSync(path.join(PUBLIC_DIR, "figure-data.json"), `${JSON.stringify(audit, null, 2)}\n`);
 console.log("wrote paper/figures/figure-data.json");
+
+// Vector PDF copies for LaTeX. includesvg needs Inkscape; these let main.tex
+// use \includegraphics instead, so the paper builds on any TeX installation.
+const CHROME_CANDIDATES = [
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+  "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
+];
+const browser = CHROME_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+if (browser) {
+  const sizes: Record<string, [number, number]> = {
+    fig1_architecture_loop: [960, 620],
+    fig2_cross_version_progression: [1080, 400],
+    fig3_epistemic_trap_escape: [960, 470],
+    fig4_trilemma_pareto: [980, 520],
+  };
+  const tmp = path.join(OUT_DIR, ".pdfbuild");
+  fs.mkdirSync(tmp, { recursive: true });
+  for (const [name, [width, height]] of Object.entries(sizes)) {
+    const svg = fs.readFileSync(path.join(OUT_DIR, `${name}.svg`), "utf8");
+    const html = `<!doctype html><html><head><meta charset="utf-8"><style>@page { size: ${width}px ${height}px; margin: 0; } html, body, svg { margin: 0; display: block; } svg { width: ${width}px; height: ${height}px; }</style></head><body>${svg.replace(/^<\?xml[^>]*>/, "")}</body></html>`;
+    const htmlPath = path.join(tmp, `${name}.html`);
+    fs.writeFileSync(htmlPath, html);
+    try {
+      execFileSync(browser, [
+        "--headless=new",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--no-pdf-header-footer",
+        `--print-to-pdf=${path.join(OUT_DIR, `${name}.pdf`)}`,
+        `file:///${htmlPath.replace(/\\/g, "/")}`,
+      ], { stdio: "ignore" });
+      console.log(`wrote paper/figures/${name}.pdf`);
+    } catch {
+      console.log(`skipped PDF conversion for ${name}`);
+    }
+  }
+  fs.rmSync(tmp, { recursive: true, force: true });
+} else {
+  console.log("no Chrome/Edge found; skipping PDF figure copies");
+}
 
 // Mirror the manuscript assets so the /paper route can serve them statically.
 const publicPaper = path.join(ROOT, "public", "paper");
