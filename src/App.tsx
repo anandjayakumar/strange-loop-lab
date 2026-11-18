@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { BookOpen } from "lucide-react";
 import { AboutDialog } from "./components/AboutDialog";
 import { ArchitecturePanel } from "./components/ArchitecturePanel";
 import { ComparisonView } from "./components/ComparisonView";
@@ -100,23 +101,44 @@ export default function App() {
       />
 
       <main className="mx-auto max-w-[1600px] space-y-4 px-4 py-4 sm:px-6">
+        <section className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 pb-1">
+          <div className="min-w-0">
+            <h1 className="font-serif text-[30px] font-light leading-none tracking-[-0.025em] text-lab-text sm:text-[34px]">
+              The control room
+            </h1>
+            <p className="mt-2 max-w-[62ch] text-[12px] leading-relaxed text-lab-muted">
+              A deterministic agent learning a model of itself, one tick at a time. Every feedback
+              edge below is visible and switchable; nothing is hidden behind the interface.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className="btn h-8 px-2.5" onClick={() => setView("research")}>
+              <BookOpen size={12} />
+              Research &amp; findings
+            </button>
+            <button className="btn h-8 px-2.5" onClick={() => setView("v05")}>
+              Latest · V0.5
+            </button>
+          </div>
+        </section>
+
         <ControlDeck controller={controller} onCompare={() => setCompareOpen(true)} />
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-          <div className="lg:col-span-5 xl:col-span-4">
+          <div className="lg:col-span-7 xl:col-span-8">
             <EnvironmentPanel engine={engine} snapshot={snapshot} />
           </div>
-          <div className="lg:col-span-7 xl:col-span-8">
+          <div className="lg:col-span-5 xl:col-span-4">
             <ArchitecturePanel snapshot={snapshot} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-          <div className="lg:col-span-5 xl:col-span-4">
-            <InternalStatePanel snapshot={snapshot} />
-          </div>
           <div className="lg:col-span-7 xl:col-span-8">
             <MetricsPanel snapshot={snapshot} series={series} />
+          </div>
+          <div className="lg:col-span-5 xl:col-span-4">
+            <InternalStatePanel snapshot={snapshot} />
           </div>
         </div>
 
