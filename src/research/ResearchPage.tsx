@@ -636,8 +636,8 @@ function DiscoveryCard({ discovery, layers }: { discovery: Discovery; layers: La
         ) : null}
       </div>
 
-      <p className="mt-auto pt-3 text-[9px] leading-relaxed text-lab-faint/80">
-        <span className="uppercase tracking-[0.12em] text-lab-faint/60">audit · </span>
+      <p className="mt-auto pt-3 text-[9px] leading-relaxed text-lab-faint">
+        <span className="uppercase tracking-[0.12em] text-lab-faint">audit · </span>
         {discovery.evidence}
       </p>
     </article>

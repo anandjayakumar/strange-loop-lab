@@ -13,7 +13,7 @@ const config: Config = {
           line2: "#333338",
           text: "#eeedea",
           muted: "#a5a29c",
-          faint: "#6d6a64",
+          faint: "#8b8780",
           amber: "#e2a765",
           green: "#86c9a3",
           cyan: "#83b8c4",

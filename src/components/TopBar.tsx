@@ -135,7 +135,7 @@ export function TopBar({
               style={status === "running" ? { animation: "soft-pulse 2.4s ease-in-out infinite" } : undefined}
             />
             <span className="font-mono text-[9px] tracking-[0.08em] text-lab-faint">{status}</span>
-            <span className="font-mono text-[9px] tabular-nums text-lab-faint/70">
+            <span className="font-mono text-[9px] tabular-nums text-lab-faint">
               {TICK_LABEL(snapshot.tick)}
             </span>
           </span>
@@ -151,7 +151,7 @@ export function TopBar({
           </span>
 
           <span className="hidden items-center gap-1.5 xl:flex">
-            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-lab-faint/70">
+            <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-lab-faint">
               seed
             </span>
             <span className="font-mono text-[9px] tabular-nums text-lab-muted">{snapshot.seed}</span>
