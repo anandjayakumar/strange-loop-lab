@@ -34,6 +34,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
   const trailRef = useRef<{ x: number; y: number }[]>([]);
   const lastTickRef = useRef(-1);
   const [hover, setHover] = useState<HoverCell | null>(null);
+  const hoverRef = useRef<HoverCell | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -129,7 +130,8 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
         }
       }
 
-      // Hovered cell.
+      // Hovered cell (read from a ref so hover moves do not restart the draw loop).
+      const hover = hoverRef.current;
       if (hover) {
         ctx.fillStyle = "rgba(255,255,255,0.055)";
         ctx.fillRect(px(hover.x), py(hover.y), cell, cell);
@@ -233,7 +235,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
       cancelAnimationFrame(raf);
       observer.disconnect();
     };
-  }, [engine, hover]);
+  }, [engine]);
 
   const onMouseMove = (event: MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -243,11 +245,18 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
     const x = Math.floor((event.clientX - rect.left - offsetX) / cell);
     const y = Math.floor((event.clientY - rect.top - offsetY) / cell);
     if (x < 0 || y < 0 || x >= 30 || y >= 30) {
-      setHover(null);
+      if (hoverRef.current) {
+        hoverRef.current = null;
+        setHover(null);
+      }
       return;
     }
     const type = stateRef.current ? stateRef.current.cells[y * 30 + x] : 0;
-    setHover({ x, y, type });
+    const current = hoverRef.current;
+    if (current && current.x === x && current.y === y && current.type === type) return;
+    const next = { x, y, type };
+    hoverRef.current = next;
+    setHover(next);
   };
 
   const agent = snapshot.physical;
@@ -302,7 +311,7 @@ export function EnvironmentPanel({ engine, snapshot }: EnvironmentPanelProps) {
         <canvas
           ref={canvasRef}
           onMouseMove={onMouseMove}
-          onMouseLeave={() => setHover(null)}
+          onMouseLeave={() => { hoverRef.current = null; setHover(null); }}
           role="img"
           aria-label={`Environment grid. Agent at ${agent.x}, ${agent.y}. Energy ${agent.energy.toFixed(1)}, fatigue ${agent.fatigue.toFixed(2)}.`}
           className="block w-full cursor-crosshair"

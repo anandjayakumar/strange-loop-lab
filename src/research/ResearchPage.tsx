@@ -101,7 +101,7 @@ export function ResearchPage({
   onOpenVersion: (version: VersionKey) => void;
   onBack: () => void;
 }) {
-  const [layers, setLayers] = useState<Layers>("both");
+  const [layers, setLayers] = useState<Layers>("plain");
   const [activeVersion, setActiveVersion] = useState<VersionKey>("v03");
 
   const version = useMemo(
@@ -227,7 +227,7 @@ export function ResearchPage({
         </section>
 
         {/* ---------------------------------------------------------------- discoveries */}
-        <section id="discoveries" className="mt-10 scroll-mt-24">
+        <section id="discoveries" className="mt-14 scroll-mt-24">
           <SectionHeading
             title="Ten discoveries across five versions"
             subtitle="Each card carries a plain-English account and the exact statistical record behind it. Toggle the reading layer; the evidence line is always the audit trail."
@@ -266,7 +266,7 @@ export function ResearchPage({
         </section>
 
         {/* ---------------------------------------------------------------- matrix */}
-        <section id="matrix" className="mt-10 scroll-mt-24">
+        <section id="matrix" className="mt-14 scroll-mt-24">
           <SectionHeading
             title="Master cross-version matrix"
             subtitle="Standardised metrics across V0 → V0.5. Green marks a validated breakthrough, amber a partial result or trade-off, red a negative result or regression."
@@ -342,7 +342,7 @@ export function ResearchPage({
         </section>
 
         {/* ---------------------------------------------------------------- versions */}
-        <section id="versions" className="mt-10 scroll-mt-24">
+        <section id="versions" className="mt-14 scroll-mt-24">
           <SectionHeading
             title="Version by version"
             subtitle="What was introduced, the equations that define it, the full ablation record, and what failed — leading into the next version."
@@ -492,7 +492,7 @@ export function ResearchPage({
         </section>
 
         {/* ---------------------------------------------------------------- frameworks */}
-        <section id="frameworks" className="mt-10 scroll-mt-24">
+        <section id="frameworks" className="mt-14 scroll-mt-24">
           <SectionHeading
             title="Theory map: Hofstadter and the indicator programme"
             subtitle="How the implemented mechanisms map onto cognitive-science frameworks — and where the mapping stops. Every row is a computational mechanism, not a claim about experience."
