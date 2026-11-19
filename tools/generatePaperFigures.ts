@@ -53,12 +53,26 @@ const analysis = (version: string) => readJson<Analysis>(`${version}-analysis.js
 
 const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length);
 const fmt1 = (value: number) => (Math.round(value * 10) / 10).toFixed(1);
-const sd = (xs: number[]) => {
-  if (xs.length < 2) return 0;
-  const m = mean(xs);
-  return Math.sqrt(xs.reduce((s, x) => s + (x - m) ** 2, 0) / (xs.length - 1));
+const bootstrapCI = (xs: number[], seed = 99173): [number, number] => {
+  if (xs.length < 2) return [mean(xs), mean(xs)];
+  let state = seed >>> 0;
+  const rand = () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const means: number[] = [];
+  for (let b = 0; b < 2000; b++) {
+    let sum = 0;
+    for (let i = 0; i < xs.length; i++) sum += xs[Math.floor(rand() * xs.length)];
+    means.push(sum / xs.length);
+  }
+  means.sort((a, b) => a - b);
+  const q = (p: number) => means[Math.floor((means.length - 1) * p)];
+  return [q(0.025), q(0.975)];
 };
-const ci = (xs: number[]) => (1.96 * sd(xs)) / Math.sqrt(Math.max(1, xs.length));
 
 function pairedDelta(a: Run[], b: Run[], key: "resources") {
   const index = new Map(b.map((run) => [run.seed, run]));
@@ -68,8 +82,8 @@ function pairedDelta(a: Run[], b: Run[], key: "resources") {
     if (other) diffs.push(run[key] - other[key]);
   }
   const m = mean(diffs);
-  const half = ci(diffs);
-  return { mean: m, lo: m - half, hi: m + half, n: diffs.length };
+  const [lo, hi] = bootstrapCI(diffs);
+  return { mean: m, lo, hi, n: diffs.length };
 }
 
 const metric = (runs: Run[], key: keyof Run) =>
@@ -491,7 +505,7 @@ function fig2() {
   body.push(text(cx + cw, 360, "V0.4 pays the illusion cost; V0.5 recovers part of it", { size: 9, fill: MUTED, italic: true, anchor: "end" }));
 
   body.push(
-    text(28, 384, "Error bars: 95% paired bootstrap / normal-approximation intervals from the per-seed JSON. Values recomputed by tools/generatePaperFigures.ts.", {
+    text(28, 384, "Error bars: 95% seed-level percentile bootstrap intervals (2,000 resamples) from the per-seed JSON. Values recomputed by tools/generatePaperFigures.ts.", {
       size: 8.5,
       fill: MUTED,
     }),
@@ -670,7 +684,7 @@ function fig4() {
   );
   body.push(text(left + width - 4, top + height - 8, "V0.5 absorption: 20-seed pilot", { size: 8.5, fill: GOLD, anchor: "end" }));
   body.push(
-    text(28, 500, "The three targets cannot be maximised at once: absorbing the illusion costs stationary tracking and attribution accuracy. No point dominates the frontier.", {
+    text(28, 500, "The three targets cannot be maximised at once: absorbing the illusion costs stationary tracking and attribution accuracy. No point dominates the tested trade-off.", {
       size: 9.5,
       fill: MUTED,
     }),

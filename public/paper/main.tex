@@ -31,7 +31,7 @@
 \noindent
 Self-models are usually evaluated as predictors. We ask what happens when a self-model becomes part of the system it models. Strange Loop Lab is a deterministic, non-neural, white-box sandbox where an agent learns a body model ($M_1$), a model of its reliability ($M_2$), and later a model of its own precision allocation.
 
-Across six generations (V0.1--V0.6) and 28{,}100 main-protocol runs (28{,}900 including 800 V0.1 corruption probes; 100 paired seeds per condition, plus an untouched 100-seed V0.6 holdout), we report five findings. (i) In the tested architecture and environment, a learned self-model is behaviourally inert in a forgiving world: a frozen model with 0.09 self-state accuracy survives 99/100 runs and forages as well as a learned one (64.6 vs 61.0 resources, $p=0.057$; this is no statistically distinguishable advantage, not formal equivalence). (ii) Naive second-order doubt is harmful ($-6.84$ resources); closing the second-order loop reverses the sign ($+12.3$ to $+28.8$), but a $2\times2$ factorial shows the gain is loop-level rather than attributable to the risk-sensitive bound or residual model alone. (iii) A causal self-model creates a self-fulfilling epistemic trap---0/100 pragmatic escapes---while second-order probing escapes 66--74/100 with zero deaths. (iv) Precision gating buys illusion absorption ($0.00\rightarrow0.830$) at a measured tracking and attribution cost, forming an observed three-way trade-off. (v) In V0.6, ablating competition, broadcast, higher-order monitoring, the attention schema, cognitive self-simulation or recurrent settling each breaks a distinct capability, an ablation-based functional dissociation; a matched physical MPC planner probes 2\% and solves 1\% of forks versus 94\%/84\% for the full architecture.
+Across six generations (V0.1--V0.6) and 28{,}100 main-protocol runs (28{,}900 including 800 V0.1 corruption probes; 100 paired seeds per condition, plus an untouched 100-seed V0.6 holdout and 6{,}200 hardening episodes), we report five findings. (i) In the tested architecture and environment, a learned self-model is behaviourally inert in a forgiving world: a frozen model with 0.09 self-state accuracy survives 99/100 runs and forages as well as a learned one (64.6 vs 61.0 resources, $p=0.057$; this is no statistically distinguishable advantage, not formal equivalence). (ii) Naive second-order doubt is harmful ($-6.84$ resources); closing the second-order loop reverses the sign ($+12.3$ to $+28.8$), but a $2\times2$ factorial shows the gain is loop-level rather than attributable to the risk-sensitive bound or residual model alone. (iii) A policy-relevant body--terrain cost model creates a self-confirming epistemic trap---0/100 pragmatic escapes---while second-order probing escapes it in 66--74/100 runs with zero deaths. (iv) Precision gating buys illusion absorption ($0.00\rightarrow0.830$) at a measured tracking and attribution cost, forming an observed three-way trade-off. (v) In V0.6, ablating competition, broadcast, higher-order monitoring, the attention schema, cognitive self-simulation or recurrent settling each breaks a distinct capability, an ablation-based functional dissociation; a matched physical MPC planner probes 2\% and solves 1\% of forks versus 94\%/84\% for the full architecture.
 
 Costs remain explicit: attribution macro-F1 is 0.502, shadow AUROC remains below 0.75, and flat or reactive controls out-forage the architecture. An untouched 100-seed holdout reproduces the full-architecture pattern (absorption 0.808 vs 0.814; fork 85\% vs 84\%; macro-F1 0.501 vs 0.502). Nothing here is evidence of consciousness or subjective experience.
 \end{abstract}
@@ -49,13 +49,13 @@ The work sits at the intersection of four literatures.
 Bayesian accounts of metacognition model confidence as a second-order estimate of first-order performance \citep{fleming2017self,pasquali2010know}. Most computational treatments are static perceptual wagering tasks. We embed second-order error prediction inside a homeostatic metabolic cliff environment where errors are lethal. Two results follow. First, naive confidence down-scaling \emph{harms} survival: the agent stops trusting its own exhaustion warning and forages until collapse ($-6.84$ resources, V0.2). Asymmetric risk-sensitive pessimism near the cliff---not symmetric doubt---produces the gain ($+12.34$ to $+28.82$). Second, compact one-parameter rolling residuals plus a persistent directional-bias head outperform a high-dimensional online contextual meta-regressor under non-stationary shifts; the contextual model is slightly \emph{worse} than the baseline-only ablation on AUROC ($\Delta=-0.01\ [-0.02,0.01]$, $p=0.812$).
 
 \paragraph{Self-fulfilling epistemic traps and active inference.}
-Active inference treats action selection as minimising expected free energy, with epistemic value driving information-seeking \citep{friston2015active,tschantz2020learning}. Homeostatic and allostatic interoceptive control formalises the same loop for bodily regulation \citep{tschantz2022simulating}. We connect this to the clinical avoidance paradox and to Hofstadterian self-reference. A pragmatic agent that believes rough terrain is catastrophically expensive never visits it, never collects the evidence that would correct the belief, and starves (\textbf{0/100} escapes, \textbf{0.0} resources). The crucial ablation is \textbf{L1}: a blind reactive agent with no causal self-model cannot be trapped by a false metabolic phobia, because it has no prior to act on. Acquiring the self-model creates the vulnerability. Escape requires second-order epistemic probing that is \emph{evidence-discounted}: V0.3's decision-VoI escapes 66/100 with zero deaths; V0.5's plateau-breaking probe raises this to 74/100 at 78.1 resources with zero deaths, while random exploration escapes more often (93/100) but at roughly half the resources and with a death.
+Active inference treats action selection as minimising expected free energy, with epistemic value driving information-seeking \citep{friston2015active,tschantz2020learning}. Homeostatic and allostatic interoceptive control formalises the same loop for bodily regulation \citep{tschantz2022simulating}. We connect this to the clinical avoidance paradox and to Hofstadterian self-reference. A pragmatic agent that believes rough terrain is catastrophically expensive never visits it, never collects the evidence that would correct the belief, and starves (\textbf{0/100} escapes, \textbf{0.0} resources). The crucial ablation is \textbf{L1}: a blind reactive agent with no causal self-model cannot be trapped by a false metabolic phobia, because it has no prior to act on. Making a body--terrain cost belief policy-relevant creates the vulnerability. Escape requires second-order epistemic probing that is \emph{evidence-discounted}: V0.3's decision-VoI escapes 66/100 with zero deaths; V0.5's plateau-breaking probe raises this to 74/100 at 78.1 resources with zero deaths, while random exploration escapes more often (93/100) but at roughly half the resources and with a death.
 
 \paragraph{Internal precision and the attention schema.}
 Attention Schema Theory proposes that the brain models its own attentional state and that this model is what makes attention reportable \citep{graziano2013consciousness,wilterson2021attention}. AST work has mostly targeted external visual selection. We extend AST-1 to \textbf{internal 5-channel precision allocation}: $M_2$ estimates the agent's own precision weights over interoceptive channels, and the schema gates prior versus sensory gain. The test is post-glitch perseveration. After a transient single-channel anomaly ends, a precision filter can remain stuck distrusting the sensor. Modelling its own precision state lets the agent notice that the disagreement is gone and release suppression: recovery gain $\mathbf{0.237}$ vs $\mathbf{0.181}$ without the schema ($dz=1.13$, $p<0.001$).
 
 \paragraph{Contributions.}
-(1) A preserved six-generation ladder (V0.1$\rightarrow$V0.6) with 100 paired seeds each, released with raw per-run JSON. (2) A causal demonstration that self-model acquisition creates epistemic traps (L1 vulnerability) and that second-order probing resolves them (L2 rescue). (3) An asymmetric risk-sensitive control result showing why symmetric metacognitive doubt fails. (4) A quantitative illusion--tracking--diagnostic trade-off with a measured frontier rather than a single headline number. (5) A unified-architecture ablation-based functional dissociation: capacity competition, broadcast, higher-order monitoring, an attention schema, cognitive self-simulation and recurrent settling are each load-bearing for a different capability. (6) A reproducibility and reporting protocol that keeps negative and partial results in the record.
+(1) A preserved six-generation ladder (V0.1$\rightarrow$V0.6) with 100 paired seeds each, released with raw per-run JSON. (2) A causal demonstration that a policy-relevant body--terrain cost model creates a self-confirming epistemic trap (L1 vulnerability) and that second-order probing resolves it (L2 rescue). (3) An asymmetric risk-sensitive control result showing why symmetric metacognitive doubt fails. (4) A quantitative illusion--tracking--diagnostic trade-off, measured with a nine-point parameter sweep rather than a single headline number. (5) A unified-architecture ablation-based functional dissociation: capacity competition, broadcast, higher-order monitoring, an attention schema, cognitive self-simulation and recurrent settling are each load-bearing for a different capability. (6) A reproducibility and reporting protocol that keeps negative and partial results in the record.
 
 \section{Environment, architecture, and escaping the minimal-implementation trap}
 
@@ -97,19 +97,24 @@ V0.2 also shows that the meta-model fails to \emph{rank} latent failures (rollin
 
 \subsection{Statistical methodology}
 
-The seed is the sole unit of statistical analysis: every test treats the 100 paired seeds as
-independent units and never treats individual ticks or within-run observations as replicates.
-For a contrast $A-B$, each seed contributes one paired difference $d_s$; the reported effect is
-$\bar d$. Two-sided $p$-values come from an exact paired sign-flip permutation test with 2{,}000
-permutations and the finite-sample $+1$ correction, $p=(b+1)/(B+1)$, where $b$ counts permutations
-whose absolute mean is at least the observed absolute mean. Ninety-five percent confidence intervals
-are seed-level percentile bootstrap intervals (2{,}000 resamples). Effect sizes are Cohen's $d_z=\bar d/s_d$.
-Holm--Bonferroni correction is applied within each pre-registered contrast family (the five indicator
-experiments; the six mechanism ablations within each experiment). Every condition--seed cell produced
-a complete deterministic run, so there were zero missing or incomplete runs; deaths are outcomes, not
-missing data. Seeds 1--100 are the exploratory/development set used for model and figure construction.
-The V0.6.1 holdout replication uses seeds 10001--10100 exactly once, with no parameter change and no
-re-tuning, and is reported separately.
+The seed is the experimental unit: every test treats paired seeds as independent units and never treats
+individual ticks or within-run observations as replicates. For a contrast $A-B$, each seed contributes
+one paired difference $d_s$; the reported effect is $\bar d$. Two-sided $p$-values come from a
+\textbf{Monte Carlo paired sign-flip permutation test} with 2{,}000 randomly sampled sign assignments
+and the finite-sample $+1$ correction, $p=(b+1)/(B+1)$, where $b$ counts sampled assignments whose
+absolute mean is at least the observed absolute mean. This is an approximation, not an exhaustive
+enumeration; the minimum attainable $p$-value is $1/2001\approx0.0005$. Ninety-five percent confidence
+intervals are seed-level percentile bootstrap intervals (2{,}000 resamples). Effect sizes are Cohen's
+$d_z=\bar d/s_d$. Holm--Bonferroni correction is applied within each analysis family returned by the
+analyzer (the five indicator experiments and the metric groups within each experiment); these families
+were specified in the analysis code, not in an independently dated preregistration. Every
+condition--seed cell produced a complete deterministic run, so there were zero missing or incomplete
+runs; deaths are outcomes, not missing data. Sample sizes differ by design and are reported with each
+result: 100 paired seeds for the main protocol, the 2$\times$2 factorial cells and each sweep point;
+40 paired glitch runs for the V0.4 AST-1 estimate; and 20 seeds for the V0.5 PP-1 absorption pilot.
+Seeds 1--100 are the exploratory/development set used for model and figure construction. The V0.6
+holdout replication uses seeds 10001--10100 exactly once, with no development, figure-construction or
+tuning use, and is reported separately.
 
 \section{Closing the second-order loop: residual metacognition and risk-sensitive control (V0.3)}
 
@@ -227,7 +232,7 @@ L5 $M_2\rightarrow$control & \textbf{4/100} & 3.2 & 1.45 & 20.1 \\
 \end{tabular}
 \end{table}
 
-L1 is the vulnerability. Breaking it removes the phobia and raises escape to 85/100, but the agent becomes a blind reactive walk: it loses 24 resources relative to the full agent, and under a physical regime shift it survives on 22.2 resources with a worse safety margin. The self-model is what makes the trap possible \emph{and} what makes competent foraging possible. There is no free ``just be reactive'' option.
+L1---the prediction-to-action link---is the vulnerability. Breaking it removes the phobia and raises escape to 85/100, but the agent becomes a blind reactive walk: it loses 24 resources relative to the full agent, and under a physical regime shift it survives on 22.2 resources with a worse safety margin. The policy-relevant body--terrain cost model is what makes the trap possible \emph{and} what makes competent foraging possible. There is no free ``just be reactive'' option.
 
 L2 is the rescue. Breaking the action$\rightarrow$evidence link collapses escape to 0/100, survival under a physical shift to 1/100, and MAE to 29.41: without the ability to attribute outcomes to its own actions, the agent cannot distinguish a world change from a sensor fault. L3 shows the same signature: freezing first-order learning leaves the model at 29 MAE and escape at 0/100. L5 is the control link: removing meta feedback drops escape to 4/100 and resources to 3.2, close to the pragmatic baseline. The meta-model must be able to \emph{act} on its reliability estimate, not merely track it.
 
@@ -306,7 +311,7 @@ V0.5 & 0.79 (pilot) & 2.04 & 0.577 & \textbf{74/100} \\
 
 The three targets cannot be maximised at once (Table~\ref{tab:trilemma}, Figure~\ref{fig:trilemma}). Absorbing the illusion requires trusting the prior, which is the same gain that slows tracking. In V0.4 the cost is explicit: absorption rises from zero to 0.830 while stationary MAE rises from 1.68 to 2.74 and attribution macro-F1 falls from 0.604 to 0.515. V0.5's selective gating recovers part of the tracking cost (MAE 2.04) and part of the diagnostic cost (F1 0.577), but it does not reach V0.3's accuracy, and its absorption is measured only in the 20-seed pilot.
 
-The trade-off is the paper's central negative result. It is an observed \emph{frontier}, not a failure of implementation: each point is the best achievable given the same precision gain, and moving along the frontier changes which capability is sacrificed.
+The trade-off is the paper's central negative result. It is an \emph{empirically observed three-way trade-off along the tested suppression-parameter sweep}, not a globally optimal Pareto frontier: each sweep point changes which capability is sacrificed, and no point dominates all three targets.
 
 An independent 9-point sweep of the suppression exponent traces this curve directly. Absorption rises monotonically from \textbf{0.167} at zero suppression to \textbf{0.931} at the strongest setting, while stationary MAE rises from \textbf{1.466} to \textbf{4.586} and macro-F1 generally declines from \textbf{0.615} to \textbf{0.444}. At the default exponent (1.0) the sweep reproduces V0.4 almost exactly: absorption \textbf{0.828}, MAE \textbf{2.743}, macro-F1 \textbf{0.515}. The trade-off is therefore an empirical parameter curve, not an artefact of comparing three hand-built versions.
 
@@ -355,7 +360,10 @@ epistemic option value is the value of the decisions that a resolved uncertainty
 \begin{table}[h]
 \centering
 \caption{V0.6 indicator experiments at 100 paired seeds. The contrast is intact minus the named
-ablation or control; intervals are 95\% bootstrap CIs.}
+ablation or control; intervals are 95\% bootstrap CIs. AE-2 is the cognitive self-simulation
+rollout; ``no cognitive self-sim'' and the older ``no-AE'' label denote the same intervention.
+Routing is plasticity routing during corruption, not attribution accuracy, and higher routing means
+less selective suppression.}
 \label{tab:v06}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llll}
@@ -364,10 +372,10 @@ Experiment & Intact & Ablation / control & Contrast \\
 \midrule
 Ambiguous settling & absorption 0.814 & No-RPT 0.290 & $+0.524\ [0.482,0.567]$, $d_z=2.38$ \\
 Compound conflict & thrash 0.051 & No bottleneck 0.356 & $-0.304\ [-0.344,-0.266]$, $d_z=-1.53$ \\
-Goal coherence & 0.91 & 0.68 & $+0.23\ [0.21,0.24]$, $d_z=2.57$ \\
+Goal coherence & 0.915 & 0.666 & $+0.249\ [0.229,0.269]$, $d_z=2.53$ \\
 Post-conflict recovery & 19 ticks & No-AST 256 & $-236.9\ [-245.3,-226.6]$ \\
-Sensor attribution & macro-F1 0.502 & No-HOT 0.000 & routing 0.774 [0.747, 0.799] vs 1.00 \\
-Epistemic fork & 94\% probe / 84\% solved & No-AE 1\% / 1\% & $+0.83\ [0.75,0.90]$, $d_z=2.20$ \\
+Sensor attribution (4-way) & macro-F1 0.502 & No-HOT 0.000 & routing 0.774 (full) vs 1.00 (no-HOT) \\
+Epistemic fork & 94\% probe / 84\% solved & No cognitive self-sim (AE-2 off) 1\% / 1\% & $+0.83\ [0.75,0.90]$, $d_z=2.20$ \\
 Contingency reversal & 2.1-tick detection & No-HOT 400 (never) & $-397.86\ [-398.63,-396.89]$, $d_z=-88.7$ \\
 \bottomrule
 \end{tabular}}
@@ -413,7 +421,7 @@ No GWT bottleneck & $+0.10$ & $+2.53^{*}$ & 0.621 & $+0.20$ & $-0.04$ \\
 No GWT broadcast & $+0.16$ & $+1.13^{*}$ & 0.579 & $+0.92^{*}$ & $+0.16$ \\
 No HOT monitor & $+0.10$ & $+0.79^{*}$ & 0.000 & $-0.13$ & $-88.74^{*}$ \\
 No AST schema & $-0.03$ & $+0.00$ & 0.535 & $+0.91^{*}$ & $+0.20$ \\
-No cognitive self-sim & $-0.14$ & $+0.08$ & 0.541 & $+2.20^{*}$ & $+0.08$ \\
+No cognitive self-sim (AE-2 off) & $-0.14$ & $+0.08$ & 0.541 & $+2.20^{*}$ & $+0.08$ \\
 \bottomrule
 \end{tabular}}
 \end{table}
@@ -500,11 +508,39 @@ The world is small and discrete; the agent is non-neural; the horizon is 900 tic
 \paragraph{Future work.}
 Four questions follow directly from this record.
 \begin{enumerate}
-  \item A finer preregistered sweep of the precision-suppression and AST-1 recovery parameters would extend the 9-point curve into a continuous trade-off frontier.
+  \item A finer sweep of the precision-suppression and AST-1 recovery parameters would extend the 9-point curve into a continuous trade-off surface.
   \item Decision-VoI and plateau preparation should be stress-tested under multi-step lookahead, delayed or ambiguous effort feedback, and environments where rough terrain is occasionally genuinely lethal.
   \item Temporal attribution should be separated into calibration and discrimination under explicitly held-out shift schedules, particularly for the physical-versus-fatigue confusion.
   \item The observable-outcome interface used by the learning calls in V0.2--V0.5 should be extended to every evaluation reachable from agent code, so the no-ground-truth guarantee is auditable end to end by the type system rather than by code review alone.
 \end{enumerate}
+
+\subsection{Run accounting}
+
+Table~\ref{tab:runs} reconciles every episode reported in this manuscript. The 28{,}100 main-protocol
+figure and its 28{,}900 corruption-inclusive variant exclude both the untouched holdout and the
+hardening experiments; no episode is counted twice.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Transparent run accounting. Each row counts distinct condition--seed episodes. The 800 V0.1
+corruption observations are additional to the 28{,}100 main-protocol runs; the holdout and hardening
+experiments are additional to both.}
+\label{tab:runs}
+\begin{tabular}{lccc}
+\toprule
+Protocol & Cells & Seeds & Episodes \\
+\midrule
+V0.1--V0.6 development main protocol & 281 & 100 & 28{,}100 \\
+V0.1 corruption probes & 8 & 100 & 800 \\
+V0.6 untouched holdout (10001--10100) & 87 & 100 & 8{,}700 \\
+V0.3 2$\times$2 factorial (2 regimes) & 8 & 100 & 800 \\
+V0.4 9-point suppression sweep & 54 & 100 & 5{,}400 \\
+\midrule
+Total unique episodes & --- & --- & \textbf{43{,}800} \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{Reproducibility.}
 Every run is seeded and deterministic. The repository preserves all six engines, their tests, dashboards and reports:
@@ -521,7 +557,7 @@ npm run typecheck && npm test && npm run build
 Raw per-run JSON is in \texttt{research/}; aggregate reports are in \texttt{docs/}. The UI exposes the same numbers with plain-English and statistical layers. The 28{,}100 total is the main protocol; adding the 800 V0.1 corruption observations gives 28{,}900 logged runs.
 
 \paragraph{Data and code availability.}
-The interactive laboratory is at \url{https://strangeloops.pages.dev}. The complete source, the six engines, their tests, the validation harnesses, the per-run JSON artifacts in \texttt{research/}, the reports in \texttt{docs/}, and the figure generator are maintained as one repository; an archived snapshot is available from the author on request. Every figure and statistic in this manuscript can be regenerated from the JSON with \texttt{npm run paper:figures} and the validation commands listed above. A SHA-256 manifest (\texttt{research/SHA256SUMS.txt}, \texttt{research/MANIFEST.json}) records every archived JSON artifact and the exact runtime and dependency versions.
+The interactive laboratory is at \url{https://strangeloops.pages.dev}. The complete source, the six engines, their tests, the validation harnesses, the per-run JSON artifacts in \texttt{research/}, the reports in \texttt{docs/}, and the figure generator are maintained in one repository that is private at the time of submission; an archived snapshot is available from the author on request. No DOI has been minted. Every figure and statistic in this manuscript can be regenerated from the JSON with \texttt{npm run paper:figures} and the validation commands listed above. A SHA-256 manifest (\texttt{research/SHA256SUMS.txt}, \texttt{research/MANIFEST.json}) records every archived JSON artifact and the exact runtime and dependency versions; \texttt{research/HOLDOUT\_MANIFEST.json} records the untouched holdout seeds and the unchanged V0.6 engine baseline (commit \texttt{1b63667}).
 
 \paragraph{Use of AI tools.}
 Generative AI tools were used in this work as follows. (i) An agentic coding environment (OpenCode, 2026; model identifiers and dates are retained in the project transcript) drafted and edited TypeScript for the engines, validation harnesses, UI and figure generator, and ran the validators. (ii) The same environment drafted and edited prose, tables and the \LaTeX/Markdown sources, and assisted in checking reported values against the JSON artifacts. (iii) All figures are produced by deterministic TypeScript from the JSON; no generative image model produced, altered or enhanced any figure or datum. The author specified the research question, design and acceptance criteria, reviewed every change, verified the references against their published sources, and takes full responsibility for all content. Every reported number was regenerated from the checked-in JSON; the 73-test suite and the type check pass on the archived code.

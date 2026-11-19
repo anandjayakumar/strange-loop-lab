@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-11-19T12:43:58.155Z",
+  "purpose": "Untouched V0.6 holdout provenance",
+  "engineBaselineCommit": "1b63667",
+  "holdoutLaunchCommit": "05a688e",
+  "architecture": "V0.6 frozen",
+  "parametersChanged": false,
+  "figureConstructionUse": false,
+  "developmentUse": false,
+  "retuning": false,
+  "seeds": {
+    "start": 10001,
+    "end": 10100,
+    "count": 100
+  },
+  "conditions": 87,
+  "episodes": 8700,
+  "engineFiles": [
+    {
+      "file": "src/simulation/v06/agent.ts",
+      "sha256": "5ceccba18fb1af9429587ab8183abb96d3431dd9b758bece7fff0ccf513384c0"
+    },
+    {
+      "file": "src/simulation/v06/attention.ts",
+      "sha256": "801f36cf8822a092bfa90ebc87bfe7596ab3957d93c82a644f1bb8b937013e65"
+    },
+    {
+      "file": "src/simulation/v06/config.ts",
+      "sha256": "89865a712581d06a9fc9e44cc55065837de92fc15e0c621fbfdda2b78eee2592"
+    },
+    {
+      "file": "src/simulation/v06/engine.ts",
+      "sha256": "ca30d8ca27d657be67ab125cfbc5659e523f30e68a8efc9f3815c6856f0c439a"
+    },
+    {
+      "file": "src/simulation/v06/higherOrder.ts",
+      "sha256": "149aff5b9765d839996f98bc1fbb6b7e6a4038732890e201385622a3ac783db7"
+    },
+    {
+      "file": "src/simulation/v06/modules.ts",
+      "sha256": "378e5cd0c2552050da9b1da31bae00d7a38324de51746ead4015bfbe41c45411"
+    },
+    {
+      "file": "src/simulation/v06/selfModel.ts",
+      "sha256": "3633f0ff263170b93f78b0f9fe10a5182d1d182b201d88b7cc842b65de7e74a0"
+    },
+    {
+      "file": "src/simulation/v06/selfSim.ts",
+      "sha256": "a424e8d8043f573dc99edbe36756a91e8f2690bfde53cce0e33d1467f7043cb9"
+    },
+    {
+      "file": "src/simulation/v06/settling.ts",
+      "sha256": "f2e260f083e0f42b0219b6302e143ff35e84f1474c505f68dc7948029fc88d05"
+    },
+    {
+      "file": "src/simulation/v06/types.ts",
+      "sha256": "dd0e323de6445929d6bd95223efcbc15f1644c213e2a5c0e7be7b8d8691716fe"
+    },
+    {
+      "file": "src/simulation/v06/workspace.ts",
+      "sha256": "5daaecaee26bb814c9701d6751817407c3385cfae3ca5099056f9576879a16a2"
+    }
+  ],
+  "validationScript": "tools/v06validate.ts",
+  "validationScriptSha256": "cd1e75f1560c7adeaeb1a8796527b2abd875a85c3f7eecbfa55db15869860da4",
+  "results": {
+    "development": "research/v06-results.json",
+    "developmentSha256": "d90ed616c58f918efe68e9a6fa83363aa2fca548627c9a8e917a2f1562cd19f3",
+    "holdout": "research/v06-holdout-results.json",
+    "holdoutSha256": "e9f0e1bc775ff821ffa1783cc324df8bc2e649a1054cfcc886779f906ba51120"
+  },
+  "counts": {
+    "development": {
+      "runs": 8700,
+      "conditions": 87,
+      "seeds": 100
+    },
+    "holdout": {
+      "runs": 8700,
+      "conditions": 87,
+      "seeds": 100
+    }
+  },
+  "note": "The V0.6 simulation sources are unchanged from 1b63667; the holdout varied only the seed argument passed to the validator."
+}

@@ -8,27 +8,27 @@
 <text x="770" y="28" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#5b6169" text-anchor="start">C</text><text x="788" y="28" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#111111" text-anchor="start">Stationary energy MAE</text>
 <line x1="70" y1="300" x2="330" y2="300" stroke="#5b6169" stroke-width="1" />
 <line x1="70" y1="233.1818181818182" x2="330" y2="233.1818181818182" stroke="#e3e0d8" stroke-width="1" stroke-dasharray="4 4" />
-<line x1="104" y1="286.2016827915314" x2="104" y2="245.45286266301403" stroke="#a6402a" stroke-width="2" />
-<line x1="97" y1="286.2016827915314" x2="111" y2="286.2016827915314" stroke="#a6402a" stroke-width="2" />
-<line x1="97" y1="245.45286266301403" x2="111" y2="245.45286266301403" stroke="#a6402a" stroke-width="2" />
+<line x1="104" y1="285.3477272727273" x2="104" y2="245.2090909090909" stroke="#a6402a" stroke-width="2" />
+<line x1="97" y1="285.3477272727273" x2="111" y2="285.3477272727273" stroke="#a6402a" stroke-width="2" />
+<line x1="97" y1="245.2090909090909" x2="111" y2="245.2090909090909" stroke="#a6402a" stroke-width="2" />
 <circle cx="104" cy="265.8272727272727" r="4.5" fill="#a6402a" stroke="none" stroke-width="0" />
 <text x="104" y="318" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">V0.2</text>
 <text x="130" y="268.8272727272727" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="700" fill="#a6402a" text-anchor="middle">-6.8</text>
-<line x1="166" y1="182.3931814875893" x2="166" y2="128.76136396695614" stroke="#2f6b45" stroke-width="2" />
-<line x1="159" y1="182.3931814875893" x2="173" y2="182.3931814875893" stroke="#2f6b45" stroke-width="2" />
-<line x1="159" y1="128.76136396695614" x2="173" y2="128.76136396695614" stroke="#2f6b45" stroke-width="2" />
+<line x1="166" y1="181.44545454545454" x2="166" y2="129.08863636363634" stroke="#2f6b45" stroke-width="2" />
+<line x1="159" y1="181.44545454545454" x2="173" y2="181.44545454545454" stroke="#2f6b45" stroke-width="2" />
+<line x1="159" y1="129.08863636363634" x2="173" y2="129.08863636363634" stroke="#2f6b45" stroke-width="2" />
 <circle cx="166" cy="155.5772727272727" r="4.5" fill="#2f6b45" stroke="none" stroke-width="0" />
 <text x="166" y="318" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">V0.3</text>
 <text x="192" y="158.5772727272727" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="700" fill="#2f6b45" text-anchor="middle">+16.3</text>
-<line x1="228" y1="187.4637189540549" x2="228" y2="131.89991740958146" stroke="#2f6b45" stroke-width="2" />
-<line x1="221" y1="187.4637189540549" x2="235" y2="187.4637189540549" stroke="#2f6b45" stroke-width="2" />
-<line x1="221" y1="131.89991740958146" x2="235" y2="131.89991740958146" stroke="#2f6b45" stroke-width="2" />
+<line x1="228" y1="186.55227272727274" x2="228" y2="133.38409090909093" stroke="#2f6b45" stroke-width="2" />
+<line x1="221" y1="186.55227272727274" x2="235" y2="186.55227272727274" stroke="#2f6b45" stroke-width="2" />
+<line x1="221" y1="133.38409090909093" x2="235" y2="133.38409090909093" stroke="#2f6b45" stroke-width="2" />
 <circle cx="228" cy="159.6818181818182" r="4.5" fill="#2f6b45" stroke="none" stroke-width="0" />
 <text x="228" y="318" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">V0.4</text>
 <text x="254" y="162.6818181818182" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="700" fill="#2f6b45" text-anchor="middle">+15.4</text>
-<line x1="290" y1="168.8578186453471" x2="290" y2="114.13763590010743" stroke="#2f6b45" stroke-width="2" />
-<line x1="283" y1="168.8578186453471" x2="297" y2="168.8578186453471" stroke="#2f6b45" stroke-width="2" />
-<line x1="283" y1="114.13763590010743" x2="297" y2="114.13763590010743" stroke="#2f6b45" stroke-width="2" />
+<line x1="290" y1="169.94318181818184" x2="290" y2="114.0068181818182" stroke="#2f6b45" stroke-width="2" />
+<line x1="283" y1="169.94318181818184" x2="297" y2="169.94318181818184" stroke="#2f6b45" stroke-width="2" />
+<line x1="283" y1="114.0068181818182" x2="297" y2="114.0068181818182" stroke="#2f6b45" stroke-width="2" />
 <circle cx="290" cy="141.49772727272727" r="4.5" fill="#2f6b45" stroke="none" stroke-width="0" />
 <text x="290" y="318" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">V0.5</text>
 <text x="316" y="144.49772727272727" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="700" fill="#2f6b45" text-anchor="middle">+19.2</text>
@@ -106,5 +106,5 @@
 <text x="806" y="159.61874214276915" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#9a6b1f" text-anchor="start">raw sensor 1.92</text>
 <text x="800" y="342" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="start">self-model MAE, lower is better</text>
 <text x="1050" y="360" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="end" font-style="italic">V0.4 pays the illusion cost; V0.5 recovers part of it</text>
-<text x="28" y="384" font-family="Helvetica, Arial, sans-serif" font-size="11.9" font-weight="400" fill="#5b6169" text-anchor="start">Error bars: 95% paired bootstrap / normal-approximation intervals from the per-seed JSON. Values recomputed by tools/generatePaperFigures.ts.</text>
+<text x="28" y="384" font-family="Helvetica, Arial, sans-serif" font-size="11.9" font-weight="400" fill="#5b6169" text-anchor="start">Error bars: 95% seed-level percentile bootstrap intervals (2,000 resamples) from the per-seed JSON. Values recomputed by tools/generatePaperFigures.ts.</text>
 </svg>
