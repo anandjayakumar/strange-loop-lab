@@ -25,7 +25,7 @@ export const VERSION_LABEL: Record<VersionKey, string> = {
   v03: "V0.3",
   v04: "V0.4",
   v05: "V0.5",
-  v06: "V0.6",
+  v06: "V0.6.1",
 };
 
 export const VERSION_COLOR: Record<VersionKey, string> = {
@@ -179,7 +179,7 @@ export const DISCOVERIES: Discovery[] = [
     stats:
       "V0.6.1 compound conflict, 100 paired seeds: action switching 0.051 with the bottleneck vs 0.356 without it (difference −0.304 [−0.344, −0.266], dz −1.53, Holm p = 0.0025); goal coherence 0.915 vs 0.666 (+0.249 [0.229, 0.269], dz 2.53). The flat blackboard is statistically indistinguishable from the no-bottleneck ablation, and it forages more (41.51 vs 32.35 resources).",
     evidence:
-      "V0.6 report §5.2; the effect is specific to the competition, not to the number of modules.",
+      "V0.6.1 report §5.2; the effect is specific to the competition, not to the number of modules.",
     tone: "good",
   },
   {
@@ -192,7 +192,7 @@ export const DISCOVERIES: Discovery[] = [
     stats:
       "V0.6.1 epistemic fork, 100 paired seeds: 94% of intact runs probe vs 1% without cognitive self-simulation (dz 3.63, p = 0.0020); 84% [77, 91] solve the fork vs 1%. Physical MPC probes 2% and solves 1%; the reactive control probes 4% and solves 4%. Removing HOT probes 100% and solves 90%, but the first probe is much later (182 vs 24 ticks). The full architecture is one point below the 85% target; the 95% CI includes it.",
     evidence:
-      "V0.6 report §5.4. This is the clearest capability dissociation in the project.",
+      "V0.6.1 report §5.4. This is the clearest capability dissociation in the project.",
     tone: "good",
   },
   {
@@ -203,9 +203,9 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "When a sensory channel starts lying, a first-order learner that keeps trusting it rewrites its body model around the lie. A higher-order monitor that attributes the discrepancy to the channel can turn down plasticity exactly where the corruption enters, while leaving the accurate modules free to learn.",
     stats:
-      "V0.6.1 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.85 with HOT and 1.00 without it; first-order energy MAE is lower with HOT. Attribution macro-F1 is 0.502 vs 0.000, with recall physical 0.90, energy 0.63, fatigue 0.63, shared 0.39. Shadow AUROC remains below 0.75 on every shift.",
+      "V0.6.1 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.774 [0.747, 0.799] with HOT and 1.00 without it; first-order energy MAE is lower with HOT. Attribution macro-F1 is 0.502 vs 0.000, with recall physical 0.90, energy 0.63, fatigue 0.63, shared 0.39. Shadow AUROC remains below 0.75 on every shift.",
     evidence:
-      "V0.6 report §5.3. The monitor protects the model it monitors; attribution is weak for shared degradation (0.44) even though routing succeeds.",
+      "V0.6.1 report §5.3. The monitor protects the model it monitors; attribution is weak for shared degradation (0.44) even though routing succeeds.",
     tone: "good",
   },
   {
@@ -587,7 +587,7 @@ export const VERSIONS: VersionDetail[] = [
   },
   {
     key: "v06",
-    name: "V0.6 — the unified cognitive architecture",
+    name: "V0.6.1 — the unified cognitive architecture",
     tagline: "Are the self-referential mechanisms causally necessary for cognition?",
     flow: ["4 modules", "GWT ignition", "broadcast", "HOT", "AE-2 rollout", "action"],
     hypothesis:
@@ -612,7 +612,7 @@ export const VERSIONS: VersionDetail[] = [
       { label: "Goal coherence", value: "0.915 vs 0.666", tone: "good" },
       { label: "Post-conflict recovery", value: "19 vs 256 ticks", note: "dz -4.86", tone: "good" },
       { label: "4-way attribution macro-F1", value: "0.502", note: "no-HOT 0.000; shared 0.39", tone: "warn" },
-      { label: "Somatic routing during sensor fault", value: "0.85", note: "no-HOT 1.00", tone: "good" },
+      { label: "Somatic routing during sensor fault", value: "0.774 [0.747, 0.799]", note: "no-HOT 1.00", tone: "good" },
       { label: "Reliability AUROC (energy / shared)", value: "0.59 / 0.58", note: "target 0.75 - fail", tone: "bad" },
       { label: "PP-1 absorption (RPT / no-RPT)", value: "0.814 / 0.290", note: "p = 0.0020", tone: "good" },
       { label: "Stationary MAE", value: "1.431", note: "feedforward 1.453", tone: "good" },

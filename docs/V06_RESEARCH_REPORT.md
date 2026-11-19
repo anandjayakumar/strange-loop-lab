@@ -2,7 +2,7 @@
 
 **Status:** complete. 87 conditions × 100 paired seeds = **8,700 episodes**.
 **Artefacts:** `research/v06-results.json`, `research/v06-analysis.json`, `research/v061_validation.log`, `research/v061_feedforward.json`.
-**Lab:** `/research?version=v06`. **Previous report:** `docs/V06_RESEARCH_REPORT.md` (V0.6, archived in git history).
+**Lab:** `/research?version=v06`. **Previous report:** the V0.6 draft of this document (archived in git history).
 
 ---
 
@@ -94,7 +94,7 @@ between quality-space step distance and next-tick mode switches. `postGlitchMae`
 
 | Condition | Exp1 absorption / MAE | Exp2 1−thrash / recovery | Exp3 macro-F1 / shift survival | Exp4 probed / solved / resources | Exp5 detection latency |
 |---|---|---|---|---|---|
-| **V0.6 full** | **0.814 / 1.431** | **0.949 / 19** | **0.502 / 100%** | **94% / 84% / 57.2** | **2.1** |
+| **V0.6.1 full** | **0.814 / 1.431** | **0.949 / 19** | **0.502 / 100%** | **94% / 84% / 57.2** | **2.1** |
 | **No-RPT (K=1)** | **0.290** (Δ **−0.524***); MAE **1.446** (Δ **+0.015***) | 0.941 (Δ −0.007 ns) / 25 | 0.520 / 100% | 96% / 39% (Δ **−0.45***) / 22.3 (Δ **−34.9***) | 5.3 (Δ +3.2 ns) |
 | **No-GWT bottleneck** | 0.790 (Δ −0.023 ns); MAE **1.625** (Δ **+0.194***) | **0.644** (Δ **−0.304***) / 23 | 0.621 / 100% | 89% / 75% (Δ −0.09 ns) / 52.1 | 2.4 |
 | **No-GWT broadcast** | 0.776 (Δ −0.037 ns); MAE 1.443 (Δ +0.012*) | **0.896** (Δ **−0.053***) / 13 | 0.579 / 100% | 88% / 34% (Δ **−0.50***) / 24.4 (Δ **−32.8***) | 1.3 |
@@ -108,7 +108,7 @@ between quality-space step distance and next-tick mode switches. `postGlitchMae`
 
 | Architecture | Standard & shift resources / survival | Conflict coherence / resources | Fork solved / resources | Gen 1 topology | Gen 2 non-linear | Gen 3 compound |
 |---|---|---|---|---|---|---|
-| **V0.6 full** | **33.84 [31.14, 36.93]**; 100/100 | **0.915**; **32.35 [29.96, 34.98]** | **84% [77, 91]**; **57.21 [51.22, 63.43]** | **57.38 [52.76, 62.05]**; 100/100 | **55.87 [51.23, 60.49]**; 100/100 | **32.69 [29.92, 36.10]**; 100/100 |
+| **V0.6.1 full** | **33.84 [31.14, 36.93]**; 100/100 | **0.915**; **32.35 [29.96, 34.81]** | **84% [77, 91]**; **57.21 [51.16, 63.44]** | **57.38 [52.76, 62.05]**; 100/100 | **55.87 [51.23, 60.49]**; 100/100 | **32.69 [29.92, 36.10]**; 100/100 |
 | **Reactive reflex** | **51.22 [47.09, 55.61]**; **99/100** | 0.831; **43.65 [40.01, 47.32]** | 4%; 3.53 | **59.92 [55.95, 64.09]**; 100/100 | **56.90 [52.66, 60.87]**; 100/100 | 2.65; 100/100 |
 | **Physical MPC (H=4)** | 30.50 [26.14, 35.05]; 100/100 | 0.665; 27.29 | 1%; 0.42 | 30.69 [26.98, 34.66]; 100/100 | 32.06 [27.64, 36.10]; 100/100 | 1.74; 100/100 |
 | **Flat blackboard** | 45.18 [41.27, 48.92]; 100/100 | 0.670; **41.51 [37.98, 44.89]** | 73%; 50.49 | 52.16 [47.97, 56.65]; 100/100 | 53.97 [49.53, 58.62]; 100/100 | **47.46 [42.62, 52.21]**; 100/100 |

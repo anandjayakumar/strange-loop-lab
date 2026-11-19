@@ -162,8 +162,8 @@ export const LESSON_CALLOUTS: Record<string, LessonCallout> = {
   "lesson-6": {
     metric: "Diagnostic probe in the epistemic fork",
     from: "1%",
-    to: "99%",
-    detail: "probe rate without → with cognitive self-simulation · 40% of forks solved vs 1% · physical MPC 3%",
+    to: "94%",
+    detail: "probe rate without → with cognitive self-simulation · 84% of forks solved vs 1% · physical MPC 2% probe / 1% solved",
     researchVersion: "v06",
     findingsAnchor: "v06-indicators",
   },

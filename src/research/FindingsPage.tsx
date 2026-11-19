@@ -37,7 +37,7 @@ const SECTIONS = [
   { id: "figures", label: "Figures", n: "02" },
   { id: "matrix", label: "Matrix", n: "03" },
   { id: "versions", label: "Deep dives", n: "04" },
-  { id: "v06-indicators", label: "V0.6 results", n: "05" },
+  { id: "v06-indicators", label: "V0.6.1 results", n: "05" },
   { id: "frameworks", label: "Theory map", n: "06" },
 ];
 
@@ -180,7 +180,7 @@ export function FindingsPage({
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="label text-lab-amber">Findings</span>
             <span className="font-serif text-[13px] italic text-lab-faint">
-              cross-version scientific record · V0.1 → V0.6
+              cross-version scientific record · V0.1 → V0.6.1
             </span>
           </div>
           <a
@@ -215,17 +215,18 @@ export function FindingsPage({
                 Strange Loop Lab is a deterministic, non-neural laboratory built around one question:
                 when an agent learns a model of its own body (M₁) and then a second-order model of when
                 that model can be trusted (M₂), do those models <em className="text-lab-text">causally</em>{" "}
-                change what it does, what it learns and whether it survives? Across five architectures
-                and 23,900 seeded runs, the answer is conditional. A self-model is behaviourally inert
+                change what it does, what it learns and whether it survives? Across six architectures
+                and 28,100 main-protocol paired runs (28,900 including the 800 V0.1 corruption
+                probes), the answer is conditional. A self-model is behaviourally inert
                 when errors are cheap, harmful when doubt is symmetric, and decisive when the agent can
                 act on an asymmetric, risk-sensitive estimate of its own reliability. The same loop that
                 makes the model useful — trusting it enough to act — is what makes it hard to correct.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-lab-line pt-3">
                 {[
-                  ["5", "architectures"],
+                  ["6", "architectures"],
                   ["100", "paired seeds"],
-                  ["10", "findings"],
+                  ["14", "findings"],
                   ["0", "consciousness claims"],
                 ].map(([value, label]) => (
                   <div key={label} className="flex items-baseline gap-2">
@@ -325,7 +326,7 @@ export function FindingsPage({
           <SectionHead
             n="01"
             tag="findings"
-            title="Ten discoveries across five versions"
+            title="Fourteen discoveries across six versions"
             subtitle="Each entry carries a plain-English account and the exact statistical record behind it. Switch the reading layer; the audit line is always the trail back to the report."
             right={
               <div className="inline-flex gap-0.5 rounded-full border border-lab-line2 p-0.5">
@@ -412,7 +413,7 @@ export function FindingsPage({
             n="03"
             tag="matrix"
             title="The evolution matrix"
-            subtitle="Standardised metrics across V0.1 → V0.6. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
+            subtitle="Standardised metrics across V0.1 → V0.6.1. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
           />
           <div className="mb-4 flex flex-wrap items-center gap-5">
             {(["good", "warn", "bad", "neutral"] as Tone[]).map((tone) => (
@@ -476,7 +477,7 @@ export function FindingsPage({
           </div>
           <p className="mt-3 max-w-[80ch] font-serif text-[12px] italic leading-relaxed text-lab-faint">
             Values are from each version&rsquo;s report at the 100-seed protocol. V0.5 figures use the
-            100-seed run unless marked pilot; V0.6 figures use the 100-seed validation (4,500
+            100-seed run unless marked pilot; V0.6.1 figures use the 100-seed validation (8,700
             episodes). &ldquo;—&rdquo; means the mechanism did not exist in that version.
           </p>
         </section>
@@ -637,7 +638,7 @@ export function FindingsPage({
         <section id="v06-indicators" className="mt-20 scroll-mt-32">
           <SectionHead
             n="05"
-            tag="V0.6"
+            tag="V0.6.1"
             title="Unified architecture: indicator properties under adversarial control"
             subtitle="Four competing modules, a capacity-limited workspace, global broadcast, a higher-order monitor, an attention schema and a bounded cognitive rollout — each independently ablated and compared with four matched-compute controls."
           />
@@ -645,7 +646,7 @@ export function FindingsPage({
           <div className="grid grid-cols-1 gap-x-12 gap-y-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <p className="editorial-drop max-w-[64ch] text-[14px] leading-[1.75] text-lab-muted">
-                V0.6 asks a different question from V0.1–V0.5. It is not another survival
+                V0.6.1 asks a different question from V0.1–V0.5. It is not another survival
                 iteration. It asks whether the integrated, self-referential mechanisms are{" "}
                 <em className="text-lab-text">causally necessary</em> for a set of cognitive
                 capabilities, and whether those capabilities survive comparison with a reactive
@@ -654,11 +655,13 @@ export function FindingsPage({
               </p>
               <p className="mt-4 max-w-[64ch] text-[13.5px] leading-[1.75] text-lab-muted">
                 The answer is a double dissociation, not a victory lap. The bottleneck,
-                broadcast, higher-order monitor, attention schema and cognitive rollout each carry
-                a capability the others do not. But the recurrent settling loop adds nothing to
-                single-tick absorption, confidence calibration inverts under energy-channel
-                corruption, attribution is weak for shared degradation, and the architecture
-                loses to simpler controls on two of three unseen-environment suites.
+                broadcast, higher-order monitor, attention schema, cognitive rollout and recurrent
+                settling each carry a capability the others do not. V0.6.1 corrects the original V0.6
+                null: the recurrent loop is load-bearing, taking single-tick absorption to 0.814
+                against 0.290 without it. The costs remain explicit: confidence calibration stays
+                below target under energy-channel corruption, attribution is weak for shared
+                degradation, and the architecture loses to simpler controls on two of three
+                unseen-environment suites.
               </p>
               <div className="mt-6 flex flex-wrap gap-2.5">
                 <a
@@ -670,7 +673,7 @@ export function FindingsPage({
                     onOpenVersion("v06");
                   }}
                 >
-                  Open V0.6 in the lab
+                  Open V0.6.1 in the lab
                 </a>
                 <a className="btn h-9 px-4" href="/paper">
                   Read the manuscript
@@ -767,8 +770,8 @@ export function FindingsPage({
                 </li>
                 <li>
                   <span className="text-lab-text">HOT monitoring.</span> Attribution macro-F1 falls
-                  from 0.502 to 0.000 and the somatic learning gain during corruption rises from 0.85
-                  to 1.00. First-order MAE is lower with HOT.
+                  from 0.502 to 0.000 and the somatic learning gain during corruption rises from
+                  0.774 [0.747, 0.799] to 1.00. First-order MAE is lower with HOT.
                 </li>
                 <li>
                   <span className="text-lab-text">Cognitive self-simulation.</span> The fork probe

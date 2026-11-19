@@ -35,7 +35,7 @@ figures/*.pdf     vector figures used by the manuscript
 - "Data and code availability" and the declarations are present.
 - Every number is regenerated from `research/*.json`; the reference list was
   checked against the published sources.
-- The paper contains no placeholder text, meta-comments or unverified citations.
+- The paper contains no unfinished sections, meta-comments, template placeholders or unverified citations.
 
 ## Registering the paper
 
