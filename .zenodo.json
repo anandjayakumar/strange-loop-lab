@@ -1,0 +1,26 @@
+{
+  "title": "Strange Loop Lab: A White-Box Laboratory for Self-Model and Consciousness-Indicator Research",
+  "description": "Strange Loop Lab is a deterministic, non-neural TypeScript laboratory for studying self-models, second-order reliability estimates and consciousness-indicator mechanisms. The repository contains six opt-in engines (V0.1–V0.6), the browser laboratory, 100-seed validation harnesses, a 43,800-episode research record, an untouched V0.6 holdout on seeds 10001–10100, hardening experiments, figure generators, SHA-256 manifests and the manuscript source. Code is MIT licensed; the manuscript and figures are CC BY 4.0. No claim of phenomenal consciousness is made.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "version": "0.6.0",
+  "publication_date": "2026-11-19",
+  "language": "eng",
+  "creators": [
+    {
+      "name": "Jayakumar, Anand"
+    }
+  ],
+  "keywords": [
+    "self-model",
+    "metacognition",
+    "active inference",
+    "attention schema",
+    "global workspace",
+    "higher-order theories",
+    "computational consciousness science",
+    "reproducibility"
+  ],
+  "notes": "Code: MIT. Manuscript and figures: CC BY 4.0. Includes raw per-seed JSON, SHA-256 manifests and holdout provenance. This software does not establish consciousness or subjective experience."
+}

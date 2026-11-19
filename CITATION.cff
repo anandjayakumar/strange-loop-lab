@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite this repository and the archived Zenodo release."
+title: "Strange Loop Lab"
+abstract: "A deterministic, white-box TypeScript laboratory for self-model, metacognition and consciousness-indicator research across six opt-in generations (V0.1-V0.6), with 100-seed validators, raw per-seed artifacts and an untouched V0.6 holdout."
+authors:
+  - family-names: Jayakumar
+    given-names: Anand
+version: 0.6.0
+date-released: "2026-11-19"
+license: MIT
+repository-code: "https://github.com/anandjayakumar/strange-loop-lab"
+url: "https://strangeloops.pages.dev"
+type: software
+keywords:
+  - self-model
+  - metacognition
+  - active inference
+  - attention schema
+  - global workspace
+  - reproducibility
