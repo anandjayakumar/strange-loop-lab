@@ -8,6 +8,22 @@ question: **can a system learn a useful model of itself, and can that model beco
 entangled with the processes that produce it?** It does not claim that the agent is conscious.
 It does not contain an LLM, a neural-network library, a pretrained model or a backend.
 
+The repository now contains the full **V0.1–V0.6** research ladder: six opt-in engines, 281
+development conditions, an untouched V0.6 holdout, and a 16-page manuscript. The interactive
+laboratory is at **https://strangeloops.pages.dev**; the paper, figures and findings are
+reachable from `/paper` and `/findings`.
+
+### Current paper
+
+> **When Self-Models Trap Themselves: Causal Ablations, Functional Dissociation, and Precision
+> Trade-Offs of Consciousness Indicators in a White-Box Agent**
+
+`paper/main.pdf` (16 pages) and `paper/arxiv/main.pdf` (14 pages). The manuscript reports
+28,100 main-protocol episodes plus 800 V0.1 corruption probes, an 8,700-episode untouched V0.6
+holdout, and 6,200 hardening episodes — **43,800 unique seeded episodes** in total. It documents
+positive results and negative results, including weak off-policy reliability discrimination
+(AUROC 0.43–0.59) and foraging advantages for flat/reactive controls.
+
 ---
 
 ## Run it
@@ -26,7 +42,8 @@ npm run build
 ```
 
 The simulation is pure TypeScript and runs entirely in the browser. No accounts, no network
-requests, no persistence beyond the tab.
+requests, no persistence beyond the tab. The 100-seed validators are Node/tsx scripts and write
+their artifacts to `research/`.
 
 `npm run typecheck` runs `tsrs` ([a Rust port of the TypeScript 7 compiler](https://github.com/oxc-project/tsrs))
 with `--noEmit` against `tsconfig.json`; `npm run typecheck:tsc` runs the classic TypeScript
@@ -48,7 +65,7 @@ compiler with the same config as an escape hatch, and `npm run build` typechecks
 | Meta-model | Second-order reliability tracker that closes the loop on influence, plasticity and prior weight |
 | Engine | Pure deterministic tick loop with 10 micro-steppable cognitive phases |
 
-### Three experimental conditions
+### V0.1's three experimental conditions
 
 | Mode | Components | Question |
 | --- | --- | --- |
@@ -58,6 +75,26 @@ compiler with the same config as an escape hatch, and `npm run build` typechecks
 
 All three modes share the same seed, obstacle field, resource schedule, physical rules and
 initial state. They can be run simultaneously in the comparison view.
+
+---
+
+## Six generations
+
+| Version | Question | Conditions × seeds | Report |
+| --- | --- | --- | --- |
+| V0.1 | Does a self-model change behaviour when errors are cheap? | 13 × 100 | `docs/RESEARCH_REPORT.md` |
+| V0.2 | What changes when priors are uninformed and reliability is learned? | 23 × 100 | `docs/V02_RESEARCH_REPORT.md` |
+| V0.3 | Residual meta-modelling, risk-sensitive control and epistemic traps | 52 × 100 | `docs/V03_RESEARCH_REPORT.md` |
+| V0.4 | Precision coding, PP-1 illusions and the AST-1 attention schema | 54 × 100 | `docs/V04_RESEARCH_REPORT.md` |
+| V0.5 | Unified precision/attribution/trap control and selective gating | 52 × 100 | `docs/V05_RESEARCH_REPORT.md` |
+| V0.6 | Causal ablations of the integrated architecture and four adversarial controls | 87 × 100 | `docs/V06_RESEARCH_REPORT.md` |
+
+V0.6 adds a capacity-limited workspace, global broadcast, higher-order reliability monitoring,
+an attention schema, a bounded cognitive rollout and recurrent settling, each independently
+ablated. The manuscript reports an **ablation-based functional dissociation** and an
+**empirically observed three-way trade-off** between illusion absorption, tracking and
+attribution. It also reports the limits: weak shadow AUROC, class-imbalanced attribution, and
+flat/reactive foraging advantages.
 
 ---
 
@@ -160,28 +197,23 @@ produces the same state as full ticks (covered by tests).
 
 ```
 src/
-  simulation/                 pure TypeScript, no React or DOM
-    environment/              world generation + physical dynamics
-    agent/
-      perception/             local view → per-action features
-      memory/                 bounded rolling history
-      world-model/            external outcome predictors
-      self-model/             internal state estimators
-      meta-model/             reliability and level crossing
-      agent.ts                orchestration + utility construction
-    experiments/              tick engine + parallel mode runner
-    metrics/                  sliding windows, calibration, adaptation
-    events/                   data-derived event text
-    types.ts config.ts math.ts rng.ts
+  simulation/
+    agent/ environment/ experiments/ metrics/ events/   V0.1 engine
+    v02/ v03/ v04/ v05/ v06/                            later opt-in engines
   components/                 dashboard panels and SVG primitives
+  research/                   findings, lab and paper views
+  home/                       landing narrative
   ui/                         React hooks for simulation and comparison
-tests/                        determinism, model, level-crossing and comparison tests
-tools/                        headless probes
-docs/MODEL.md                 equations and constants
+tests/                        determinism, model, level-crossing and research tests
+tools/                        validators, analyzers, figure and manifest generators
+docs/                         research reports and the publication audit
+paper/                        manuscript, arXiv source, figures and PDFs
+research/                     raw per-run JSON and aggregate artifacts
+public/paper/                 statically served manuscript, figures and PDF
 ```
 
-The simulation imports nothing from React. All model updates are ordinary numeric code with
-inspectable coefficients.
+The simulation engines import nothing from React. All model updates are ordinary numeric code
+with inspectable coefficients.
 
 ---
 
@@ -195,7 +227,7 @@ inspectable coefficients.
 - Exactly two meta levels.
 - The self-model can be wrong, is measured against ground truth outside itself, and can recover.
 
-## V0.1 status
+## V0.1 engine status
 
 - Agent survives and navigates under fatigue-dependent cost, success and energy weight.
 - World model learns from online prediction errors.
@@ -229,6 +261,27 @@ PP-1, Goodhart and five-link intervention controls.
 PP-1 illusion, multi-step directional meta targets, epistemic preparation, strain-to-outcome
 consistency, and the AST-1 attention-schema ablation.
 
+`docs/V05_RESEARCH_REPORT.md` contains the V0.5 audit: the unified precision/attribution/trap stack,
+selective transient gating, the plateau-breaking probe and the non-Pareto trade-off.
+
+`docs/V06_RESEARCH_REPORT.md` contains the V0.6 audit: the full 7×5 mechanism rubric, four
+matched-compute adversarial controls, the crossed ablation matrix, the untouched holdout
+replication, and the hardening experiments. The publication audit is in
+`docs/FINAL_PUBLICATION_AUDIT.md`.
+
+### Hardening experiments
+
+- **V0.3 2×2 factorial** (`research/hardening-factorial.json`): residual meta-model × risk-sensitive
+  bound. Neither component nor their interaction is significant in the standard or shift regime;
+  the earlier meta-on gain is therefore reported as a **loop-level L5 effect**, not a component effect.
+- **V0.4 9-point suppression sweep** (`research/hardening-sweep.json`): absorption rises
+  0.167 → 0.931 while MAE rises 1.466 → 4.586 and macro-F1 generally declines. At the frozen
+  default exponent (1.0) it reproduces V0.4 (0.828 / 2.743 / 0.515).
+- **Untouched V0.6 holdout** (seeds 10001–10100, 8,700 episodes,
+  `research/v06-holdout-results.json`): full-architecture absorption 0.808 vs 0.814, coherence
+  0.932 vs 0.949, macro-F1 0.501 vs 0.502, fork solved 85% vs 84%. Secondary instability is
+  disclosed (No-RPT fork 26% vs 39%; No-AST latency 5.8 vs 1.3 ticks).
+
 ```bash
 npx tsx tools/validate.ts   # V0.1: 100 seeds × 13 conditions × 1,200 ticks + corruption cells
 npx tsx tools/analyze.ts    # V0.1 tables and research/analysis.json
@@ -241,11 +294,39 @@ npm run validate:v06        # V0.6: full 7×5 rubric, 8,700 episodes
 npm run validate:holdout    # V0.6: untouched holdout seeds 10001–10100
 npm run validate:hardening  # V0.3 factorial, V0.4 sweep, holdout comparison
 npm run manifest            # SHA-256 sums + dependency/runtime manifest
+npm run paper:figures       # regenerate paper/figures from research/*.json
+npm run paper:arxiv         # rebuild the arXiv source zip
 ```
 
 Open the dashboard and use the header to switch between **V0.1, V0.2, V0.3, V0.4, V0.5** and **V0.6**. Each
 version is a separate opt-in research stack; the research record, figures and manuscript are reachable
 from **Findings** and **Paper**.
+
+## Publication and reproducibility
+
+- **Manuscript:** `paper/main.pdf` (16 pages); arXiv source `paper/arxiv/main.pdf` (14 pages) and
+  `paper/arxiv/arxiv-submission.zip`.
+- **Title:** *When Self-Models Trap Themselves: Causal Ablations, Functional Dissociation, and
+  Precision Trade-Offs of Consciousness Indicators in a White-Box Agent*.
+- **Paper page:** `/paper`; **findings:** `/findings`; **live lab:** https://strangeloops.pages.dev.
+
+| Protocol | Cells | Seeds | Episodes |
+| --- | ---: | ---: | ---: |
+| V0.1–V0.6 development | 281 | 100 | 28,100 |
+| V0.1 corruption probes | 8 | 100 | 800 |
+| V0.6 untouched holdout | 87 | 100 | 8,700 |
+| V0.3 2×2 factorial | 8 | 100 | 800 |
+| V0.4 9-point sweep | 54 | 100 | 5,400 |
+| **Total unique** | | | **43,800** |
+
+- `research/SHA256SUMS.txt` and `research/MANIFEST.json` record checksums and exact runtime /
+  dependency versions for all archived JSON artifacts.
+- `research/HOLDOUT_MANIFEST.json` records the untouched seeds 10001–10100 and the unchanged V0.6
+  engine baseline (commit `1b63667`).
+- The repository is **private at submission**; no DOI has been minted. An archived snapshot is
+  available from the author on request.
+- Verification: `npm run typecheck`, `npm test` (73/73), `npm run build`, and clean LaTeX builds
+  with no overfull boxes or undefined references.
 
 ## Licence
 
