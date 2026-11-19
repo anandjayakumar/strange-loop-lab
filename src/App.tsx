@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SiteHeader } from "./components/SiteHeader";
+import { LandingHeader } from "./components/LandingHeader";
 import { HomePage } from "./home/HomePage";
 import { PaperPage } from "./paper/PaperPage";
 import { FindingsPage } from "./research/FindingsPage";
@@ -72,9 +72,7 @@ export default function App() {
 
   return (
     <div>
-      {route.name === "home" ? null : (
-        <SiteHeader active={route.name} onNavigate={navigate} />
-      )}
+      <LandingHeader active={route.name} onNavigate={navigate} />
 
       {route.name === "home" ? <HomePage onNavigate={navigate} /> : null}
 
