@@ -6,6 +6,19 @@ dist-ssr
 .vite
 coverage
 
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+.dev.vars
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
 .wrangler/
 
 .opencode/
