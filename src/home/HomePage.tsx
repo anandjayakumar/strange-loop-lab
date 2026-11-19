@@ -29,8 +29,8 @@ function RouteButton({
       }}
       className={
         variant === "solid"
-          ? "route-solid inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#e0a267] px-5 font-sans text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#f0c08f]"
-          : "inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#ece6da]/25 px-5 font-sans text-[10.5px] font-medium uppercase tracking-[0.12em] text-[#d8d0c1] transition-colors hover:border-[#e0a267] hover:text-[#f6f1e6]"
+          ? "route-pill route-solid inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#e0a267] px-5 font-sans text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#f0c08f]"
+          : "route-pill inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[#ece6da]/25 px-5 font-sans text-[10.5px] font-medium uppercase tracking-[0.12em] text-[#d8d0c1] transition-colors hover:border-[#e0a267] hover:text-[#f6f1e6]"
       }
     >
       {children}
@@ -72,7 +72,7 @@ function LessonCard({
               event.preventDefault();
               onNavigate(`/research?version=${callout.researchVersion}`);
             }}
-            className="route-solid inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-[#ece6da] px-3.5 font-sans text-[9px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#e0a267]"
+            className="route-pill route-solid inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-[#ece6da] px-3.5 font-sans text-[9px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#e0a267]"
           >
             <FlaskConical size={11} />
             Run this in the lab
@@ -85,7 +85,7 @@ function LessonCard({
               event.preventDefault();
               onNavigate(`/findings#${callout.findingsAnchor}`);
             }}
-            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-full border border-[#ece6da]/25 px-3.5 font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-[#d8d0c1] transition-colors hover:border-[#e0a267] hover:text-[#f6f1e6]"
+            className="route-pill inline-flex h-8 items-center justify-center gap-1.5 rounded-full border border-[#ece6da]/25 px-3.5 font-sans text-[9px] font-medium uppercase tracking-[0.12em] text-[#d8d0c1] transition-colors hover:border-[#e0a267] hover:text-[#f6f1e6]"
           >
             <BookOpen size={11} />
             See full data in findings
@@ -252,7 +252,7 @@ export function HomePage({ onNavigate }: { onNavigate: (target: string) => void 
 
             <footer className="pt-10">
               <div className="font-sans text-[8.5px] font-semibold uppercase tracking-[0.22em] text-[#e0a267]">
-                What did we actually build?
+                Explore the evidence
               </div>
               <p className="mt-3 max-w-[70ch] font-serif text-[22px] leading-[1.4] text-[#f6f1e6]">
                 A falsifiable instrument for studying self-reference — not a conscious creature.

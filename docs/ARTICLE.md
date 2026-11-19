@@ -2,7 +2,7 @@
 
 In 1979, the cognitive scientist Douglas Hofstadter published *Gödel, Escher, Bach*, proposing a radical idea about how minds work. Consciousness and the sense of "I," Hofstadter argued, are not magical substances. Instead, they emerge from **strange loops**—tangled hierarchies where a system builds an internal model of the world, then builds a model of *itself*, and eventually allows those high-level self-beliefs to loop back down and rewrite its own low-level behavior and learning.
 
-More recently, in 2023, a coalition of nineteen leading neuroscientists, philosophers, and AI researchers (including Yoshua Bengio, David Chalmers, and Stanislas Dehaene) published a landmark framework asking how we could ever test for consciousness-linked properties in artificial systems. Their answer: stop being fooled by chatbots that merely *say* they are self-aware. Instead, look for specific **computational mechanisms**—like top-down predictive models, metacognitive monitors that distinguish internal knowledge from sensory static, and attention schemas that track how the mind focuses.
+More recently, a coalition of twenty leading neuroscientists, philosophers, and AI researchers (including Patrick Butlin, Robert Long, Yoshua Bengio, David Chalmers, and Stephen Fleming) published a landmark framework (preprint 2023; *Trends in Cognitive Sciences*, 2025) asking how we could ever test for consciousness-linked properties in artificial systems. Their answer: stop being fooled by chatbots that merely *say* they are self-aware. Instead, look for specific **computational mechanisms**—like top-down predictive models, metacognitive monitors that distinguish internal knowledge from sensory static, and attention schemas that track how the mind focuses.
 
 We set out to test both ideas in the cleanest way possible. 
 
@@ -16,7 +16,7 @@ What we discovered was a series of surprising lessons about why brains need self
 
 Our organism’s life is simple: it wanders a 30×30 grid looking for food (green squares) while avoiding obstacles. Moving burns energy and builds up physical fatigue; resting restores energy and clears fatigue. Importantly, the organism cannot see a digital battery percentage of its true energy. Like a biological animal, it only feels noisy, imperfect internal sensations—a rough feeling of hunger, muscle strain, and whether its legs just slipped.
 
-In our first prototype (**Version 0**), we gave the organism a **First-Order Self-Model**—an internal notebook that learns how much energy moving costs and how tired its body is—plus a **Second-Order Meta-Model** designed to track whether that notebook could be trusted. 
+In our first prototype (**Version 0.1**), we gave the organism a **First-Order Self-Model**—an internal notebook that learns how much energy moving costs and how tired its body is—plus a **Second-Order Meta-Model** designed to track whether that notebook could be trusted. 
 
 At first glance, the dashboard looked amazing. The organism survived, foraged, and updated its beliefs. 
 
@@ -55,7 +55,7 @@ What happened when the organism **had a working First-Order Self-Model**? Becaus
 This revealed a profound principle: **a rock, or a blind reflex machine, cannot develop a psychological phobia.** Acquiring a First-Order Self-Model gives an organism the power to plan and survive—but it simultaneously creates a brand-new cognitive vulnerability: the ability to lock itself inside a false belief about its own limits.
 
 How does a mind escape a trap created by its own self-beliefs? 
-* **Random recklessness** ("just take random actions") broke the trap 86% of the time, **but killed the organism when it blundered onto rough terrain while exhausted.**
+* **Random recklessness** ("just take random actions") broke the trap 93% of the time, **but killed the organism when it blundered onto rough terrain while exhausted.**
 * **Second-Order Epistemic Curiosity** solved the puzzle safely. Because the Second-Order Meta-Model tracks *how much evidence* sits behind each belief, it realized: *"My Self-Model says rough terrain is deadly—but I have zero actual experience to back that up!"* Waiting until its energy reserves were safely high (and even deliberately resting to prepare in **Version 0.5**), the Meta-Model triggered a single, safe diagnostic step onto the rough terrain. In a single step, the illusion shattered, the phobia vanished, and the organism feasted with **zero deaths**.
 
 **First-order self-reference creates the trap; second-order self-reference is the cure.**
@@ -90,7 +90,7 @@ Even in a tiny digital creature, there is no single "perfect" brain setting. Eve
 
 The result is a **double dissociation**. Remove the competition and the agent thrashes between actions under conflict. Remove the broadcast and it loses binding even when the winner is unchanged. Remove the higher-order monitor and it can no longer tell whether its body, its energy sense, or its fatigue sense is wrong—and it starts rewriting its body model around a lying sensor. Remove the attention schema and it never recovers after a glitch. Remove the cognitive simulation and it refuses to pay for a diagnostic probe, because it cannot imagine that the probe will change what it knows. A conventional planner that simulates only physical states, with the same horizon, also refuses.
 
-But the same experiments produced uncomfortable negatives. Confidence calibration stayed **below target** when the energy channel itself started lying. Attribution was weak for shared degradation. A simple reactive control diagnosed faults *better* than the full architecture. And the architecture was out-foraged by simpler controls in two of three unseen worlds. The loop buys real capabilities, but not a better forager—and not every elegant mechanism earns its keep. The one earlier negative that did not survive scrutiny was recurrent settling: the first V0.6 run let the one-pass filter keep a hard outlier clamp, which hid the loop's contribution. With that artefact removed, three settling passes raise one-tick illusion absorption from 0.290 to 0.814, so the loop is load-bearing after all.
+But the same experiments produced uncomfortable negatives. Confidence calibration stayed **below target** when the energy channel itself started lying. Attribution was weak for shared degradation. A simple reactive control out-foraged the full architecture during sensor disruptions. And the architecture was out-foraged by simpler controls in all three unseen worlds (by reactive control in Gen 1–2 and by the flat blackboard in Gen 3), even while V0.6 won conflict coherence and epistemic fork solving. The loop buys real capabilities, but not a better forager—and not every elegant mechanism earns its keep. The one earlier negative that did not survive scrutiny was recurrent settling: the first V0.6 run let the one-pass filter keep a hard outlier clamp, which hid the loop's contribution. With that artefact removed, three settling passes raise one-tick illusion absorption from 0.290 to 0.814, so the loop is load-bearing after all.
 
 ---
 
@@ -98,4 +98,4 @@ But the same experiments produced uncomfortable negatives. Confidence calibratio
 
 Did we build a conscious creature? **No—and we are emphatic about that.** Our organism has no feelings, no inner theatre, and no subjective experience. 
 
-What we *did* build is a clear, falsifiable proof of **why** nature—and future AI—might evolve strange loops in the first place. Once a creature needs an internal model of itself to survive a harsh world, it becomes vulnerable to its own blind spots and self-fulfilling fears. The only way out is to build a second level that watches the first—questioning its own certainty, diagnosing its own errors, and running safe experiments on itself to discover what it is truly capable of.
+What we *did* build is a clear, falsifiable demonstration of **why** nature—and future AI—might evolve strange loops in the first place. Once a creature needs an internal model of itself to survive a harsh world, it becomes vulnerable to its own blind spots and self-fulfilling fears. The only way out is to build a second level that watches the first—questioning its own certainty, diagnosing its own errors, and running safe experiments on itself to discover what it is truly capable of.

@@ -36,7 +36,7 @@
 <rect x="652" y="156" width="138" height="40" fill="rgb(158,198,170)" stroke="#ffffff" stroke-width="1" />
 <text x="721" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">56.9</text>
 <rect x="794" y="156" width="138" height="40" fill="rgb(242,221,213)" stroke="#ffffff" stroke-width="1" />
-<text x="863" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">2.6</text>
+<text x="863" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">2.7</text>
 <text x="210" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="500" fill="#111111" text-anchor="end">Physical MPC (H=4)</text>
 <rect x="226" y="204" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
 <text x="295" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">0.665</text>

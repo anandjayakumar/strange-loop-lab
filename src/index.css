@@ -260,6 +260,10 @@
   color: #17130d;
 }
 
+.article-prose a.route-pill {
+  text-decoration: none;
+}
+
 .article-prose a:hover {
     color: #f0c08f;
   }
@@ -319,6 +323,13 @@
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  header,
+  nav {
+    position: static !important;
   }
 }
 

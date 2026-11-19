@@ -52,6 +52,7 @@ const results = (version: string) => readJson<ResultsFile>(`${version}-results.j
 const analysis = (version: string) => readJson<Analysis>(`${version}-analysis.json`);
 
 const mean = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length);
+const fmt1 = (value: number) => (Math.round(value * 10) / 10).toFixed(1);
 const sd = (xs: number[]) => {
   if (xs.length < 2) return 0;
   const m = mean(xs);
@@ -503,7 +504,7 @@ function fig2() {
 
 function fig3() {
   const w = 960;
-  const h = 470;
+  const h = 488;
   const body: string[] = [];
   body.push(panelTitle(28, 30, "A", "L1 vulnerability and L2 rescue in the decoupled trap"));
   body.push(
@@ -542,21 +543,27 @@ function fig3() {
     );
   });
 
-  body.push(rect(28, 376, 904, 70, "#faf8f2", GRID, 1));
+  body.push(rect(28, 376, 904, 92, "#faf8f2", GRID, 1));
   body.push(
-    text(44, 400, "A causal first-order model creates the trap; a second-order probe escapes it.", {
+    text(44, 398, "A causal first-order model creates the trap; a second-order probe escapes it.", {
       size: 11,
       weight: 700,
     }),
   );
   body.push(
-    text(44, 420, "Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with lower foraging.", {
+    text(44, 416, "Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia", {
       size: 9.5,
       fill: MUTED,
     }),
   );
   body.push(
-    text(44, 436, "Decision-VoI probes without mortality in V0.3; the V0.5 plateau-breaking probe raises escape further while keeping zero deaths.", {
+    text(44, 432, "but yields a blind reactive walk with lower foraging.", {
+      size: 9.5,
+      fill: MUTED,
+    }),
+  );
+  body.push(
+    text(44, 450, "Decision-VoI probes without mortality in V0.3; the V0.5 plateau-breaking probe raises escape further while keeping zero deaths.", {
       size: 9.5,
       fill: MUTED,
     }),
@@ -688,9 +695,9 @@ function fig5() {
   const cols = [
     { head: ["Conflict", "coherence"], get: (row: (typeof controlRows)[number]) => row.coherence, fmt: (v: number) => v.toFixed(3) },
     { head: ["Fork", "solved"], get: (row: (typeof controlRows)[number]) => row.solved, fmt: (v: number) => `${Math.round(v * 100)}%` },
-    { head: ["Gen 1", "topology"], get: (row: (typeof controlRows)[number]) => row.gen[0], fmt: (v: number) => v.toFixed(1) },
-    { head: ["Gen 2", "non-linear"], get: (row: (typeof controlRows)[number]) => row.gen[1], fmt: (v: number) => v.toFixed(1) },
-    { head: ["Gen 3", "compound"], get: (row: (typeof controlRows)[number]) => row.gen[2], fmt: (v: number) => v.toFixed(1) },
+    { head: ["Gen 1", "topology"], get: (row: (typeof controlRows)[number]) => row.gen[0], fmt: (v: number) => fmt1(v) },
+    { head: ["Gen 2", "non-linear"], get: (row: (typeof controlRows)[number]) => row.gen[1], fmt: (v: number) => fmt1(v) },
+    { head: ["Gen 3", "compound"], get: (row: (typeof controlRows)[number]) => row.gen[2], fmt: (v: number) => fmt1(v) },
   ];
   const ranges = cols.map((col) => {
     const values = controlRows.map((row) => col.get(row));
@@ -770,7 +777,7 @@ if (browser) {
   const sizes: Record<string, [number, number]> = {
     fig1_architecture_loop: [960, 620],
     fig2_cross_version_progression: [1080, 400],
-    fig3_epistemic_trap_escape: [960, 470],
+    fig3_epistemic_trap_escape: [960, 488],
     fig4_trilemma_pareto: [980, 520],
     fig5_double_dissociation: [980, 432],
   };
