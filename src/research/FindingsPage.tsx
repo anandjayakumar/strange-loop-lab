@@ -654,7 +654,7 @@ export function FindingsPage({
                 no capacity limit and a matched-compute feedforward network.
               </p>
               <p className="mt-4 max-w-[64ch] text-[13.5px] leading-[1.75] text-lab-muted">
-                The answer is a ablation-based functional dissociation, not a victory lap. The bottleneck,
+                The answer is an ablation-based functional dissociation, not a victory lap. The bottleneck,
                 broadcast, higher-order monitor, attention schema, cognitive rollout and recurrent
                 settling each carry a capability the others do not. The final V0.6 run corrects
                 the original null: the recurrent loop is load-bearing, taking single-tick absorption to 0.814
