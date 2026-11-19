@@ -9,7 +9,7 @@
 
 export type RouteName = "home" | "research" | "findings" | "paper";
 
-export type VersionId = "v0" | "v02" | "v03" | "v04" | "v05";
+export type VersionId = "v0" | "v02" | "v03" | "v04" | "v05" | "v06";
 
 export interface RouteState {
   name: RouteName;
@@ -18,7 +18,7 @@ export interface RouteState {
   hash: string;
 }
 
-export const VERSION_IDS: VersionId[] = ["v0", "v02", "v03", "v04", "v05"];
+export const VERSION_IDS: VersionId[] = ["v0", "v02", "v03", "v04", "v05", "v06"];
 
 const NAV_EVENT = "strange-loop:navigate";
 
@@ -46,6 +46,7 @@ export function resolveHref(target: string): string {
     case "v03":
     case "v04":
     case "v05":
+    case "v06":
       return buildResearchHref(target);
     default:
       return "/";

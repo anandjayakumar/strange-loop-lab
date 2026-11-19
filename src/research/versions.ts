@@ -104,6 +104,24 @@ export const LAB_VERSIONS: LabVersion[] = [
     findingsAnchor: "v05",
     color: "#39643f",
   },
+  {
+    id: "v06",
+    label: "V0.6",
+    name: "Unified Cognitive Architecture",
+    short: "Four modules · workspace · recursive self-simulation",
+    era: "indicator properties under adversarial control",
+    milestone:
+      "Four specialist modules compete for a capacity-limited workspace; the ignited frame is broadcast back to perception, learning and the other modules, and a bounded rollout simulates the agent's own future beliefs. The result is a double dissociation: removing the bottleneck produces policy thrashing, removing broadcast degrades binding, removing HOT collapses attribution and plasticity routing, removing the attention schema abolishes post-conflict recovery, and removing cognitive self-simulation makes the epistemic fork unsolvable — while RPT itself adds nothing to single-tick absorption.",
+    guide:
+      "Start on Compound conflict and watch the four modules compete. Step one phase at a time: propose, ignite, query. Compare the intact run with No-GWT bottleneck and Flat blackboard (thrashing), No-AST (no recovery), and No cognitive self-simulation (no fork probe). Switch to Self-model / sensor disruption and read the four-way attribution and the somatic learning gain. The Quality space panel is the integrated HOT-4 state; the Recursive rollout panel shows the imagined future mode transitions.",
+    tryThis: [
+      "Run Compound conflict intact, then switch to No-GWT bottleneck and compare thrash.",
+      "Inject an energy-channel disruption and watch attribution and the somatic learning gain.",
+      "Switch to Epistemic fork with No cognitive self-simulation: the probe disappears.",
+    ],
+    findingsAnchor: "v06-indicators",
+    color: "#1d5c67",
+  },
 ];
 
 export const labVersion = (id: VersionId) =>

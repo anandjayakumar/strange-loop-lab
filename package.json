@@ -21,7 +21,8 @@
     "validate:v04": "tsx tools/v04validate.ts",
     "validate:v05": "tsx tools/v05validate.ts",
     "paper:figures": "tsx tools/generatePaperFigures.ts",
-    "paper:arxiv": "tsx tools/build-arxiv-submission.ts"
+    "paper:arxiv": "tsx tools/build-arxiv-submission.ts",
+    "validate:v06": "tsx tools/v06validate.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

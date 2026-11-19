@@ -37,7 +37,8 @@ const SECTIONS = [
   { id: "figures", label: "Figures", n: "02" },
   { id: "matrix", label: "Matrix", n: "03" },
   { id: "versions", label: "Deep dives", n: "04" },
-  { id: "frameworks", label: "Theory map", n: "05" },
+  { id: "v06-indicators", label: "V0.6 results", n: "05" },
+  { id: "frameworks", label: "Theory map", n: "06" },
 ];
 
 const FIGURES = [
@@ -179,7 +180,7 @@ export function FindingsPage({
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span className="label text-lab-amber">Findings</span>
             <span className="font-serif text-[13px] italic text-lab-faint">
-              cross-version scientific record · V0.1 → V0.5
+              cross-version scientific record · V0.1 → V0.6
             </span>
           </div>
           <a
@@ -215,7 +216,7 @@ export function FindingsPage({
                 when an agent learns a model of its own body (M₁) and then a second-order model of when
                 that model can be trusted (M₂), do those models <em className="text-lab-text">causally</em>{" "}
                 change what it does, what it learns and whether it survives? Across five architectures
-                and 19,400 seeded runs, the answer is conditional. A self-model is behaviourally inert
+                and 23,900 seeded runs, the answer is conditional. A self-model is behaviourally inert
                 when errors are cheap, harmful when doubt is symmetric, and decisive when the agent can
                 act on an asymmetric, risk-sensitive estimate of its own reliability. The same loop that
                 makes the model useful — trusting it enough to act — is what makes it hard to correct.
@@ -411,7 +412,7 @@ export function FindingsPage({
             n="03"
             tag="matrix"
             title="The evolution matrix"
-            subtitle="Standardised metrics across V0.1 → V0.5. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
+            subtitle="Standardised metrics across V0.1 → V0.6. Green marks a validated breakthrough, vermilion a partial result or trade-off, red a negative result or regression."
           />
           <div className="mb-4 flex flex-wrap items-center gap-5">
             {(["good", "warn", "bad", "neutral"] as Tone[]).map((tone) => (
@@ -475,8 +476,8 @@ export function FindingsPage({
           </div>
           <p className="mt-3 max-w-[80ch] font-serif text-[12px] italic leading-relaxed text-lab-faint">
             Values are from each version&rsquo;s report at the 100-seed protocol. V0.5 figures use the
-            100-seed run unless marked pilot. &ldquo;—&rdquo; means the mechanism did not exist in
-            that version.
+            100-seed run unless marked pilot; V0.6 figures use the 100-seed validation (4,500
+            episodes). &ldquo;—&rdquo; means the mechanism did not exist in that version.
           </p>
         </section>
 
@@ -632,10 +633,187 @@ export function FindingsPage({
           ))}
         </section>
 
+        {/* ------------------------------------------------------------ v0.6 */}
+        <section id="v06-indicators" className="mt-20 scroll-mt-32">
+          <SectionHead
+            n="05"
+            tag="V0.6"
+            title="Unified architecture: indicator properties under adversarial control"
+            subtitle="Four competing modules, a capacity-limited workspace, global broadcast, a higher-order monitor, an attention schema and a bounded cognitive rollout — each independently ablated and compared with four matched-compute controls."
+          />
+
+          <div className="grid grid-cols-1 gap-x-12 gap-y-8 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <p className="editorial-drop max-w-[64ch] text-[14px] leading-[1.75] text-lab-muted">
+                V0.6 asks a different question from V0.1–V0.5. It is not another survival
+                iteration. It asks whether the integrated, self-referential mechanisms are{" "}
+                <em className="text-lab-text">causally necessary</em> for a set of cognitive
+                capabilities, and whether those capabilities survive comparison with a reactive
+                reflex, a physical-only MPC planner with the same horizon, a flat blackboard with
+                no capacity limit and a matched-compute feedforward network.
+              </p>
+              <p className="mt-4 max-w-[64ch] text-[13.5px] leading-[1.75] text-lab-muted">
+                The answer is a double dissociation, not a victory lap. The bottleneck,
+                broadcast, higher-order monitor, attention schema and cognitive rollout each carry
+                a capability the others do not. But the recurrent settling loop adds nothing to
+                single-tick absorption, confidence calibration inverts under energy-channel
+                corruption, attribution is weak for shared degradation, and the architecture
+                loses to simpler controls on two of three unseen-environment suites.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                <a
+                  className="btn btn-primary h-9 px-4"
+                  href="/research?version=v06"
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    onOpenVersion("v06");
+                  }}
+                >
+                  Open V0.6 in the lab
+                </a>
+                <a className="btn h-9 px-4" href="/paper">
+                  Read the manuscript
+                </a>
+              </div>
+            </div>
+            <div className="lg:col-span-5">
+              <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[3px] border border-lab-line bg-lab-line">
+                {[
+                  ["99%", "fork probes", "vs 1% without AE-2"],
+                  ["0.057", "conflict thrash", "vs 0.296 without bottleneck"],
+                  ["5", "ticks to recover", "vs 256 without AST"],
+                  ["0.553", "4-way macro-F1", "vs 0.000 without HOT"],
+                ].map(([value, label, note]) => (
+                  <div key={label} className="bg-lab-panel px-4 py-4">
+                    <div className="num text-[28px] leading-none text-lab-text">{value}</div>
+                    <div className="mt-1.5 font-sans text-[8.5px] uppercase tracking-[0.14em] text-lab-muted">
+                      {label}
+                    </div>
+                    <div className="mt-1 font-serif text-[11px] italic text-lab-faint">{note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 overflow-x-auto border-y border-lab-line">
+            <table className="w-full min-w-[720px] border-collapse text-left">
+              <thead>
+                <tr className="border-b border-lab-line">
+                  {["mechanism", "exp 1 settling", "exp 2 competition", "exp 3 meta", "exp 4 fork", "exp 5 reversal"].map(
+                    (label) => (
+                      <th
+                        key={label}
+                        className="px-3 py-2 font-sans text-[8.5px] font-medium uppercase tracking-[0.14em] text-lab-faint"
+                      >
+                        {label}
+                      </th>
+                    ),
+                  )}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["RPT (K = 3)", "0 (null)", "—", "—", "—", "—"],
+                  ["GWT bottleneck", "—", "++", "—", "—", "—"],
+                  ["GWT broadcast", "—", "+", "—", "—", "0"],
+                  ["HOT reliability", "—", "—", "++", "+", "++"],
+                  ["AST-1 schema", "+", "++", "—", "—", "—"],
+                  ["AE-2 cognitive rollout", "—", "—", "—", "++", "—"],
+                ].map((row) => (
+                  <tr key={row[0]} className="border-b border-lab-line/70">
+                    <td className="px-3 py-2 font-serif text-[13px] text-lab-text">{row[0]}</td>
+                    {row.slice(1).map((cell, index) => (
+                      <td key={index} className="px-3 py-2 font-mono text-[10px] text-lab-muted">
+                        <span
+                          className={
+                            cell === "++"
+                              ? "text-lab-green"
+                              : cell === "0"
+                                ? "text-lab-red"
+                                : ""
+                          }
+                        >
+                          {cell}
+                        </span>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-6 lg:grid-cols-2">
+            <div>
+              <div className="label">what survived</div>
+              <ul className="mt-2 space-y-2 text-[12.5px] leading-relaxed text-lab-muted">
+                <li>
+                  <span className="text-lab-text">Capacity competition.</span> Removing the
+                  bottleneck raises action switching from 0.057 to 0.296 and drops goal coherence
+                  from 0.91 to 0.68 (dz −1.33, p = 0.002). The flat blackboard is statistically
+                  indistinguishable from the no-bottleneck ablation.
+                </li>
+                <li>
+                  <span className="text-lab-text">Broadcast.</span> Removing the return path
+                  degrades coherence from 0.91 to 0.86 (dz 1.21, p = 0.002) without changing the
+                  winner. The broadcast is doing work beyond selection.
+                </li>
+                <li>
+                  <span className="text-lab-text">HOT monitoring.</span> Attribution macro-F1 falls
+                  from 0.553 to 0.000, somatic plasticity is no longer suppressed during sensor
+                  corruption (1.00 vs 0.58–0.88), and first-order MAE rises by 0.74–1.22 (p =
+                  0.002).
+                </li>
+                <li>
+                  <span className="text-lab-text">Cognitive self-simulation.</span> The fork probe
+                  rate falls from 99% to 1% and solved forks from 40% to 1% (dz 0.76). Physical MPC
+                  (3%) and the reactive control (4%) also fail: modelling future physical state is
+                  not enough.
+                </li>
+                <li>
+                  <span className="text-lab-text">Attention schema.</span> Post-conflict recovery
+                  takes 5 ticks with AST-1 and never happens without it (dz −44.4), and AST also
+                  improves absorption by 0.03 and stationary MAE by 0.09.
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div className="label">what failed</div>
+              <ul className="mt-2 space-y-2 text-[12.5px] leading-relaxed text-lab-muted">
+                <li>
+                  <span className="text-lab-text">RPT is a null result.</span> Absorption is 0.823
+                  with RPT and 0.811 without it (+0.01, p = 0.224); stationary MAE is unchanged.
+                  The V0.5 precision gate, not within-tick recurrence, carries the absorption.
+                </li>
+                <li>
+                  <span className="text-lab-text">Calibration inverts under sensor corruption.</span>{" "}
+                  Reliability AUROC is 0.73 for self-disruption and 0.78 for fatigue, but 0.42 for
+                  energy and 0.41 for shared. Observed error and latent error dissociate when the
+                  channel itself is lying.
+                </li>
+                <li>
+                  <span className="text-lab-text">Attribution is class-imbalanced.</span> Energy
+                  shifts are identified 97/100, but shared degradation only 44/100 and a self-model
+                  disruption 61/100. A shared shift is statistically close to an energy shift when
+                  the fatigue channel is already quiet.
+                </li>
+                <li>
+                  <span className="text-lab-text">Generalization is mixed.</span> The architecture
+                  wins the compound suite (13.9 vs 3.0–7.9 resources) but loses to reactive and flat
+                  controls on unseen topology (31.8 vs 63.4 / 51.1) and non-linear dynamics (29.9
+                  vs 61.5 / 53.8).
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* --------------------------------------------------------- frameworks */}
         <section id="frameworks" className="mt-20 scroll-mt-32">
           <SectionHead
-            n="05"
+            n="06"
             tag="framework"
             title="Theory map: Hofstadter and the indicator programme"
             subtitle="How the implemented mechanisms map onto cognitive-science frameworks — and where the mapping stops. Every row is a computational mechanism, not a claim about experience."

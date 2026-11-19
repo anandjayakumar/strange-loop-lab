@@ -72,7 +72,7 @@ function LessonCard({
               event.preventDefault();
               onNavigate(`/research?version=${callout.researchVersion}`);
             }}
-            className="inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-[#ece6da] px-3.5 font-sans text-[9px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#e0a267]"
+            className="route-solid inline-flex h-8 items-center justify-center gap-1.5 rounded-full bg-[#ece6da] px-3.5 font-sans text-[9px] font-semibold uppercase tracking-[0.12em] text-[#17130d] transition-colors hover:bg-[#e0a267]"
           >
             <FlaskConical size={11} />
             Run this in the lab
@@ -161,7 +161,7 @@ export function HomePage({ onNavigate }: { onNavigate: (target: string) => void 
           ) : null}
 
           <p className="mt-6 max-w-[68ch] text-[13.5px] leading-[1.75] text-[#a49a88]">
-            A transparent digital organism, five evolutionary generations, and a set of measured
+            A transparent digital organism, six evolutionary generations, and a set of measured
             lessons about why a mind needs a model of itself — and why that model can become the
             trap it needs a second level to escape.
           </p>

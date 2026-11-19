@@ -84,6 +84,16 @@ Even in a tiny digital creature, there is no single "perfect" brain setting. Eve
 
 ---
 
+### Lesson 6: What the Whole Loop Buys — and What It Doesn’t
+
+**Version 0.6** stops adding survival tricks and asks a stricter question: are the self-referential mechanisms *actually necessary* for a cognitive capability, or do they just look impressive? We built four specialist modules (world, body, meta-diagnosis, curiosity), made them compete for one capacity-limited workspace, broadcast the winner back to everyone, and let the agent run a short internal simulation of its own future beliefs.
+
+The result is a **double dissociation**. Remove the competition and the agent thrashes between actions under conflict. Remove the broadcast and it loses binding even when the winner is unchanged. Remove the higher-order monitor and it can no longer tell whether its body, its energy sense, or its fatigue sense is wrong—and it starts rewriting its body model around a lying sensor. Remove the attention schema and it never recovers after a glitch. Remove the cognitive simulation and it refuses to pay for a diagnostic probe, because it cannot imagine that the probe will change what it knows. A conventional planner that simulates only physical states, with the same horizon, also refuses.
+
+But the same experiments produced uncomfortable negatives. Adding three recurrent settling passes did **not** improve the ability to ignore a one-tick sensory lie; the older precision gate already did that. Confidence calibration **inverted** when the energy channel itself started lying. A simple reactive control diagnosed faults *better* than the full architecture. And the architecture was out-foraged by simpler controls in two of three unseen worlds. The loop buys real capabilities, but not a better forager—and not every elegant mechanism earns its keep.
+
+---
+
 ### What Did We Actually Build?
 
 Did we build a conscious creature? **No—and we are emphatic about that.** Our organism has no feelings, no inner theatre, and no subjective experience. 

@@ -205,7 +205,7 @@ inspectable coefficients.
 - A/B/C run under identical seeds, including simultaneous background runs.
 - Micro-stepping, reset, model reset and per-edge toggles are implemented.
 - Determinism, dynamics, micro-stepping, V0.1/V0.2/V0.3 ablations, shadow isolation and learned-meta
-  invariants are covered by 67 tests.
+  invariants are covered by 73 tests.
 
 See `docs/MODEL.md` for the equations and tunable constants.
 
@@ -237,9 +237,10 @@ npm run validate:v02        # V0.2: 100 seeds × 23 conditions × 1,000 ticks + 
 npm run validate:v03        # V0.3: 100 seeds × 52 conditions × 1,000/1,600 ticks
 npm run validate:v04        # V0.4: 100 seeds × 54 conditions × 1,000/1,600 ticks
 npm run validate:v05        # V0.5: unified precision/attribution/trap validation
+npm run validate:v06        # V0.6: unified architecture, ablations and adversarial controls
 ```
 
-Open the dashboard and use the header to switch between **V0.1, V0.2, V0.3, V0.4** and **V0.5**. Each
+Open the dashboard and use the header to switch between **V0.1, V0.2, V0.3, V0.4, V0.5** and **V0.6**. Each
 version is a separate opt-in research stack; the research record, figures and manuscript are reachable
 from **Findings** and **Paper**.
 

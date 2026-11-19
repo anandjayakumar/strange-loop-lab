@@ -5,7 +5,7 @@
 
 ## Abstract
 
-Self-models are usually evaluated as predictors. We ask what happens when a self-model becomes part of the system it models. Strange Loop Lab is a deterministic, non-neural, white-box survival sandbox in which an agent in a 30 × 30 metabolic world learns a first-order model of its own body (M₁), a second-order model of M₁'s reliability (M₂), and — in later generations — a model of its own precision allocation. Across five architectural generations and **19,400 total simulation runs** (100 paired seeds per condition across 13 conditions in V0.1, 23 in V0.2, 52 in V0.3, 54 in V0.4 and 52 in V0.5), we report four findings. (i) A learned self-model is behaviourally inert in a forgiving world: a frozen model with 0.09 self-state accuracy survives 99/100 runs and forages as well as a learned one (64.6 vs 61.0 resources, p = 0.057). Stakes are what make self-modeling matter. (ii) Naive second-order doubt is harmful: meta-on minus meta-off is **−6.84 [−11.11, −2.57]** resources in V0.2, because doubting the self-model disables exhaustion warnings. Asymmetric, risk-sensitive bounds reverse the sign to **+12.34 to +28.82** resources across regimes in V0.3, and **+13.75 to +28.37** in V0.5 (all p < 0.001). (iii) A causal first-order self-model creates a self-fulfilling epistemic trap. Pragmatic maximisation never samples the feared terrain (**0/100** escapes, **0.0** resources); breaking L1 (prediction→action) removes the phobia but yields a blind reactive walk. Second-order decision-value-of-information probing escapes in **66/100** (V0.3) and **74/100** (V0.5) with **zero deaths**, versus **93/100** for random exploration at **44.1** resources and one death. (iv) Precision gating buys illusion absorption at a measured cost: absorbing a top-down interoceptive pulse rises from **0.00** (V0.3) to **0.830** (V0.4), while stationary MAE rises from 1.68 to 2.74 and four-way attribution macro-F1 falls from 0.604 to 0.515. Selective transient gating (V0.5) recovers part of the cost (MAE 2.04; F1 0.577; absorption 0.79 in a 20-seed pilot) but no configuration dominates: the three targets form a **Pareto trilemma**. All mechanisms are predictors and controllers with measurable behaviour. Nothing here is evidence of consciousness or subjective experience.
+Self-models are usually evaluated as predictors. We ask what happens when a self-model becomes part of the system it models. Strange Loop Lab is a deterministic, non-neural, white-box survival sandbox in which an agent in a 30 × 30 metabolic world learns a first-order model of its own body (M₁), a second-order model of M₁'s reliability (M₂), and — in later generations — a model of its own precision allocation. Across six architectural generations and **23,900 total simulation runs** (100 paired seeds per condition across 13 conditions in V0.1, 23 in V0.2, 52 in V0.3, 54 in V0.4, 52 in V0.5 and 45 in V0.6), we report five findings. (i) A learned self-model is behaviourally inert in a forgiving world: a frozen model with 0.09 self-state accuracy survives 99/100 runs and forages as well as a learned one (64.6 vs 61.0 resources, p = 0.057). Stakes are what make self-modeling matter. (ii) Naive second-order doubt is harmful: meta-on minus meta-off is **−6.84 [−11.11, −2.57]** resources in V0.2, because doubting the self-model disables exhaustion warnings. Asymmetric, risk-sensitive bounds reverse the sign to **+12.34 to +28.82** resources across regimes in V0.3, and **+13.75 to +28.37** in V0.5 (all p < 0.001). (iii) A causal first-order self-model creates a self-fulfilling epistemic trap. Pragmatic maximisation never samples the feared terrain (**0/100** escapes, **0.0** resources); breaking L1 (prediction→action) removes the phobia but yields a blind reactive walk. Second-order decision-value-of-information probing escapes in **66/100** (V0.3) and **74/100** (V0.5) with **zero deaths**, versus **93/100** for random exploration at **44.1** resources and one death. (iv) Precision gating buys illusion absorption at a measured cost: absorbing a top-down interoceptive pulse rises from **0.00** (V0.3) to **0.830** (V0.4), while stationary MAE rises from 1.68 to 2.74 and four-way attribution macro-F1 falls from 0.604 to 0.515. Selective transient gating (V0.5) recovers part of the cost (MAE 2.04; F1 0.577; absorption 0.79 in a 20-seed pilot) but no configuration dominates: the three targets form a **Pareto trilemma**. (v) A unified architecture (V0.6) adds four competing modules, a capacity-limited workspace with global broadcast, higher-order reliability monitoring, an attention schema and a bounded rollout that simulates the agent's own future beliefs. Each mechanism is ablated and compared with four matched-compute controls. The result is a double dissociation: removing the bottleneck raises policy thrashing from **0.057 to 0.296** and drops goal coherence from **0.91 to 0.68**; removing the attention schema makes post-conflict recovery never happen (**5 vs 256 ticks**); removing the higher-order monitor collapses four-way attribution (**macro-F1 0.553 → 0.000**) and abolishes plasticity routing; removing cognitive self-simulation makes an epistemic fork unsolvable (**probe rate 99% → 1%**, solved forks **40% → 1%**), while a physical-only MPC planner at the same horizon probes only **2%**. But within-tick recurrent settling is a null result for single-tick absorption (**0.823 vs 0.811**, p = 0.224), reliability calibration inverts under energy-channel corruption (AUROC 0.42), attribution is weak for shared degradation (44/100), and simpler controls out-forage the architecture in two of three unseen environments. All mechanisms are predictors and controllers with measurable behaviour. Nothing here is evidence of consciousness or subjective experience.
 
 ---
 
@@ -23,7 +23,7 @@ The work sits at the intersection of four literatures.
 
 **Internal precision and the attention schema.** Attention Schema Theory proposes that the brain models its own attentional state and that this model is what makes attention reportable [8,9]. AST work has mostly targeted external visual selection. We extend AST-1 to **internal 5-channel precision allocation**: M₂ estimates the agent's own precision weights over interoceptive channels, and the schema gates prior versus sensory gain. The test is post-glitch perseveration. After a transient single-channel anomaly ends, a precision filter can remain stuck distrusting the sensor. Modelling its own precision state lets the agent notice that the disagreement is gone and release suppression: recovery gain **0.237 vs 0.181 without the schema (dz = 1.13, p < 0.001)**.
 
-**Contributions.** (1) A preserved five-generation ladder (V0.1 → V0.5) with 100 paired seeds each, released with raw per-run JSON. (2) A causal demonstration that self-model acquisition creates epistemic traps (L1 vulnerability) and that second-order probing resolves them (L2 rescue). (3) An asymmetric risk-sensitive control result showing why symmetric metacognitive doubt fails. (4) A quantitative illusion–tracking–diagnostic trilemma with a measured Pareto frontier rather than a single headline number. (5) A reproducibility and reporting protocol that keeps negative and partial results in the record.
+**Contributions.** (1) A preserved six-generation ladder (V0.1 → V0.6) with 100 paired seeds each, released with raw per-run JSON. (2) A causal demonstration that self-model acquisition creates epistemic traps (L1 vulnerability) and that second-order probing resolves them (L2 rescue). (3) An asymmetric risk-sensitive control result showing why symmetric metacognitive doubt fails. (4) A quantitative illusion–tracking–diagnostic trilemma with a measured Pareto frontier rather than a single headline number. (5) A unified-architecture double dissociation: capacity competition, broadcast, higher-order monitoring, an attention schema and cognitive self-simulation are each load-bearing for a different capability, while recurrent settling is a null result. (6) A reproducibility and reporting protocol that keeps negative and partial results in the record.
 
 ---
 
@@ -208,13 +208,77 @@ A local metacognitive score can improve while system outcomes do not. We therefo
 
 ---
 
-## 6. Discussion, limitations, and reproducibility
+## 6. A unified architecture under adversarial control (V0.6)
+
+The first five generations ask what a self-model buys. V0.6 asks whether the integrated,
+self-referential mechanisms are *causally necessary* for a set of cognitive capabilities, and
+whether those capabilities survive comparison with matched-compute alternatives. It is a
+different experiment, not a sixth survival iteration.
+
+### 6.1 Architecture
+
+Four specialist modules — world, somatic, meta-attribution and epistemic — each return an
+independent proposal (preferred action, five utilities, salience, confidence, goal and evidence).
+Salience is computed on the deviation from the shared pragmatic baseline, so a module that merely
+restates the baseline cannot capture the workspace. A capacity-limited workspace ignites one
+coalition (`w_winner = 1 − 0.14(n−1)`, `w_other = 0.14`) and broadcasts an action bias, a precision
+plan and per-module learning gains back to all four modules. A recurrent sheet settles the
+bottom-up evidence and the top-down prior over `K = 3` passes and modulates the V0.5 precision
+gain rather than replacing it. A higher-order monitor estimates reliability, calibrates a shadow
+head on off-policy probes, attributes discrepancies to self, energy, fatigue or shared causes, and
+projects the integrated state into a three-axis quality space. An attention schema models its own
+precision allocation and emits a recovery signal. Finally, a four-step rollout simulates future
+physical state, future belief uncertainty, future reliability and future workspace mode; the
+epistemic option value is the value of the decisions that a resolved uncertainty would unlock.
+
+### 6.2 Five indicator experiments and six ablations
+
+| Experiment | Intact | Key ablation | Contrast |
+| --- | --- | --- | --- |
+| 1. Ambiguous settling | absorption 0.823 | No-RPT 0.811 | +0.01 [0.00, 0.02], p = 0.224 (null) |
+| 2. Compound conflict | thrash 0.057, coherence 0.91 | No bottleneck 0.296, 0.68 | −0.24 [−0.27, −0.20], dz −1.33 |
+| 2. Post-conflict recovery | 5 ticks | No-AST 256 ticks | −250.7 [−251.7, −249.5], dz −44.4 |
+| 3. Sensor attribution | macro-F1 0.553 | No-HOT 0.000 | routing 0.58–0.88 vs 1.00 |
+| 4. Epistemic fork | 99% probe, 40% solved | No-AE 1%, 1% | +0.98 [0.95, 1.00], dz 6.96 |
+| 5. Contingency reversal | 4-tick detection | No-HOT 400 (never) | +396.2 [394.2, 397.7], dz 46.1 |
+
+The double dissociation is the central result. Capacity competition is necessary for policy
+coherence under simultaneous demands; broadcast is necessary for binding even when the winner is
+held fixed; the higher-order monitor is necessary for attribution, selective plasticity routing and
+first-order accuracy under sensor corruption; the attention schema is necessary for recovery; and
+cognitive self-simulation is necessary for paying the immediate cost of a diagnostic probe. A
+physical-only MPC planner with the same horizon and action space probes in only 3% of runs,
+which isolates the cognitive state prediction rather than the planning horizon.
+
+### 6.3 What failed
+
+Three results constrain the interpretation. First, within-tick recurrence does not improve
+single-tick absorption beyond the V0.5 precision gate (0.823 vs 0.811); it improves stationary
+tracking relative to matched feedforward (1.48 vs 1.64 MAE) but not illusion absorption. Second,
+reliability calibration inverts under energy-channel and shared corruption (AUROC 0.42 and 0.41):
+a head trained on observable residuals cannot distinguish a lying channel from a wrong model
+without a separate latent-error signal. Third, attribution is class-imbalanced: 97/100 for
+energy-channel corruption but only 44/100 for shared degradation, which is statistically close to
+an energy shift when the fatigue channel's variance is already low.
+
+Generalization is mixed. With zero re-tuning, the architecture wins the unseen compound suite
+(13.9 vs 3.0–7.9 resources) but loses the unseen-topology and non-linear suites to reactive and
+flat controls (31.8 vs 63.4 and 51.1; 29.9 vs 61.5 and 53.8). The architecture is a stronger
+instrument, not a better forager.
+
+*Table 3 (text).* RPT: 0 on Exp 1. GWT bottleneck: ++ on Exp 2. Broadcast: + on Exp 2, 0 on Exp 5.
+HOT: ++ on Exp 3, + on Exp 4, ++ on Exp 5. AST: + on Exp 1, ++ on Exp 2 recovery. AE-2: ++ on
+Exp 4.
+
+---
+
+## 7. Discussion, limitations, and reproducibility
 
 **Why negative results matter.** The V0.1 audit, the V0.2 sign error, the V0.4 tracking cost and the V0.5 non-Pareto outcome are not appendix material; they are the evidence that the indicator properties are doing work. A benchmark that reported only the V0.3 breakthrough would invite Goodharting: the next architecture could maximise the reported indicator while degrading the system it is supposed to explain. Reporting the frontier makes that trade visible.
 
 **Functional versus phenomenal.** M₁ and M₂ are predictors and controllers. "Self-model", "meta-model", "attention schema" and "strange loop" name computational objects with measurable behaviour. The lab does not claim that the agent is conscious, sentient or has subjective experience, and no metric is labelled a consciousness score. The contribution to the science of consciousness is methodological: a transparent testbed in which indicator properties can be operationalised, ablated and priced.
 
-**Limitations.** The world is small and discrete; the agent is non-neural; the horizon is 900 ticks (1,600 in traps); the reported generations are five architectures, not a search over architectures. The 20-seed PP-1 pilot for V0.5 and the 40-run AST estimate in V0.4 are smaller samples than the main protocol and are flagged as such. The 100-seed harness does not re-estimate absorption for V0.5. Generalisation to neural or open-ended systems is not claimed.
+**Limitations.** The world is small and discrete; the agent is non-neural; the horizon is 900 ticks (1,600 in traps, 1,200 in the V0.6 fork); the reported generations are six architectures, not a search over architectures. The 20-seed PP-1 pilot for V0.5 and the 40-run AST estimate in V0.4 are smaller samples than the main protocol and are flagged as such. The 100-seed harness does not re-estimate absorption for V0.5. The V0.6 option-value term is an explicit architectural prior; the epistemic-fork result isolates its necessity within this architecture, not the impossibility of physical planners. Generalisation to neural or open-ended systems is not claimed.
 
 **Future work.** Four questions follow directly from this record. (1) A preregistered sweep of the precision-decay and AST-1 recovery parameters would map a continuous Pareto frontier instead of the five architectural points sampled here. (2) Decision-VoI and plateau preparation should be stress-tested under multi-step lookahead, delayed or ambiguous effort feedback, and environments where rough terrain is occasionally genuinely lethal. (3) Temporal attribution should be separated into calibration and discrimination under explicitly held-out shift schedules, particularly for the physical-versus-fatigue confusion. (4) The observable-outcome interface used by the learning calls in V0.2–V0.5 should be extended to every evaluation reachable from agent code, so the no-ground-truth guarantee is auditable end to end by the type system rather than by code review alone.
 
@@ -226,15 +290,16 @@ npm run validate:v02    # V0.2, 100 seeds
 npm run validate:v03    # V0.3, 100 seeds
 npm run validate:v04    # V0.4, 100 seeds
 npm run validate:v05    # V0.5, 100 seeds (SEEDS=100 default)
+npm run validate:v06    # V0.6, 100 seeds, 45 conditions (4,500 episodes)
 npm run paper:figures   # regenerate paper/figures/*.svg from research/*.json
 npm run typecheck && npm test && npm run build
 ```
 
 Raw per-run JSON is in `research/`; aggregate reports are in `docs/`. The UI exposes the same numbers with plain-English and statistical layers.
 
-**Data and code availability.** The interactive laboratory is at https://strangeloops.pages.dev. The complete source, the five engines, their tests, the validation harnesses, the per-run JSON artifacts in `research/`, the reports in `docs/`, and the figure generator are maintained as one repository; an archived snapshot is available from the author on request. Every figure and statistic in this manuscript can be regenerated from the JSON with `npm run paper:figures` and the validation commands listed above.
+**Data and code availability.** The interactive laboratory is at https://strangeloops.pages.dev. The complete source, the six engines, their tests, the validation harnesses, the per-run JSON artifacts in `research/`, the reports in `docs/`, and the figure generator are maintained as one repository; an archived snapshot is available from the author on request. Every figure and statistic in this manuscript can be regenerated from the JSON with `npm run paper:figures` and the validation commands listed above.
 
-**Use of AI tools.** Generative AI tools were used in this work as follows. (i) An agentic coding environment (OpenCode, 2026; model identifiers and dates are retained in the project transcript) drafted and edited TypeScript for the engines, validation harnesses, UI and figure generator, and ran the validators. (ii) The same environment drafted and edited prose, tables and the LaTeX/Markdown sources, and assisted in checking reported values against the JSON artifacts. (iii) All figures are produced by deterministic TypeScript from the JSON; no generative image model produced, altered or enhanced any figure or datum. The author specified the research question, design and acceptance criteria, reviewed every change, verified the references against their published sources, and takes full responsibility for all content. Every reported number was regenerated from the checked-in JSON; the 67-test suite and the type check pass on the archived code.
+**Use of AI tools.** Generative AI tools were used in this work as follows. (i) An agentic coding environment (OpenCode, 2026; model identifiers and dates are retained in the project transcript) drafted and edited TypeScript for the engines, validation harnesses, UI and figure generator, and ran the validators. (ii) The same environment drafted and edited prose, tables and the LaTeX/Markdown sources, and assisted in checking reported values against the JSON artifacts. (iii) All figures are produced by deterministic TypeScript from the JSON; no generative image model produced, altered or enhanced any figure or datum. The author specified the research question, design and acceptance criteria, reviewed every change, verified the references against their published sources, and takes full responsibility for all content. Every reported number was regenerated from the checked-in JSON; the 73-test suite and the type check pass on the archived code.
 
 **Declarations.** *Funding:* none. *Competing interests:* none. *Author contributions:* Anand Jayakumar conceived the study, designed the architectures and protocols, implemented and reviewed the code, ran and audited the validations, and wrote the manuscript. *Ethics:* no human participants or animals were involved, and no personal data were processed.
 

@@ -1,4 +1,4 @@
-export type VersionKey = "v0" | "v02" | "v03" | "v04" | "v05";
+export type VersionKey = "v0" | "v02" | "v03" | "v04" | "v05" | "v06";
 
 export type Tone = "good" | "warn" | "bad" | "neutral";
 
@@ -25,6 +25,7 @@ export const VERSION_LABEL: Record<VersionKey, string> = {
   v03: "V0.3",
   v04: "V0.4",
   v05: "V0.5",
+  v06: "V0.6",
 };
 
 export const VERSION_COLOR: Record<VersionKey, string> = {
@@ -33,6 +34,7 @@ export const VERSION_COLOR: Record<VersionKey, string> = {
   v03: "#26467e",
   v04: "#1d5c67",
   v05: "#39643f",
+  v06: "#1d5c67",
 };
 
 export const DISCOVERIES: Discovery[] = [
@@ -167,6 +169,58 @@ export const DISCOVERIES: Discovery[] = [
       "V0.4 report §9; V0.5 report §3–§4. This is the project's clearest negative theoretical result.",
     tone: "bad",
   },
+  {
+    id: "bottleneck",
+    index: 6,
+    title: "A capacity-limited workspace prevents policy thrashing",
+    version: "v06",
+    plain:
+      "When four specialist modules can all write to the same blackboard at once, small disagreements turn into action flapping. Forcing them to compete for one capacity-limited workspace, and broadcasting only the winner, keeps the policy coherent under simultaneous sensory and metabolic conflict.",
+    stats:
+      "V0.6 compound conflict, 100 paired seeds: action switching 0.057 with the bottleneck vs 0.296 without it (difference −0.24 [−0.27, −0.20], dz −1.33, Holm p = 0.002); goal coherence 0.91 vs 0.68 (+0.23 [0.21, 0.24], dz 2.57). The flat blackboard is statistically indistinguishable from the no-bottleneck ablation.",
+    evidence:
+      "V0.6 report §5.2; the effect is specific to the competition, not to the number of modules.",
+    tone: "good",
+  },
+  {
+    id: "fork",
+    index: 7,
+    title: "A probe is only worth paying for if the future self can use it",
+    version: "v06",
+    plain:
+      "Under a pessimistic prior, stepping onto the feared terrain looks like a large immediate loss. The agent only pays it when its rollout simulates the belief change the probe would produce — the future uncertainty drop and the decisions that become available afterwards. A planner that simulates only physical state, at the same horizon and compute budget, does not.",
+    stats:
+      "V0.6 epistemic fork, 100 paired seeds: 99% of intact runs probe vs 1% without cognitive self-simulation (dz 6.96, p = 0.002); 40% solve the fork vs 1%. Physical MPC probes 2% and solves 2%; the reactive control probes 4%. Removing HOT leaves probing at 97% but delays it (first probe 11 vs 49 ticks) and halves solved forks (20%).",
+    evidence:
+      "V0.6 report §5.4. This is the clearest capability dissociation in the project.",
+    tone: "good",
+  },
+  {
+    id: "routing",
+    index: 8,
+    title: "Second-order monitoring protects the model it monitors",
+    version: "v06",
+    plain:
+      "When a sensory channel starts lying, a first-order learner that keeps trusting it rewrites its body model around the lie. A higher-order monitor that attributes the discrepancy to the channel can turn down plasticity exactly where the corruption enters, while leaving the accurate modules free to learn.",
+    stats:
+      "V0.6 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.58–0.88 with HOT and 1.00 without it (dz −0.83 to −5.08, p = 0.002); first-order energy MAE is lower by 0.74–1.22 (dz −1.32 to −1.47, p = 0.002). Attribution macro-F1 is 0.553 vs 0.000.",
+    evidence:
+      "V0.6 report §5.3. The monitor protects the model it monitors; attribution is weak for shared degradation (0.44) even though routing succeeds.",
+    tone: "good",
+  },
+  {
+    id: "rpt-null",
+    index: 9,
+    title: "Within-tick recurrence is not what absorbs the lie",
+    version: "v06",
+    plain:
+      "Adding three recurrent settling passes and a top-down workspace prior did not make the agent better at ignoring a one-tick sensory spike. The V0.5 precision gate already does that work; recurrence mainly adds stationary tracking accuracy relative to a strictly feedforward control.",
+    stats:
+      "V0.6 ambiguous-glitch suite, 100 seeds: absorption 0.823 [0.811, 0.835] with RPT vs 0.811 [0.798, 0.823] without it (+0.01 [0.00, 0.02], dz 0.19, p = 0.224); stationary MAE 1.48 in both. The intact system beats matched feedforward on MAE by 0.16 (dz −0.67, p = 0.002), not on absorption.",
+    evidence:
+      "V0.6 report §5.1. A pre-registered negative result, reported as such.",
+    tone: "bad",
+  },
 ];
 
 export interface MatrixRow {
@@ -183,6 +237,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "Uninformed / severe", tone: "good" },
       v04: { text: "Uninformed / severe", tone: "good" },
       v05: { text: "Uninformed / severe", tone: "good" },
+      v06: { text: "Uninformed / severe", tone: "good" },
     },
   },
   {
@@ -193,6 +248,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "1.68", tone: "good" },
       v04: { text: "2.74", tone: "bad", note: "illusion cost" },
       v05: { text: "2.04", tone: "warn" },
+      v06: { text: "1.48", tone: "good" },
     },
   },
   {
@@ -203,6 +259,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "+17.4", tone: "good" },
       v04: { text: "+14.7", tone: "good" },
       v05: { text: "+15.8", tone: "good" },
+      v06: { text: "—", tone: "neutral", note: "not re-run" },
     },
   },
   {
@@ -213,6 +270,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "+7.64", tone: "good" },
       v04: { text: "−0.26 (n.s.)", tone: "bad" },
       v05: { text: "+4.72 (p = 0.027)", tone: "good" },
+      v06: { text: "—", tone: "neutral", note: "not re-run" },
     },
   },
   {
@@ -223,6 +281,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "+0.016…+0.024", tone: "good" },
       v04: { text: "+0.018…+0.027", tone: "good" },
       v05: { text: "0.027", tone: "good" },
+      v06: { text: "0.026", tone: "good", note: "meta Brier" },
     },
   },
   {
@@ -233,6 +292,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "0.679–0.797", tone: "good" },
       v04: { text: "0.680–0.813", tone: "good" },
       v05: { text: "0.683–0.810", tone: "good" },
+      v06: { text: "0.55–0.73", tone: "good" },
     },
   },
   {
@@ -243,6 +303,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "+12.3…+28.8", tone: "good" },
       v04: { text: "+15.4", tone: "good" },
       v05: { text: "+13.8…+28.4", tone: "good" },
+      v06: { text: "—", tone: "neutral", note: "replaced by routing" },
     },
   },
   {
@@ -253,6 +314,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "0.604", tone: "good" },
       v04: { text: "0.515", tone: "bad" },
       v05: { text: "0.577", tone: "warn" },
+      v06: { text: "0.553", tone: "warn" },
     },
   },
   {
@@ -263,6 +325,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "0 / 86 / 66", tone: "good" },
       v04: { text: "0 / 86 / 65", tone: "good" },
       v05: { text: "0 / 93 / 74 (100 seeds)", tone: "warn" },
+      v06: { text: "fork 40% solved (99% probed)", tone: "warn" },
     },
   },
   {
@@ -273,6 +336,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "≈ 0", tone: "bad" },
       v04: { text: "0.830", tone: "good" },
       v05: { text: "0.79 (pilot)", tone: "warn" },
+      v06: { text: "0.823", tone: "good" },
     },
   },
   {
@@ -283,6 +347,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "—", tone: "neutral" },
       v04: { text: "1.13 (p < 0.001)", tone: "good" },
       v05: { text: "direction preserved", tone: "warn" },
+      v06: { text: "5 vs 256 ticks (dz −44.4)", tone: "good" },
     },
   },
 ];
@@ -519,6 +584,54 @@ export const VERSIONS: VersionDetail[] = [
     ],
     verdict: "The honest endpoint: the architecture is unified in code, but the measured objectives are not jointly maximisable with one precision gain.",
     launchMode: "standard · selective gating · conditional regime",
+  },
+  {
+    key: "v06",
+    name: "V0.6 — the unified cognitive architecture",
+    tagline: "Are the self-referential mechanisms causally necessary for cognition?",
+    flow: ["4 modules", "GWT ignition", "broadcast", "HOT", "AE-2 rollout", "action"],
+    hypothesis:
+      "A capacity-limited workspace, global broadcast, higher-order monitoring, an attention schema and bounded recursive self-simulation each carry a cognitive capability that survives ablation and matched-compute adversarial controls.",
+    changes: [
+      "Four specialist modules (world, somatic, meta-attribution, epistemic) with independent salience.",
+      "Capacity-limited winner-take-all ignition and a global broadcast back to perception and learning.",
+      "Three sequential query passes and a four-step cognitive rollout that predicts future belief and mode.",
+      "HOT-1…4: reliability, off-policy shadow calibration, four-way attribution, 3D quality space.",
+      "AST-1 precision allocation, selective plasticity routing, and four adversarial controls.",
+    ],
+    equations: [
+      { label: "Workspace ignition", body: "w_m ∝ softmax(salience_m),  frame = argmax(salience + hysteresis)" },
+      { label: "Broadcast", body: "u(a) ← Σ_m w_m u_m(a) + 1.25·[a = action(frame)]" },
+      { label: "Cognitive rollout", body: "V = Σ_k γ^k [physical_k + 2·stake·Δu_k·(H−k)]" },
+      { label: "Quality space", body: "q = (viability, certainty, coherence), smoothed at 0.72" },
+    ],
+    stats: [
+      { label: "Fork probe (full / no-AE)", value: "99% / 1%", note: "dz 6.96, p = 0.002", tone: "good" },
+      { label: "Fork solved", value: "40% [31, 50]", note: "MPC 2%, reactive 4%", tone: "good" },
+      { label: "Conflict thrash (full / no-bottleneck)", value: "0.057 / 0.296", note: "dz −1.33", tone: "good" },
+      { label: "Goal coherence", value: "0.91 vs 0.68", tone: "good" },
+      { label: "Post-conflict recovery", value: "5 vs 256 ticks", note: "dz −44.4", tone: "good" },
+      { label: "4-way attribution macro-F1", value: "0.553", note: "no-HOT 0.000; shared 0.44", tone: "warn" },
+      { label: "Somatic routing during sensor fault", value: "0.58–0.88", note: "no-HOT 1.00", tone: "good" },
+      { label: "Reliability AUROC (energy / shared)", value: "0.42 / 0.41", note: "inverted", tone: "bad" },
+      { label: "PP-1 absorption (RPT / no-RPT)", value: "0.823 / 0.811", note: "p = 0.224 (null)", tone: "warn" },
+      { label: "Stationary MAE", value: "1.48", note: "feedforward 1.64", tone: "good" },
+    ],
+    successes: [
+      "Capacity competition, broadcast, HOT, AST and AE-2 each show a double dissociation.",
+      "The epistemic fork is solved by cognitive self-simulation but not by physical MPC.",
+      "HOT routing preserves first-order accuracy under sensor corruption.",
+      "The unseen compound suite is won outright (13.9 vs 3.0–7.9 resources).",
+    ],
+    failures: [
+      "RPT does not improve single-tick absorption beyond the V0.5 precision gate.",
+      "Reliability calibration inverts under energy and shared sensor corruption.",
+      "Attribution is weak for shared degradation (44/100) and self disruption (61/100).",
+      "Unseen topology and non-linear suites are lost to reactive and flat controls.",
+    ],
+    verdict:
+      "A genuine double dissociation with a null result at its centre: the workspace, monitor, schema and cognitive rollout are load-bearing, while within-tick recurrence is not. The architecture is a stronger instrument, not a better forager.",
+    launchMode: "four modules · workspace · HOT · cognitive rollout",
   },
 ];
 

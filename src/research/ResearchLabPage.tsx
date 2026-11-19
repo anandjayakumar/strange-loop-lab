@@ -6,6 +6,7 @@ import { V02Lab } from "../v02/V02Lab";
 import { V03Lab } from "../v03/V03Lab";
 import { V04Lab } from "../v04/V04Lab";
 import { V05Lab } from "../v05/V05Lab";
+import { V06Lab } from "../v06/V06Lab";
 import { LAB_VERSIONS, labVersion } from "./versions";
 
 function VersionNav({
@@ -16,8 +17,8 @@ function VersionNav({
   onNavigate: (target: string) => void;
 }) {
   return (
-    <nav aria-label="Simulator generations" className="scroll-thin overflow-x-auto border-t border-lab-line">
-      <div className="flex min-w-max">
+    <nav aria-label="Simulator generations" className="scroll-thin overflow-x-auto border-t border-lab-line lg:overflow-visible">
+      <div className="flex w-full min-w-max flex-wrap lg:min-w-0 lg:flex-nowrap">
         {LAB_VERSIONS.map((item) => {
           const active = item.id === version;
           return (
@@ -31,7 +32,7 @@ function VersionNav({
                 onNavigate(`/research?version=${item.id}`);
               }}
               className={cn(
-                "group relative flex min-w-[184px] flex-1 flex-col gap-1 border-r border-lab-line px-4 py-3 text-left transition-colors last:border-r-0 sm:min-w-[200px]",
+                "group relative flex min-w-[158px] flex-1 flex-col gap-1 border-r border-lab-line px-3 py-3 text-left transition-colors last:border-r-0 sm:min-w-[172px] sm:px-4",
                 active ? "bg-lab-panel" : "hover:bg-lab-panel/60",
               )}
             >
@@ -50,7 +51,7 @@ function VersionNav({
               </span>
               <span
                 className={cn(
-                  "font-serif text-[16px] leading-tight",
+                  "font-serif text-[15px] leading-tight",
                   active ? "text-lab-text" : "text-lab-muted group-hover:text-lab-text",
                 )}
               >
@@ -166,9 +167,9 @@ export function ResearchLabPage({
         <div className="mx-auto max-w-[1560px] px-5 pt-7 sm:px-8">
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 pb-4">
             <div>
-              <div className="kicker">Interactive simulation lab · V0.1 → V0.5</div>
+              <div className="kicker">Interactive simulation lab · V0.1 → V0.6</div>
               <h1 className="display mt-2 text-[34px] leading-[0.98] sm:text-[44px]">
-                Five generations, <span className="italic text-lab-amber">one organism</span>
+                Six generations, <span className="italic text-lab-amber">one organism</span>
               </h1>
               <p className="mt-2 max-w-[74ch] text-[13px] leading-[1.7] text-lab-muted">
                 Every generation is a live, deterministic simulator. Switch versions below to
@@ -177,8 +178,8 @@ export function ResearchLabPage({
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pb-1">
-              <span className="chip">19,400 total runs</span>
-              <span className="chip">67 tests</span>
+              <span className="chip">23,900 total runs</span>
+              <span className="chip">73 tests</span>
               <span className="chip">white-box</span>
               <span className="hidden font-serif text-[12px] italic text-lab-faint md:inline">
                 current: {meta.label} · {meta.era}
@@ -197,6 +198,7 @@ export function ResearchLabPage({
         {version === "v03" ? <V03Lab onNavigate={onNavigate} /> : null}
         {version === "v04" ? <V04Lab onNavigate={onNavigate} /> : null}
         {version === "v05" ? <V05Lab onNavigate={onNavigate} /> : null}
+        {version === "v06" ? <V06Lab onNavigate={onNavigate} /> : null}
       </div>
     </div>
   );
