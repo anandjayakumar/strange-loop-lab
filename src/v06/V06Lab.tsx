@@ -245,6 +245,49 @@ export function V06Lab({ onNavigate }: { onNavigate: (target: string) => void })
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-2 border-b border-lab-line/60 px-3.5 py-2">
+            <span className="mono-label">presets</span>
+            {(
+              [
+                ["glitch", "E1 settling"],
+                ["conflict", "E2 conflict"],
+                ["self_disruption", "E3 meta"],
+                ["epistemic_fork", "E4 fork"],
+                ["contingency_reversal", "E5 reversal"],
+              ] as [V06Scenario, string][]
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                className={cn(
+                  "btn h-7 px-2 py-0 normal-case tracking-normal",
+                  settings.scenario === key && "border-lab-text bg-lab-raise text-lab-text",
+                )}
+                onClick={() => actions.resetWith({ scenario: key })}
+              >
+                {label}
+              </button>
+            ))}
+            <span className="hidden h-4 w-px bg-lab-line sm:block" />
+            <span className="mono-label">unseen</span>
+            {(
+              [
+                ["unseen_topology", "topology"],
+                ["unseen_nonlinear", "non-linear"],
+                ["unseen_compound", "compound"],
+              ] as [V06Scenario, string][]
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                className={cn(
+                  "btn h-7 px-2 py-0 normal-case tracking-normal",
+                  settings.scenario === key && "border-lab-text bg-lab-raise text-lab-text",
+                )}
+                onClick={() => actions.resetWith({ scenario: key })}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center gap-2 border-b border-lab-line/60 px-3.5 py-2">
             <span className="mono-label">disrupt</span>
             {DISRUPTIONS.map((item) => (
               <button
