@@ -1,7 +1,7 @@
 # V0.6 — Full-Rubric Refinement and the Four Mechanism Bottlenecks
 
 **Status:** complete. 87 conditions × 100 paired seeds = **8,700 episodes**.
-**Artefacts:** `research/v06-results.json`, `research/v06-analysis.json`, `research/v061_validation.log`, `research/v061_feedforward.json`.
+**Artefacts:** `research/v06-results.json`, `research/v06-analysis.json`, `research/v06_validation.log`, `research/v06_feedforward.json`.
 **Lab:** `/research?version=v06`. **Previous report:** the earlier 45-condition V0.6 draft of this document (archived in git history).
 
 ---
@@ -171,4 +171,4 @@ npm run typecheck && npm run build
 
 The validator writes raw per-run summaries to `research/v06-results.json` and aggregates, contrasts,
 macro-F1 and Table C to `research/v06-analysis.json`. The matched-feedforward Exp1 supplement is in
-`research/v061_feedforward.json`. Every value in this report is regenerated from those files.
+`research/v06_feedforward.json`. Every value in this report is regenerated from those files.
