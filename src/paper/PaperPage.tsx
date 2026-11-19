@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowUpRight, BookOpen, Download, FileText, FlaskConical } from "lucide-react";
+import { ArrowUpRight, BookOpen, Download, FileDown, FileText, FlaskConical } from "lucide-react";
 import { renderMarkdown } from "../lib/markdown";
 
 export function PaperPage({ onNavigate }: { onNavigate: (target: string) => void }) {
@@ -54,13 +54,17 @@ export function PaperPage({ onNavigate }: { onNavigate: (target: string) => void
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <a className="btn h-8 px-3" href="/paper/MANUSCRIPT.md" download>
-              <Download size={12} />
-              Markdown
+            <a className="btn btn-primary h-8 px-3" href="/paper/main.pdf" download>
+              <FileDown size={12} />
+              PDF
             </a>
             <a className="btn h-8 px-3" href="/paper/main.tex" download>
               <FileText size={12} />
               LaTeX
+            </a>
+            <a className="btn h-8 px-3" href="/paper/MANUSCRIPT.md" download>
+              <Download size={12} />
+              Markdown
             </a>
           </div>
         </div>

@@ -31,6 +31,8 @@ type Run = {
   metaAuroc?: number;
   rollingBss?: number;
   trapEscaped?: boolean;
+  probed?: boolean;
+  forkSolved?: boolean;
 };
 
 type ResultsFile = { metadata: { seeds: number[] }; results: Record<string, Run[]> };
@@ -150,6 +152,46 @@ const trapL1 = trap("v05", "trap_voi_l1");
 const astOn = a04.ast?.gainOn.mean ?? 0;
 const astOff = a04.ast?.gainOff.mean ?? 0;
 const astDz = 1.13;
+
+/* ------------------------------------------------- v0.6 adversarial controls */
+
+type V06Analysis = {
+  conditions: Record<string, { summary: { coherence: Stat } }>;
+  tableC: Record<
+    string,
+    {
+      gen_topology: { resources: Stat };
+      gen_nonlinear: { resources: Stat };
+      gen_compound: { resources: Stat };
+    }
+  >;
+};
+
+const v06a = readJson<V06Analysis>("v06-analysis.json");
+const v06runs = results("v06");
+
+const rateOf = (condition: string, field: "probed" | "forkSolved") => {
+  const runs = con(v06runs, condition);
+  return runs.length ? runs.filter((run) => run[field]).length / runs.length : 0;
+};
+
+const controlRows = [
+  { label: "V0.6", table: "V0.6 full", coherence: "m_full_exp2", fork: "m_full_exp4" },
+  { label: "Reactive", table: "Reactive", coherence: "c_reactive_conflict", fork: "c_reactive_fork" },
+  { label: "Physical MPC (H=4)", table: "Physical MPC", coherence: "c_physical_mpc_conflict", fork: "c_physical_mpc_fork" },
+  { label: "Flat blackboard", table: "Flat blackboard", coherence: "c_flat_blackboard_conflict", fork: "c_flat_blackboard_fork" },
+  { label: "Matched feedforward", table: "Matched feedforward", coherence: "c_matched_feedforward_conflict", fork: "c_matched_feedforward_fork" },
+].map((row) => ({
+  label: row.label,
+  coherence: v06a.conditions[row.coherence].summary.coherence.mean,
+  probed: rateOf(row.fork, "probed"),
+  solved: rateOf(row.fork, "forkSolved"),
+  gen: [
+    v06a.tableC[row.table].gen_topology.resources.mean,
+    v06a.tableC[row.table].gen_nonlinear.resources.mean,
+    v06a.tableC[row.table].gen_compound.resources.mean,
+  ],
+}));
 
 const trapCells = [
   { label: "Pragmatic only", rate: trapPragmatic.rate, res: trapPragmatic.resources, deaths: trapPragmatic.deaths },
@@ -321,9 +363,9 @@ function fig2() {
   const w = 1080;
   const h = 400;
   const body: string[] = [];
-  body.push(panelTitle(28, 28, "A", "Meta-control resource gain (meta-on − meta-off)"));
-  body.push(panelTitle(392, 28, "B", "Latent-failure AUROC"));
-  body.push(panelTitle(742, 28, "C", "Stationary energy MAE"));
+  body.push(panelTitle(28, 28, "A", "Meta-control gain (on − off)"));
+  body.push(panelTitle(410, 28, "B", "Latent-failure AUROC"));
+  body.push(panelTitle(770, 28, "C", "Stationary energy MAE"));
 
   const points = [
     { label: "V0.2", value: meta.v02 },
@@ -351,7 +393,7 @@ function fig2() {
     body.push(circle(x, ayFor(value.mean), 4.5, value.mean < 0 ? RED : GREEN));
     body.push(tickLabel(x, ay + 18, point.label));
     body.push(
-      text(x + 9, ayFor(value.mean) + 3, `${value.mean >= 0 ? "+" : ""}${value.mean.toFixed(1)}`, {
+      text(x + 26, ayFor(value.mean) + 3, `${value.mean >= 0 ? "+" : ""}${value.mean.toFixed(1)}`, {
         size: 9,
         weight: 700,
         anchor: "middle",
@@ -365,7 +407,7 @@ function fig2() {
   });
   body.push(text(ax, 342, "resources per 900 ticks", { size: 9, fill: MUTED }));
   body.push(
-    text(ax, 360, `V0.3 shift regimes span ${v03MetaRange.lo.toFixed(1)} … +${v03MetaRange.hi.toFixed(1)}`, {
+    text(ax, 360, `V0.3 shift regimes span ${v03MetaRange.lo >= 0 ? "+" : ""}${v03MetaRange.lo.toFixed(1)} … +${v03MetaRange.hi.toFixed(1)}`, {
       size: 9,
       fill: MUTED,
       italic: true,
@@ -373,7 +415,7 @@ function fig2() {
   );
 
   // Panel B: AUROC with CI
-  const bx = 430;
+  const bx = 445;
   const bw = 250;
   const by = 300;
   const bh = 210;
@@ -399,7 +441,7 @@ function fig2() {
     body.push(circle(x, byFor(point.value), 4.5, BLUE));
     body.push(tickLabel(x, by + 18, point.label));
     body.push(
-      text(x + 12, byFor(point.value) + 3, point.value.toFixed(2), {
+      text(x + 22, byFor(point.value) + 3, point.value.toFixed(2), {
         size: 9,
         weight: 700,
         anchor: "middle",
@@ -411,7 +453,7 @@ function fig2() {
   body.push(text(bx, 360, "V0.2 meta AUROC 0.471 (below chance)", { size: 9, fill: RED, italic: true }));
 
   // Panel C: MAE bars
-  const cx = 780;
+  const cx = 800;
   const cw = 250;
   const cy = 300;
   const ch = 210;
@@ -445,7 +487,7 @@ function fig2() {
   body.push(line(cx, cyFor(mae.raw), cx + cw, cyFor(mae.raw), GOLD, 1.4, "5 4"));
   body.push(text(cx + 6, cyFor(mae.raw) - 6, `raw sensor ${mae.raw.toFixed(2)}`, { size: 9, fill: GOLD }));
   body.push(text(cx, 342, "self-model MAE, lower is better", { size: 9, fill: MUTED }));
-  body.push(text(cx, 360, "V0.4 pays the illusion cost; V0.5 recovers part of it", { size: 9, fill: MUTED, italic: true }));
+  body.push(text(cx + cw, 360, "V0.4 pays the illusion cost; V0.5 recovers part of it", { size: 9, fill: MUTED, italic: true, anchor: "end" }));
 
   body.push(
     text(28, 384, "Error bars: 95% paired bootstrap / normal-approximation intervals from the per-seed JSON. Values recomputed by tools/generatePaperFigures.ts.", {
@@ -508,7 +550,7 @@ function fig3() {
     }),
   );
   body.push(
-    text(44, 420, "Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with fewer resources.", {
+    text(44, 420, "Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with lower foraging.", {
       size: 9.5,
       fill: MUTED,
     }),
@@ -624,6 +666,74 @@ function fig4() {
   return svg(w, h, body.join("\n"));
 }
 
+/* ------------------------------------------------------------------- fig5 */
+
+function fig5() {
+  const w = 980;
+  const h = 432;
+  const body: string[] = [];
+  body.push(panelTitle(28, 30, "A", "V0.6 double dissociation against four adversarial controls"));
+  body.push(
+    text(28, 48, "100 paired seeds. Colour is min–max within each column; darker green is better.", {
+      size: 9.5,
+      fill: MUTED,
+      italic: true,
+    }),
+  );
+
+  const left = 224;
+  const top = 104;
+  const cw = 142;
+  const rh = 48;
+  const cols = [
+    { head: ["Conflict", "coherence"], get: (row: (typeof controlRows)[number]) => row.coherence, fmt: (v: number) => v.toFixed(3) },
+    { head: ["Fork", "solved"], get: (row: (typeof controlRows)[number]) => row.solved, fmt: (v: number) => `${Math.round(v * 100)}%` },
+    { head: ["Gen 1", "topology"], get: (row: (typeof controlRows)[number]) => row.gen[0], fmt: (v: number) => v.toFixed(1) },
+    { head: ["Gen 2", "non-linear"], get: (row: (typeof controlRows)[number]) => row.gen[1], fmt: (v: number) => v.toFixed(1) },
+    { head: ["Gen 3", "compound"], get: (row: (typeof controlRows)[number]) => row.gen[2], fmt: (v: number) => v.toFixed(1) },
+  ];
+  const ranges = cols.map((col) => {
+    const values = controlRows.map((row) => col.get(row));
+    return [Math.min(...values), Math.max(...values)] as const;
+  });
+  const shade = (t: number) => {
+    const lo = [244, 221, 214];
+    const hi = [158, 198, 170];
+    const c = lo.map((value, i) => Math.round(value + (hi[i] - value) * t));
+    return `rgb(${c.join(",")})`;
+  };
+
+  cols.forEach((col, j) => {
+    const x = left + j * cw + cw / 2;
+    col.head.forEach((label, k) =>
+      body.push(text(x, 74 + k * 14, label, { size: 9.5, weight: 700, anchor: "middle", fill: MUTED })),
+    );
+  });
+
+  controlRows.forEach((row, i) => {
+    const y = top + i * rh;
+    body.push(text(left - 14, y + 22, row.label, { size: 10.5, weight: i === 0 ? 700 : 500, anchor: "end" }));
+    cols.forEach((col, j) => {
+      const value = col.get(row);
+      const [lo, hi] = ranges[j];
+      const t = hi === lo ? 0.5 : (value - lo) / (hi - lo);
+      body.push(rect(left + j * cw + 2, y + 4, cw - 4, rh - 8, shade(t), "#ffffff", 1));
+      body.push(text(left + j * cw + cw / 2, y + 22, col.fmt(value), { size: 10, weight: 600, anchor: "middle" }));
+    });
+  });
+
+  body.push(line(left, top - 2, left + cw * cols.length, top - 2, GRID, 1));
+  body.push(
+    text(28, 392, "V0.6 wins conflict coherence and fork solving; reactive control wins Gen 1–2 resources; flat blackboard wins Gen 3.", {
+      size: 9.5,
+      fill: MUTED,
+    }),
+  );
+  body.push(text(28, 410, "No single architecture dominates the capability profile.", { size: 9.5, fill: MUTED, italic: true }));
+
+  return svg(w, h, body.join("\n"));
+}
+
 /* ------------------------------------------------------------------ write */
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
@@ -634,6 +744,7 @@ const figures: [string, string][] = [
   ["fig2_cross_version_progression.svg", fig2()],
   ["fig3_epistemic_trap_escape.svg", fig3()],
   ["fig4_trilemma_pareto.svg", fig4()],
+  ["fig5_double_dissociation.svg", fig5()],
 ];
 
 for (const [name, content] of figures) {
@@ -661,6 +772,7 @@ if (browser) {
     fig2_cross_version_progression: [1080, 400],
     fig3_epistemic_trap_escape: [960, 470],
     fig4_trilemma_pareto: [980, 520],
+    fig5_double_dissociation: [980, 432],
   };
   const tmp = path.join(OUT_DIR, ".pdfbuild");
   fs.mkdirSync(tmp, { recursive: true });
@@ -691,7 +803,7 @@ if (browser) {
 // Mirror the manuscript assets so the /paper route can serve them statically.
 const publicPaper = path.join(ROOT, "public", "paper");
 fs.mkdirSync(publicPaper, { recursive: true });
-for (const name of ["MANUSCRIPT.md", "references.bib", "main.tex"]) {
+for (const name of ["MANUSCRIPT.md", "references.bib", "main.tex", "main.pdf"]) {
   const source = path.join(ROOT, "paper", name);
   if (fs.existsSync(source)) {
     fs.copyFileSync(source, path.join(publicPaper, name));

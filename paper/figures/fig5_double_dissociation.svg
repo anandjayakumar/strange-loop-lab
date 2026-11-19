@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 432" width="980" height="432" role="img">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#111111"/></marker>
+</defs>
+<rect width="980" height="432" fill="#ffffff"/>
+<text x="28" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#5b6169" text-anchor="start">A</text><text x="46" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#111111" text-anchor="start">V0.6 double dissociation against four adversarial controls</text>
+<text x="28" y="48" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start" font-style="italic">100 paired seeds. Colour is min–max within each column; darker green is better.</text>
+<text x="295" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">Conflict</text>
+<text x="295" y="88" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">coherence</text>
+<text x="437" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">Fork</text>
+<text x="437" y="88" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">solved</text>
+<text x="579" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">Gen 1</text>
+<text x="579" y="88" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">topology</text>
+<text x="721" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">Gen 2</text>
+<text x="721" y="88" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">non-linear</text>
+<text x="863" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">Gen 3</text>
+<text x="863" y="88" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#5b6169" text-anchor="middle">compound</text>
+<text x="210" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="700" fill="#111111" text-anchor="end">V0.6</text>
+<rect x="226" y="108" width="138" height="40" fill="rgb(158,198,170)" stroke="#ffffff" stroke-width="1" />
+<text x="295" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">0.915</text>
+<rect x="368" y="108" width="138" height="40" fill="rgb(158,198,170)" stroke="#ffffff" stroke-width="1" />
+<text x="437" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">84%</text>
+<rect x="510" y="108" width="138" height="40" fill="rgb(165,200,174)" stroke="#ffffff" stroke-width="1" />
+<text x="579" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">57.4</text>
+<rect x="652" y="108" width="138" height="40" fill="rgb(162,199,172)" stroke="#ffffff" stroke-width="1" />
+<text x="721" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">55.9</text>
+<rect x="794" y="108" width="138" height="40" fill="rgb(186,205,184)" stroke="#ffffff" stroke-width="1" />
+<text x="863" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">32.7</text>
+<text x="210" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="500" fill="#111111" text-anchor="end">Reactive</text>
+<rect x="226" y="156" width="138" height="40" fill="rgb(187,206,185)" stroke="#ffffff" stroke-width="1" />
+<text x="295" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">0.831</text>
+<rect x="368" y="156" width="138" height="40" fill="rgb(241,220,212)" stroke="#ffffff" stroke-width="1" />
+<text x="437" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">4%</text>
+<rect x="510" y="156" width="138" height="40" fill="rgb(158,198,170)" stroke="#ffffff" stroke-width="1" />
+<text x="579" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">59.9</text>
+<rect x="652" y="156" width="138" height="40" fill="rgb(158,198,170)" stroke="#ffffff" stroke-width="1" />
+<text x="721" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">56.9</text>
+<rect x="794" y="156" width="138" height="40" fill="rgb(242,221,213)" stroke="#ffffff" stroke-width="1" />
+<text x="863" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">2.6</text>
+<text x="210" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="500" fill="#111111" text-anchor="end">Physical MPC (H=4)</text>
+<rect x="226" y="204" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
+<text x="295" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">0.665</text>
+<rect x="368" y="204" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
+<text x="437" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">1%</text>
+<rect x="510" y="204" width="138" height="40" fill="rgb(240,220,212)" stroke="#ffffff" stroke-width="1" />
+<text x="579" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">30.7</text>
+<rect x="652" y="204" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
+<text x="721" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">32.1</text>
+<rect x="794" y="204" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
+<text x="863" y="222" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">1.7</text>
+<text x="210" y="270" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="500" fill="#111111" text-anchor="end">Flat blackboard</text>
+<rect x="226" y="252" width="138" height="40" fill="rgb(242,221,213)" stroke="#ffffff" stroke-width="1" />
+<text x="295" y="270" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">0.670</text>
+<rect x="368" y="252" width="138" height="40" fill="rgb(169,201,176)" stroke="#ffffff" stroke-width="1" />
+<text x="437" y="270" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">73%</text>
+<rect x="510" y="252" width="138" height="40" fill="rgb(180,204,181)" stroke="#ffffff" stroke-width="1" />
+<text x="579" y="270" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">52.2</text>
+<rect x="652" y="252" width="138" height="40" fill="rgb(168,201,175)" stroke="#ffffff" stroke-width="1" />
+<text x="721" y="270" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">54.0</text>
+<rect x="794" y="252" width="138" height="40" fill="rgb(158,198,170)" stroke="#ffffff" stroke-width="1" />
+<text x="863" y="270" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">47.5</text>
+<text x="210" y="318" font-family="Helvetica, Arial, sans-serif" font-size="14.7" font-weight="500" fill="#111111" text-anchor="end">Matched feedforward</text>
+<rect x="226" y="300" width="138" height="40" fill="rgb(181,204,182)" stroke="#ffffff" stroke-width="1" />
+<text x="295" y="318" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">0.847</text>
+<rect x="368" y="300" width="138" height="40" fill="rgb(213,213,198)" stroke="#ffffff" stroke-width="1" />
+<text x="437" y="318" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">31%</text>
+<rect x="510" y="300" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
+<text x="579" y="318" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">29.1</text>
+<rect x="652" y="300" width="138" height="40" fill="rgb(244,221,214)" stroke="#ffffff" stroke-width="1" />
+<text x="721" y="318" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">32.0</text>
+<rect x="794" y="300" width="138" height="40" fill="rgb(192,207,187)" stroke="#ffffff" stroke-width="1" />
+<text x="863" y="318" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#111111" text-anchor="middle">29.6</text>
+<line x1="224" y1="102" x2="934" y2="102" stroke="#e3e0d8" stroke-width="1" />
+<text x="28" y="392" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">V0.6 wins conflict coherence and fork solving; reactive control wins Gen 1–2 resources; flat blackboard wins Gen 3.</text>
+<text x="28" y="410" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start" font-style="italic">No single architecture dominates the capability profile.</text>
+</svg>

@@ -33,6 +33,6 @@
 <text x="691.6" y="316" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">74%  ·  78.1 res  ·  0 deaths</text>
 <rect x="28" y="376" width="904" height="70" fill="#faf8f2" stroke="#e3e0d8" stroke-width="1" />
 <text x="44" y="400" font-family="Helvetica, Arial, sans-serif" font-size="15.4" font-weight="700" fill="#111111" text-anchor="start">A causal first-order model creates the trap; a second-order probe escapes it.</text>
-<text x="44" y="420" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with fewer resources.</text>
+<text x="44" y="420" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">Pragmatic maximisation never samples the feared terrain (0 resources). Breaking L1 removes the phobia but yields a blind reactive walk with lower foraging.</text>
 <text x="44" y="436" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start">Decision-VoI probes without mortality in V0.3; the V0.5 plateau-breaking probe raises escape further while keeping zero deaths.</text>
 </svg>
