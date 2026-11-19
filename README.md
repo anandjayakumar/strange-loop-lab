@@ -1,5 +1,7 @@
 # Strange Loop Lab
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24371773.svg)](https://doi.org/10.5281/zenodo.24371773)
+
 A deterministic, browser-based computational laboratory for observing self-reference and
 level-crossing dynamics in a small digital organism.
 
@@ -318,14 +320,32 @@ from **Findings** and **Paper**.
 | V0.4 9-point sweep | 54 | 100 | 5,400 |
 | **Total unique** | | | **43,800** |
 
+- **Archived release:** [10.5281/zenodo.24371773](https://doi.org/10.5281/zenodo.24371773)
+  (concept DOI: [10.5281/zenodo.24371772](https://doi.org/10.5281/zenodo.24371772)).
+- The repository is **public** at https://github.com/anandjayakumar/strange-loop-lab.
 - `research/SHA256SUMS.txt` and `research/MANIFEST.json` record checksums and exact runtime /
   dependency versions for all archived JSON artifacts.
 - `research/HOLDOUT_MANIFEST.json` records the untouched seeds 10001–10100 and the unchanged V0.6
   engine baseline (commit `30bc9a8`).
-- The repository is **private at submission**; no DOI has been minted. An archived snapshot is
-  available from the author on request.
 - Verification: `npm run typecheck`, `npm test` (73/73), `npm run build`, and clean LaTeX builds
   with no overfull boxes or undefined references.
+
+## Citation
+
+If you use the software, cite the archived release:
+
+```bibtex
+@software{jayakumar_strange_loop_lab_2026,
+  author       = {Jayakumar, Anand},
+  title        = {Strange Loop Lab: A White-Box Laboratory for Self-Model and Consciousness-Indicator Research},
+  version      = {0.6.0},
+  year         = {2026},
+  doi          = {10.5281/zenodo.24371773},
+  url          = {https://github.com/anandjayakumar/strange-loop-lab}
+}
+```
+
+The concept DOI for all versions is `10.5281/zenodo.24371772`.
 
 ## Licence
 

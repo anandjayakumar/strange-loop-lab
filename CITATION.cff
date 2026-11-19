@@ -7,6 +7,7 @@ authors:
     given-names: Anand
 version: 0.6.0
 date-released: "2026-11-19"
+doi: "10.5281/zenodo.24371773"
 license: MIT
 repository-code: "https://github.com/anandjayakumar/strange-loop-lab"
 url: "https://strangeloops.pages.dev"
