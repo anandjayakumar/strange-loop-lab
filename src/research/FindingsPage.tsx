@@ -506,7 +506,7 @@ export function FindingsPage({
               </a>
             ))}
             <span className="ml-auto hidden shrink-0 self-center font-serif text-[12px] italic text-lab-faint md:inline">
-              five deep dives · each opens its live simulator
+              six deep dives · each opens its live simulator
             </span>
           </div>
 
