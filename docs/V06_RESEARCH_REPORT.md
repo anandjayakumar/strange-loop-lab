@@ -1,7 +1,7 @@
 # V0.6 — Full-Rubric Refinement and the Four Mechanism Bottlenecks
 
 **Status:** complete. 87 conditions × 100 paired seeds = **8,700 episodes**.
-**Artefacts:** `research/v06-results.json`, `research/v06-analysis.json`, `research/v06_validation.log`, `research/v06_feedforward.json`.
+**Artefacts:** `research/v06-results.json`, `research/v06-analysis.json`, `research/v06_feedforward.json`.
 **Lab:** `/research?version=v06`. **Previous report:** the earlier 45-condition V0.6 draft of this document (archived in git history).
 
 ---

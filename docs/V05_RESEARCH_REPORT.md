@@ -96,5 +96,4 @@ run. All other values are from the JSON artifacts listed in §7.
 ## 7. Files
 
 `src/simulation/v05/*`, `tests/v05.test.ts`, `tools/v05validate.ts`,
-`research/v05-results.json`, `research/v05-analysis.json`, `research/v05validation.log`,
-`paper/figures/*`.
+`research/v05-results.json`, `research/v05-analysis.json`, `paper/figures/*`.

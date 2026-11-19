@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-19T12:49:45.271Z",
+  "generatedAt": "2026-11-19T14:09:44.095Z",
   "project": "strange-loop-lab",
   "version": "0.1.0",
   "runtime": {
@@ -50,12 +50,12 @@
     {
       "file": "research/HOLDOUT_MANIFEST.json",
       "bytes": 2805,
-      "sha256": "821103942e6336c5b7c7da829c7bc4af19e7c6e7546d3b94a5deaea7e82a931f"
+      "sha256": "5469d955770946f1c58526ff3be9252778073ad35dc4e9a4930d47e589025323"
     },
     {
       "file": "research/MANIFEST.json",
-      "bytes": 4547,
-      "sha256": "89709af5f643cf2b48fa58e36ea0c1a230a2e8d6d0849068ca621cf74212a5c9"
+      "bytes": 4712,
+      "sha256": "47ed9a4cff4c82887ce11cf23ef2e05e329aa4aad2940adb1641cde8416beece"
     },
     {
       "file": "research/analysis.json",

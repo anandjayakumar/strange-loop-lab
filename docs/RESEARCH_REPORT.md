@@ -773,8 +773,7 @@ npx tsx tools/analyze.ts       # writes research/analysis.json and tables
 npx tsx tools/selfaudit.ts     # focused self-estimate audit
 ```
 
-Raw outputs: `research/results.json`, `research/summary.json`, `research/analysis.json`,
-`research/validation2.log`, `research/analysis2.log`, `research/selfaudit.log`.
+Raw outputs: `research/results.json`, `research/summary.json`, `research/analysis.json`.
 
 The default dynamics, policy and UI settings were not altered for these experiments. Research
 options are opt-in through `ResearchOptions` (`src/simulation/types.ts`) and the default lab uses

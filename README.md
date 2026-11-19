@@ -266,8 +266,7 @@ selective transient gating, the plateau-breaking probe and the non-Pareto trade-
 
 `docs/V06_RESEARCH_REPORT.md` contains the V0.6 audit: the full 7×5 mechanism rubric, four
 matched-compute adversarial controls, the crossed ablation matrix, the untouched holdout
-replication, and the hardening experiments. The publication audit is in
-`docs/FINAL_PUBLICATION_AUDIT.md`.
+replication, and the hardening experiments.
 
 ### Hardening experiments
 
@@ -322,7 +321,7 @@ from **Findings** and **Paper**.
 - `research/SHA256SUMS.txt` and `research/MANIFEST.json` record checksums and exact runtime /
   dependency versions for all archived JSON artifacts.
 - `research/HOLDOUT_MANIFEST.json` records the untouched seeds 10001–10100 and the unchanged V0.6
-  engine baseline (commit `1b63667`).
+  engine baseline (commit `30bc9a8`).
 - The repository is **private at submission**; no DOI has been minted. An archived snapshot is
   available from the author on request.
 - Verification: `npm run typecheck`, `npm test` (73/73), `npm run build`, and clean LaTeX builds

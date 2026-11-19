@@ -232,7 +232,7 @@ Meta-control is preserved: full 40.1 vs meta-off 24.7 (+15.40, dz 0.52, p<0.001)
 - `src/simulation/v04/{types,config,dynamics,selfModel,worldModel,metaModel,attribution,attentionSchema,agent,engine}.ts`
 - `src/v04/{V04Lab.tsx,useV04Simulation.ts}`, V0.4 switch in `src/App.tsx` / `src/components/TopBar.tsx`
 - `tools/v04validate.ts`, `tests/v04.test.ts`
-- `research/v04-results.json`, `research/v04-analysis.json`, `research/v04validation.log`
+- `research/v04-results.json`, `research/v04-analysis.json`
 - preserved: `src/simulation/v02/*`, `src/simulation/v03/*`, `src/v02/*`, `src/v03/*`,
   `tests/v02.test.ts`, `tests/v03.test.ts`, `docs/V02_RESEARCH_REPORT.md`,
   `docs/V03_RESEARCH_REPORT.md`

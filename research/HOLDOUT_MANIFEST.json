@@ -1,8 +1,8 @@
 {
   "generatedAt": "2026-11-19T12:43:58.155Z",
   "purpose": "Untouched V0.6 holdout provenance",
-  "engineBaselineCommit": "1b63667",
-  "holdoutLaunchCommit": "05a688e",
+  "engineBaselineCommit": "30bc9a8",
+  "holdoutLaunchCommit": "ac82aaa",
   "architecture": "V0.6 frozen",
   "parametersChanged": false,
   "figureConstructionUse": false,
@@ -81,5 +81,5 @@
       "seeds": 100
     }
   },
-  "note": "The V0.6 simulation sources are unchanged from 1b63667; the holdout varied only the seed argument passed to the validator."
+  "note": "The V0.6 simulation sources are unchanged from 30bc9a8; the holdout varied only the seed argument passed to the validator."
 }

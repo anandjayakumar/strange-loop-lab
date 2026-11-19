@@ -293,13 +293,13 @@ summaries; `research/v02-analysis.json` contains shadow records.
 
 ## 4. Results
 
-> The tables below are populated from the 100-seed run. `research/v02validation.log` is the
-> primary raw output.
+> The tables below are populated from the 100-seed run; raw per-seed outputs are in
+> `research/v02-results.json`.
 
 ### 4.1 Condition summary
 
 Means over 100 seeds (1,000 ticks). Full per-seed distributions and bootstrap CIs are in
-`research/v02-results.json` and `research/v02validation2.log`.
+`research/v02-results.json` and `research/v02-analysis.json`.
 
 | Condition | Alive | Resources | Mean E | Self MAE | Raw MAE | Meta Brier | Meta BSS | Meta AUROC |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
