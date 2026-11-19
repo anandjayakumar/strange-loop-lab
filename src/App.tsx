@@ -71,8 +71,10 @@ export default function App() {
   const navigate = (target: string) => navigateTo(target);
 
   return (
-    <div className={route.name === "home" ? "editorial-dark" : undefined}>
-      <SiteHeader active={route.name} onNavigate={navigate} dark={route.name === "home"} />
+    <div>
+      {route.name === "home" ? null : (
+        <SiteHeader active={route.name} onNavigate={navigate} />
+      )}
 
       {route.name === "home" ? <HomePage onNavigate={navigate} /> : null}
 

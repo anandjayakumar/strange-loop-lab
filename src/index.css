@@ -297,6 +297,101 @@
     line-height: 0.78;
     color: var(--ed-accent);
   }
+
+  .landing-prose {
+    color: #4a4035;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .landing-prose p {
+    margin-bottom: 1.1em;
+  }
+
+  .landing-prose strong {
+    font-weight: 600;
+    color: #1c1915;
+  }
+
+  .landing-prose em {
+    color: #5d5144;
+  }
+
+  .landing-prose a {
+    color: #b5532a;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .landing-prose .article-list {
+    list-style: disc;
+    padding-left: 1.2rem;
+  }
+
+  .landing-prose ol.article-list {
+    list-style: decimal;
+  }
+
+  .landing-prose .article-list li::marker {
+    color: #b5532a;
+  }
+
+  .landing-prose .article-first::first-letter {
+    float: left;
+    margin-right: 0.08em;
+    padding-top: 0.06em;
+    font-family: var(--font-editorial-serif);
+    font-size: 3.5em;
+    line-height: 0.76;
+    color: #b5532a;
+  }
+
+  .landing-prose a.landing-cta {
+    color: #3f352b;
+    text-decoration: none;
+  }
+
+  .landing-prose a.landing-cta.landing-cta-solid {
+    color: #fbf7ee;
+  }
+
+  .landing-prose a.landing-cta:hover {
+    text-decoration: none;
+  }
+
+  .beginner-guide.paper-view {
+    font-size: 14px;
+    line-height: 1.78;
+    color: #4a4035;
+  }
+
+  .beginner-guide.paper-view h2 {
+    font-size: 31px;
+    line-height: 1.12;
+    margin-top: 2.4rem;
+  }
+
+  .beginner-guide.paper-view h3 {
+    margin: 1.75rem 0 0.55rem;
+    font-family: var(--font-editorial-serif);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: #1c1915;
+  }
+
+  .beginner-guide.paper-view p,
+  .beginner-guide.paper-view .paper-p {
+    margin-bottom: 0.95rem;
+  }
+
+  .beginner-guide.paper-view table.paper-table {
+    min-width: 460px;
+    font-size: 12px;
+  }
 }
 
 @keyframes dash-flow {
