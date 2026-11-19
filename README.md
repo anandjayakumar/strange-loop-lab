@@ -238,6 +238,9 @@ npm run validate:v03        # V0.3: 100 seeds × 52 conditions × 1,000/1,600 ti
 npm run validate:v04        # V0.4: 100 seeds × 54 conditions × 1,000/1,600 ticks
 npm run validate:v05        # V0.5: unified precision/attribution/trap validation
 npm run validate:v06        # V0.6: full 7×5 rubric, 8,700 episodes
+npm run validate:holdout    # V0.6: untouched holdout seeds 10001–10100
+npm run validate:hardening  # V0.3 factorial, V0.4 sweep, holdout comparison
+npm run manifest            # SHA-256 sums + dependency/runtime manifest
 ```
 
 Open the dashboard and use the header to switch between **V0.1, V0.2, V0.3, V0.4, V0.5** and **V0.6**. Each

@@ -180,6 +180,7 @@ export class V04Engine {
       preparation: input.preparation ?? true,
       attentionSchema: input.attentionSchema ?? true,
       evidenceLink: input.evidenceLink ?? true,
+      precisionSuppression: input.precisionSuppression ?? 1,
       recordEvents: input.recordEvents ?? true,
       historyLimit: input.historyLimit ?? 2000,
     };
@@ -206,6 +207,7 @@ export class V04Engine {
       residualMeta: this.options.residualMeta,
       preparation: this.options.preparation,
       attentionSchema: this.options.attentionSchema,
+      precisionSuppression: this.options.precisionSuppression,
     });
     this.sensorRng = new Rng(streamSeed(this.seed, "v04-sensors"));
     this.dynamicsRng = new Rng(streamSeed(this.seed, "v04-dynamics"));

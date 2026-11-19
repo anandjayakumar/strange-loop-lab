@@ -1,0 +1,734 @@
+{
+  "generatedAt": "2026-11-19T12:07:04.122Z",
+  "development": {
+    "seeds": 100,
+    "runs": 8700
+  },
+  "holdout": {
+    "seeds": 100,
+    "runs": 8700
+  },
+  "sharedConditions": 87,
+  "maxAbsResourceDifference": {
+    "condition": "m_no_bottleneck_exp1",
+    "dev": 63.85,
+    "holdout": 57.32,
+    "difference": -6.530000000000001
+  },
+  "meanAbsResourceDifference": 1.954712643678161,
+  "headline": {
+    "full": {
+      "absorption": {
+        "dev": 0.8136472655909123,
+        "holdout": 0.8076870409754384,
+        "difference": -0.0059602246154738525
+      },
+      "oneMinusThrash": {
+        "dev": 0.9486516853932584,
+        "holdout": 0.9315730337078652,
+        "difference": -0.017078651685393242
+      },
+      "macroF1": {
+        "dev": 0.5015242755180835,
+        "holdout": 0.5006233995597321,
+        "difference": -0.0009008759583514214
+      },
+      "solved": {
+        "dev": 0.84,
+        "holdout": 0.85,
+        "difference": 0.010000000000000009
+      },
+      "latency": {
+        "dev": 2.14,
+        "holdout": 3.2,
+        "difference": 1.06
+      }
+    },
+    "no_rpt": {
+      "absorption": {
+        "dev": 0.2895844635737468,
+        "holdout": 0.3369930044763915,
+        "difference": 0.047408540902644736
+      },
+      "oneMinusThrash": {
+        "dev": 0.9412359550561797,
+        "holdout": 0.9565168539325842,
+        "difference": 0.015280898876404492
+      },
+      "macroF1": {
+        "dev": 0.5201711174487944,
+        "holdout": 0.5010347884035703,
+        "difference": -0.01913632904522411
+      },
+      "solved": {
+        "dev": 0.39,
+        "holdout": 0.26,
+        "difference": -0.13
+      },
+      "latency": {
+        "dev": 5.29,
+        "holdout": 2.55,
+        "difference": -2.74
+      }
+    },
+    "no_bottleneck": {
+      "absorption": {
+        "dev": 0.7902633385644592,
+        "holdout": 0.777845608003705,
+        "difference": -0.012417730560754237
+      },
+      "oneMinusThrash": {
+        "dev": 0.644494382022472,
+        "holdout": 0.6606741573033709,
+        "difference": 0.016179775280898867
+      },
+      "macroF1": {
+        "dev": 0.6212995189411755,
+        "holdout": 0.5983169613537495,
+        "difference": -0.022982557587426067
+      },
+      "solved": {
+        "dev": 0.75,
+        "holdout": 0.74,
+        "difference": -0.010000000000000009
+      },
+      "latency": {
+        "dev": 2.35,
+        "holdout": 1.71,
+        "difference": -0.6400000000000001
+      }
+    },
+    "no_broadcast": {
+      "absorption": {
+        "dev": 0.7764953669952164,
+        "holdout": 0.8354888328422863,
+        "difference": 0.05899346584706988
+      },
+      "oneMinusThrash": {
+        "dev": 0.8958426966292135,
+        "holdout": 0.9119101123595506,
+        "difference": 0.016067415730337098
+      },
+      "macroF1": {
+        "dev": 0.5791594236193539,
+        "holdout": 0.5511662288411656,
+        "difference": -0.02799319477818829
+      },
+      "solved": {
+        "dev": 0.34,
+        "holdout": 0.4,
+        "difference": 0.06
+      },
+      "latency": {
+        "dev": 1.28,
+        "holdout": 2.87,
+        "difference": 1.59
+      }
+    },
+    "no_hot": {
+      "absorption": {
+        "dev": 0.7922366752078795,
+        "holdout": 0.780112257709879,
+        "difference": -0.012124417498000528
+      },
+      "oneMinusThrash": {
+        "dev": 0.7729213483146067,
+        "holdout": 0.7679775280898876,
+        "difference": -0.004943820224719064
+      },
+      "macroF1": {
+        "dev": 0,
+        "holdout": 0,
+        "difference": 0
+      },
+      "solved": {
+        "dev": 0.9,
+        "holdout": 0.9,
+        "difference": 0
+      },
+      "latency": {
+        "dev": 400,
+        "holdout": 400,
+        "difference": 0
+      }
+    },
+    "no_ast": {
+      "absorption": {
+        "dev": 0.8192631348252969,
+        "holdout": 0.8455894929945768,
+        "difference": 0.026326358169279862
+      },
+      "oneMinusThrash": {
+        "dev": 0.9373033707865168,
+        "holdout": 0.9582022471910112,
+        "difference": 0.020898876404494393
+      },
+      "macroF1": {
+        "dev": 0.5353089211431905,
+        "holdout": 0.5298445123228909,
+        "difference": -0.005464408820299638
+      },
+      "solved": {
+        "dev": 0.35,
+        "holdout": 0.3,
+        "difference": -0.04999999999999999
+      },
+      "latency": {
+        "dev": 1.28,
+        "holdout": 5.84,
+        "difference": 4.56
+      }
+    },
+    "no_selfsim": {
+      "absorption": {
+        "dev": 0.8391554642482637,
+        "holdout": 0.8164226140460227,
+        "difference": -0.02273285020224103
+      },
+      "oneMinusThrash": {
+        "dev": 0.9491011235955056,
+        "holdout": 0.9395505617977528,
+        "difference": -0.009550561797752821
+      },
+      "macroF1": {
+        "dev": 0.5406499432457422,
+        "holdout": 0.5156216393400527,
+        "difference": -0.025028303905689553
+      },
+      "solved": {
+        "dev": 0.01,
+        "holdout": 0.01,
+        "difference": 0
+      },
+      "latency": {
+        "dev": 1.65,
+        "holdout": 6.53,
+        "difference": 4.880000000000001
+      }
+    }
+  },
+  "perConditionResources": [
+    {
+      "condition": "m_full_exp1",
+      "dev": 25.37,
+      "holdout": 23.5,
+      "difference": -1.870000000000001
+    },
+    {
+      "condition": "m_full_exp2",
+      "dev": 32.35,
+      "holdout": 32.8,
+      "difference": 0.44999999999999574
+    },
+    {
+      "condition": "m_full_exp3_self",
+      "dev": 51.62,
+      "holdout": 49.97,
+      "difference": -1.6499999999999986
+    },
+    {
+      "condition": "m_full_exp3_energy_sensor",
+      "dev": 33.71,
+      "holdout": 34.33,
+      "difference": 0.6199999999999974
+    },
+    {
+      "condition": "m_full_exp3_fatigue_sensor",
+      "dev": 54.08,
+      "holdout": 52.63,
+      "difference": -1.4499999999999957
+    },
+    {
+      "condition": "m_full_exp3_shared",
+      "dev": 33.84,
+      "holdout": 34.97,
+      "difference": 1.1299999999999955
+    },
+    {
+      "condition": "m_full_exp4",
+      "dev": 57.21,
+      "holdout": 58.27,
+      "difference": 1.0600000000000023
+    },
+    {
+      "condition": "m_full_exp5",
+      "dev": 46.59,
+      "holdout": 45.62,
+      "difference": -0.970000000000006
+    },
+    {
+      "condition": "m_no_rpt_exp1",
+      "dev": 24.7,
+      "holdout": 22.72,
+      "difference": -1.9800000000000004
+    },
+    {
+      "condition": "m_no_rpt_exp2",
+      "dev": 23.04,
+      "holdout": 21.92,
+      "difference": -1.1199999999999974
+    },
+    {
+      "condition": "m_no_rpt_exp3_self",
+      "dev": 26.39,
+      "holdout": 25.98,
+      "difference": -0.41000000000000014
+    },
+    {
+      "condition": "m_no_rpt_exp3_energy_sensor",
+      "dev": 24.43,
+      "holdout": 22.33,
+      "difference": -2.1000000000000014
+    },
+    {
+      "condition": "m_no_rpt_exp3_fatigue_sensor",
+      "dev": 23.99,
+      "holdout": 23.11,
+      "difference": -0.879999999999999
+    },
+    {
+      "condition": "m_no_rpt_exp3_shared",
+      "dev": 23.4,
+      "holdout": 23.63,
+      "difference": 0.23000000000000043
+    },
+    {
+      "condition": "m_no_rpt_exp4",
+      "dev": 22.33,
+      "holdout": 19.83,
+      "difference": -2.5
+    },
+    {
+      "condition": "m_no_rpt_exp5",
+      "dev": 22.89,
+      "holdout": 22.04,
+      "difference": -0.8500000000000014
+    },
+    {
+      "condition": "m_no_bottleneck_exp1",
+      "dev": 63.85,
+      "holdout": 57.32,
+      "difference": -6.530000000000001
+    },
+    {
+      "condition": "m_no_bottleneck_exp2",
+      "dev": 43.95,
+      "holdout": 39.88,
+      "difference": -4.07
+    },
+    {
+      "condition": "m_no_bottleneck_exp3_self",
+      "dev": 51.39,
+      "holdout": 46.95,
+      "difference": -4.439999999999998
+    },
+    {
+      "condition": "m_no_bottleneck_exp3_energy_sensor",
+      "dev": 48.7,
+      "holdout": 46.95,
+      "difference": -1.75
+    },
+    {
+      "condition": "m_no_bottleneck_exp3_fatigue_sensor",
+      "dev": 50.09,
+      "holdout": 45.86,
+      "difference": -4.230000000000004
+    },
+    {
+      "condition": "m_no_bottleneck_exp3_shared",
+      "dev": 49.27,
+      "holdout": 45.31,
+      "difference": -3.960000000000001
+    },
+    {
+      "condition": "m_no_bottleneck_exp4",
+      "dev": 52.11,
+      "holdout": 56.13,
+      "difference": 4.020000000000003
+    },
+    {
+      "condition": "m_no_bottleneck_exp5",
+      "dev": 42.2,
+      "holdout": 39.96,
+      "difference": -2.240000000000002
+    },
+    {
+      "condition": "m_no_broadcast_exp1",
+      "dev": 30.74,
+      "holdout": 32.9,
+      "difference": 2.16
+    },
+    {
+      "condition": "m_no_broadcast_exp2",
+      "dev": 27.85,
+      "holdout": 26.22,
+      "difference": -1.6300000000000026
+    },
+    {
+      "condition": "m_no_broadcast_exp3_self",
+      "dev": 34.62,
+      "holdout": 31.7,
+      "difference": -2.919999999999998
+    },
+    {
+      "condition": "m_no_broadcast_exp3_energy_sensor",
+      "dev": 30.16,
+      "holdout": 27.95,
+      "difference": -2.210000000000001
+    },
+    {
+      "condition": "m_no_broadcast_exp3_fatigue_sensor",
+      "dev": 30.63,
+      "holdout": 26.7,
+      "difference": -3.9299999999999997
+    },
+    {
+      "condition": "m_no_broadcast_exp3_shared",
+      "dev": 30.21,
+      "holdout": 28.59,
+      "difference": -1.620000000000001
+    },
+    {
+      "condition": "m_no_broadcast_exp4",
+      "dev": 24.42,
+      "holdout": 24.16,
+      "difference": -0.26000000000000156
+    },
+    {
+      "condition": "m_no_broadcast_exp5",
+      "dev": 28.43,
+      "holdout": 26.79,
+      "difference": -1.6400000000000006
+    },
+    {
+      "condition": "m_no_hot_exp1",
+      "dev": 46.89,
+      "holdout": 46.94,
+      "difference": 0.04999999999999716
+    },
+    {
+      "condition": "m_no_hot_exp2",
+      "dev": 36.28,
+      "holdout": 35.55,
+      "difference": -0.730000000000004
+    },
+    {
+      "condition": "m_no_hot_exp3_self",
+      "dev": 43.41,
+      "holdout": 42.32,
+      "difference": -1.0899999999999963
+    },
+    {
+      "condition": "m_no_hot_exp3_energy_sensor",
+      "dev": 43,
+      "holdout": 41.25,
+      "difference": -1.75
+    },
+    {
+      "condition": "m_no_hot_exp3_fatigue_sensor",
+      "dev": 43.26,
+      "holdout": 41.72,
+      "difference": -1.5399999999999991
+    },
+    {
+      "condition": "m_no_hot_exp3_shared",
+      "dev": 43.28,
+      "holdout": 41.31,
+      "difference": -1.9699999999999989
+    },
+    {
+      "condition": "m_no_hot_exp4",
+      "dev": 61.91,
+      "holdout": 57.84,
+      "difference": -4.069999999999993
+    },
+    {
+      "condition": "m_no_hot_exp5",
+      "dev": 34.88,
+      "holdout": 34.52,
+      "difference": -0.35999999999999943
+    },
+    {
+      "condition": "m_no_ast_exp1",
+      "dev": 27.04,
+      "holdout": 23.78,
+      "difference": -3.259999999999998
+    },
+    {
+      "condition": "m_no_ast_exp2",
+      "dev": 24.97,
+      "holdout": 22.56,
+      "difference": -2.41
+    },
+    {
+      "condition": "m_no_ast_exp3_self",
+      "dev": 29.69,
+      "holdout": 26.99,
+      "difference": -2.700000000000003
+    },
+    {
+      "condition": "m_no_ast_exp3_energy_sensor",
+      "dev": 25.36,
+      "holdout": 22.32,
+      "difference": -3.039999999999999
+    },
+    {
+      "condition": "m_no_ast_exp3_fatigue_sensor",
+      "dev": 26.59,
+      "holdout": 23.62,
+      "difference": -2.969999999999999
+    },
+    {
+      "condition": "m_no_ast_exp3_shared",
+      "dev": 26.47,
+      "holdout": 23.19,
+      "difference": -3.2799999999999976
+    },
+    {
+      "condition": "m_no_ast_exp4",
+      "dev": 20.82,
+      "holdout": 18.13,
+      "difference": -2.6900000000000013
+    },
+    {
+      "condition": "m_no_ast_exp5",
+      "dev": 24.91,
+      "holdout": 22.4,
+      "difference": -2.5100000000000016
+    },
+    {
+      "condition": "m_no_selfsim_exp1",
+      "dev": 24.39,
+      "holdout": 22.57,
+      "difference": -1.8200000000000003
+    },
+    {
+      "condition": "m_no_selfsim_exp2",
+      "dev": 21.95,
+      "holdout": 21.84,
+      "difference": -0.10999999999999943
+    },
+    {
+      "condition": "m_no_selfsim_exp3_self",
+      "dev": 26.97,
+      "holdout": 25.11,
+      "difference": -1.8599999999999994
+    },
+    {
+      "condition": "m_no_selfsim_exp3_energy_sensor",
+      "dev": 22.98,
+      "holdout": 22.79,
+      "difference": -0.19000000000000128
+    },
+    {
+      "condition": "m_no_selfsim_exp3_fatigue_sensor",
+      "dev": 23.05,
+      "holdout": 22.58,
+      "difference": -0.4700000000000024
+    },
+    {
+      "condition": "m_no_selfsim_exp3_shared",
+      "dev": 23.84,
+      "holdout": 22.13,
+      "difference": -1.7100000000000009
+    },
+    {
+      "condition": "m_no_selfsim_exp4",
+      "dev": 0.33,
+      "holdout": 0.86,
+      "difference": 0.53
+    },
+    {
+      "condition": "m_no_selfsim_exp5",
+      "dev": 22.07,
+      "holdout": 21.97,
+      "difference": -0.10000000000000142
+    },
+    {
+      "condition": "m_full_gen_topology",
+      "dev": 57.38,
+      "holdout": 51.66,
+      "difference": -5.720000000000006
+    },
+    {
+      "condition": "m_full_gen_nonlinear",
+      "dev": 55.87,
+      "holdout": 54.01,
+      "difference": -1.8599999999999994
+    },
+    {
+      "condition": "m_full_gen_compound",
+      "dev": 32.69,
+      "holdout": 34.88,
+      "difference": 2.190000000000005
+    },
+    {
+      "condition": "c_reactive_standard_shift",
+      "dev": 51.22,
+      "holdout": 50.93,
+      "difference": -0.28999999999999915
+    },
+    {
+      "condition": "c_reactive_conflict",
+      "dev": 43.65,
+      "holdout": 44.34,
+      "difference": 0.6900000000000048
+    },
+    {
+      "condition": "c_reactive_fork",
+      "dev": 3.53,
+      "holdout": 2.4,
+      "difference": -1.13
+    },
+    {
+      "condition": "c_reactive_gen_topology",
+      "dev": 59.92,
+      "holdout": 58.19,
+      "difference": -1.730000000000004
+    },
+    {
+      "condition": "c_reactive_gen_nonlinear",
+      "dev": 56.9,
+      "holdout": 60.54,
+      "difference": 3.6400000000000006
+    },
+    {
+      "condition": "c_reactive_gen_compound",
+      "dev": 2.65,
+      "holdout": 1.39,
+      "difference": -1.26
+    },
+    {
+      "condition": "c_physical_mpc_standard_shift",
+      "dev": 30.5,
+      "holdout": 26.32,
+      "difference": -4.18
+    },
+    {
+      "condition": "c_physical_mpc_conflict",
+      "dev": 27.29,
+      "holdout": 24.11,
+      "difference": -3.1799999999999997
+    },
+    {
+      "condition": "c_physical_mpc_fork",
+      "dev": 0.42,
+      "holdout": 0.79,
+      "difference": 0.37000000000000005
+    },
+    {
+      "condition": "c_physical_mpc_gen_topology",
+      "dev": 30.69,
+      "holdout": 27.96,
+      "difference": -2.7300000000000004
+    },
+    {
+      "condition": "c_physical_mpc_gen_nonlinear",
+      "dev": 32.06,
+      "holdout": 29.79,
+      "difference": -2.270000000000003
+    },
+    {
+      "condition": "c_physical_mpc_gen_compound",
+      "dev": 1.74,
+      "holdout": 1.6,
+      "difference": -0.1399999999999999
+    },
+    {
+      "condition": "c_flat_blackboard_standard_shift",
+      "dev": 45.18,
+      "holdout": 46.54,
+      "difference": 1.3599999999999994
+    },
+    {
+      "condition": "c_flat_blackboard_conflict",
+      "dev": 41.51,
+      "holdout": 40.1,
+      "difference": -1.4099999999999966
+    },
+    {
+      "condition": "c_flat_blackboard_fork",
+      "dev": 50.49,
+      "holdout": 50.35,
+      "difference": -0.14000000000000057
+    },
+    {
+      "condition": "c_flat_blackboard_gen_topology",
+      "dev": 52.16,
+      "holdout": 49.18,
+      "difference": -2.979999999999997
+    },
+    {
+      "condition": "c_flat_blackboard_gen_nonlinear",
+      "dev": 53.97,
+      "holdout": 51.29,
+      "difference": -2.6799999999999997
+    },
+    {
+      "condition": "c_flat_blackboard_gen_compound",
+      "dev": 47.46,
+      "holdout": 46.84,
+      "difference": -0.6199999999999974
+    },
+    {
+      "condition": "c_matched_feedforward_standard_shift",
+      "dev": 30.21,
+      "holdout": 27.43,
+      "difference": -2.780000000000001
+    },
+    {
+      "condition": "c_matched_feedforward_conflict",
+      "dev": 27.43,
+      "holdout": 26.05,
+      "difference": -1.379999999999999
+    },
+    {
+      "condition": "c_matched_feedforward_fork",
+      "dev": 19.52,
+      "holdout": 13.98,
+      "difference": -5.539999999999999
+    },
+    {
+      "condition": "c_matched_feedforward_gen_topology",
+      "dev": 29.11,
+      "holdout": 30.28,
+      "difference": 1.1700000000000017
+    },
+    {
+      "condition": "c_matched_feedforward_gen_nonlinear",
+      "dev": 31.98,
+      "holdout": 32.59,
+      "difference": 0.610000000000003
+    },
+    {
+      "condition": "c_matched_feedforward_gen_compound",
+      "dev": 29.55,
+      "holdout": 27.5,
+      "difference": -2.0500000000000007
+    },
+    {
+      "condition": "r_rolling_exp1",
+      "dev": 38.52,
+      "holdout": 38.69,
+      "difference": 0.1699999999999946
+    },
+    {
+      "condition": "r_rolling_exp3",
+      "dev": 27.76,
+      "holdout": 25.38,
+      "difference": -2.3800000000000026
+    },
+    {
+      "condition": "r_raw_exp1",
+      "dev": 26.09,
+      "holdout": 21.85,
+      "difference": -4.239999999999998
+    },
+    {
+      "condition": "r_fixed_exp1",
+      "dev": 24.86,
+      "holdout": 23.78,
+      "difference": -1.0799999999999983
+    }
+  ]
+}

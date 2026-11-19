@@ -1,0 +1,151 @@
+{
+  "generatedAt": "2026-11-19T12:29:15.290Z",
+  "project": "strange-loop-lab",
+  "version": "0.1.0",
+  "runtime": {
+    "node": "v22.23.4",
+    "platform": "win32",
+    "arch": "x64",
+    "npm": "npm/10.9.9 node/v22.23.4 win32 x64 workspaces/false",
+    "typescript": "~5.6.3",
+    "tsx": "^4.19.2",
+    "vite": "^6.0.5",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "tsrs": "0.25.0-ts7.1.0-beta",
+    "tsx": "^4.19.2",
+    "typescript": "~5.6.3",
+    "vite": "^6.0.5",
+    "vitest": "^3.2.7"
+  },
+  "protocol": {
+    "seeds": "1-100 development; 10001-10100 untouched holdout for V0.6.1",
+    "tests": "73",
+    "validators": [
+      "npm run validate",
+      "npm run validate:v02",
+      "npm run validate:v03",
+      "npm run validate:v04",
+      "npm run validate:v05",
+      "npm run validate:v06",
+      "npm run validate:holdout",
+      "npm run validate:hardening"
+    ]
+  },
+  "files": [
+    {
+      "file": "research/MANIFEST.json",
+      "bytes": 3537,
+      "sha256": "65ce84102d4bc8c536b2214b25e1be37dea827f1a2d70e17313fa3c48599d9ec"
+    },
+    {
+      "file": "research/analysis.json",
+      "bytes": 290780,
+      "sha256": "ffa56420382506ed82881e7d993d4972e7d1ca5c5e9c3a1043cd53361fbcc32f"
+    },
+    {
+      "file": "research/hardening-factorial.json",
+      "bytes": 8684,
+      "sha256": "6e8addf63662d595c4d393c6fdc8e08586ed3d81fae3c7f414d38c228eb22b95"
+    },
+    {
+      "file": "research/hardening-holdout-comparison.json",
+      "bytes": 17283,
+      "sha256": "31562db5a5a0363e181122e16091b2caf17d0db04cfea26fdff6630cea09bcff"
+    },
+    {
+      "file": "research/hardening-sweep.json",
+      "bytes": 9208,
+      "sha256": "97a2fc90eb0597b01baeae7e9e6a4f1664a0be799c26ccd48c42a546fdee4ba6"
+    },
+    {
+      "file": "research/results.json",
+      "bytes": 3664243,
+      "sha256": "72336df769fb5413230a58c543b1ee597aaeebc6145b58c614b36a2088efe475"
+    },
+    {
+      "file": "research/summary.json",
+      "bytes": 86619,
+      "sha256": "e206e71aee68f37031164cadce7a2737aac4d5434247aef85106b9bd04060b1c"
+    },
+    {
+      "file": "research/v02-analysis.json",
+      "bytes": 17474295,
+      "sha256": "3ab1c734f4fb93ee21165cca749b31de6aef4330311ce8fd8324ba226787e91d"
+    },
+    {
+      "file": "research/v02-results.json",
+      "bytes": 3299460,
+      "sha256": "d9b0443a4bd9a5e5c8b3cb0d2bf78fb14dd8a149153c222db4f202162c89d04a"
+    },
+    {
+      "file": "research/v03-analysis.json",
+      "bytes": 15829,
+      "sha256": "e400e984ced4274e0c99dc5bd9939b1bc12f8cc067c8e47a39bf09c7548cf54f"
+    },
+    {
+      "file": "research/v03-results.json",
+      "bytes": 7143730,
+      "sha256": "62b4f0df0794c99a85c480d5369720f6ca9dc87313c450182c7b209345b71cb4"
+    },
+    {
+      "file": "research/v04-analysis.json",
+      "bytes": 17085,
+      "sha256": "66d7a5de9e33f11bb69601010ac0c23abb334b92f50f05cbf63156a6b325d649"
+    },
+    {
+      "file": "research/v04-results.json",
+      "bytes": 7417463,
+      "sha256": "75e011e390f5357b574245f6aab86f8f1f47672721364d7a2c98a5cce0bccc0a"
+    },
+    {
+      "file": "research/v05-analysis.json",
+      "bytes": 15812,
+      "sha256": "53c14c087f0f54ff19f9353dbc17493977681fd89c6674000d4c404906a62ad1"
+    },
+    {
+      "file": "research/v05-results.json",
+      "bytes": 7141492,
+      "sha256": "ba6e0f3cfbef9d6e43890ffa7f48fef6c4a716c1f96e0226b55993b69e053ff5"
+    },
+    {
+      "file": "research/v06-analysis.json",
+      "bytes": 911311,
+      "sha256": "52b46f18fee0a80e58e3c63c54f4d970e005dd9f749ee09e37902383587a7db3"
+    },
+    {
+      "file": "research/v06-holdout-analysis.json",
+      "bytes": 913071,
+      "sha256": "7dc6fc24477f6e099e0d20100790ceb4d120227d4822a2be8fd945e75dd46649"
+    },
+    {
+      "file": "research/v06-holdout-results.json",
+      "bytes": 14580173,
+      "sha256": "e9f0e1bc775ff821ffa1783cc324df8bc2e649a1054cfcc886779f906ba51120"
+    },
+    {
+      "file": "research/v06-results.json",
+      "bytes": 14555369,
+      "sha256": "d90ed616c58f918efe68e9a6fa83363aa2fca548627c9a8e917a2f1562cd19f3"
+    },
+    {
+      "file": "research/v06_feedforward.json",
+      "bytes": 4998,
+      "sha256": "a2f722f3929f5fa4bd82414b52141a1c1e60ebdb19f6de942ed96ad16d0acfe1"
+    }
+  ]
+}

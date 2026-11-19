@@ -69,7 +69,7 @@ const FIGURES = [
   {
     id: "fig4",
     src: "/paper/figures/fig4_trilemma_pareto.svg",
-    title: "The illusion–tracking–diagnostic trilemma",
+    title: "The illusion–tracking–diagnostic trade-off",
     caption:
       "PP-1 pulse absorption against stationary MAE, with marker area encoding four-way attribution macro-F1. Absorbing the illusion buys calm at a measured cost to tracking and diagnosis; no point dominates the frontier.",
     note: "Negative result · Pareto frontier",
@@ -316,7 +316,7 @@ export function FindingsPage({
               to absorb a sensory lie, it is slower to track the truth and harder to diagnose.
             </p>
             <footer className="mt-3 label">
-              the trilemma is measured, not argued
+              the trade-off is measured, not argued
             </footer>
           </blockquote>
         </section>
@@ -654,7 +654,7 @@ export function FindingsPage({
                 no capacity limit and a matched-compute feedforward network.
               </p>
               <p className="mt-4 max-w-[64ch] text-[13.5px] leading-[1.75] text-lab-muted">
-                The answer is a double dissociation, not a victory lap. The bottleneck,
+                The answer is a ablation-based functional dissociation, not a victory lap. The bottleneck,
                 broadcast, higher-order monitor, attention schema, cognitive rollout and recurrent
                 settling each carry a capability the others do not. The final V0.6 run corrects
                 the original null: the recurrent loop is load-bearing, taking single-tick absorption to 0.814

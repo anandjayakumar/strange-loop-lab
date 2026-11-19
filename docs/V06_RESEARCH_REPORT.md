@@ -172,3 +172,7 @@ npm run typecheck && npm run build
 The validator writes raw per-run summaries to `research/v06-results.json` and aggregates, contrasts,
 macro-F1 and Table C to `research/v06-analysis.json`. The matched-feedforward Exp1 supplement is in
 `research/v06_feedforward.json`. Every value in this report is regenerated from those files.
+
+## 8. Untouched holdout replication (seeds 10001-10100)
+
+The full V0.6 benchmark was rerun once on 100 new seeds with no parameter or code change. Full-architecture estimates reproduced the development set: PP-1 absorption 0.808 [0.777, 0.836] vs 0.814; conflict coherence 0.932 vs 0.949; attribution macro-F1 0.501 vs 0.502; fork solved 85% [78, 92] vs 84%; fork resources 58.3 [52.8, 64.2] vs 57.2. Across 87 conditions the mean absolute resource difference was 1.95 (largest 6.53, No-GWT bottleneck Exp 1). No-RPT fork solving (26% vs 39%) and No-AST detection latency (5.8 vs 1.3) were less stable; see research/hardening-holdout-comparison.json.

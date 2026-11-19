@@ -70,7 +70,7 @@ In **Version 0.2**, our organism couldn't tell the difference—a broken energy 
 
 ---
 
-### Lesson 5: The Brain’s Unavoidable Trilemma
+### Lesson 5: The Brain’s Unavoidable Trade-off
 
 Finally, in **Versions 0.4 and 0.5**, we added two concepts from modern neuroscience: **Top-Down Perceptual Illusions** (where strong internal beliefs absorb brief sensory glitches rather than overreacting to them) and an **Attention Schema** (a model of how the brain is currently allocating its own focus across its senses).
 
@@ -88,7 +88,7 @@ Even in a tiny digital creature, there is no single "perfect" brain setting. Eve
 
 **Version 0.6** stops adding survival tricks and asks a stricter question: are the self-referential mechanisms *actually necessary* for a cognitive capability, or do they just look impressive? We built four specialist modules (world, body, meta-diagnosis, curiosity), made them compete for one capacity-limited workspace, broadcast the winner back to everyone, and let the agent run a short internal simulation of its own future beliefs.
 
-The result is a **double dissociation**. Remove the competition and the agent thrashes between actions under conflict. Remove the broadcast and it loses binding even when the winner is unchanged. Remove the higher-order monitor and it can no longer tell whether its body, its energy sense, or its fatigue sense is wrong—and it starts rewriting its body model around a lying sensor. Remove the attention schema and it never recovers after a glitch. Remove the cognitive simulation and it refuses to pay for a diagnostic probe, because it cannot imagine that the probe will change what it knows. A conventional planner that simulates only physical states, with the same horizon, also refuses.
+The result is a **ablation-based functional dissociation**. Remove the competition and the agent thrashes between actions under conflict. Remove the broadcast and it loses binding even when the winner is unchanged. Remove the higher-order monitor and it can no longer tell whether its body, its energy sense, or its fatigue sense is wrong—and it starts rewriting its body model around a lying sensor. Remove the attention schema and it never recovers after a glitch. Remove the cognitive simulation and it refuses to pay for a diagnostic probe, because it cannot imagine that the probe will change what it knows. A conventional planner that simulates only physical states, with the same horizon, also refuses.
 
 But the same experiments produced uncomfortable negatives. Confidence calibration stayed **below target** when the energy channel itself started lying. Attribution was weak for shared degradation. A simple reactive control out-foraged the full architecture during sensor disruptions. And the architecture was out-foraged by simpler controls in all three unseen worlds (by reactive control in Gen 1–2 and by the flat blackboard in Gen 3), even while V0.6 won conflict coherence and epistemic fork solving. The loop buys real capabilities, but not a better forager—and not every elegant mechanism earns its keep. The one earlier negative that did not survive scrutiny was recurrent settling: the first V0.6 run let the one-pass filter keep a hard outlier clamp, which hid the loop's contribution. With that artefact removed, three settling passes raise one-tick illusion absorption from 0.290 to 0.814, so the loop is load-bearing after all.
 

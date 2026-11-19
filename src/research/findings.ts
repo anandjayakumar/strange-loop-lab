@@ -159,7 +159,7 @@ export const DISCOVERIES: Discovery[] = [
   {
     id: "trilemma",
     index: 10,
-    title: "The illusion–tracking–diagnostic trilemma (a no-free-lunch theorem)",
+    title: "The illusion–tracking–diagnostic trade-off (a no-free-lunch theorem)",
     version: "v05",
     plain:
       "Making the agent absorb a one-tick sensory lie requires it to trust its prior more than its senses. That same setting makes it slower to track real changes and blinds the module that diagnoses sensor faults. V0.5 showed the three cannot all be maximised at once with a single gain: every attempt to buy back tracking or attribution gave back absorption.",
@@ -618,7 +618,7 @@ export const VERSIONS: VersionDetail[] = [
       { label: "Stationary MAE", value: "1.431", note: "feedforward 1.453", tone: "good" },
     ],
     successes: [
-      "Capacity competition, broadcast, HOT, AST and AE-2 each show a double dissociation.",
+      "Capacity competition, broadcast, HOT, AST and AE-2 each show a ablation-based functional dissociation.",
       "The epistemic fork is solved by cognitive self-simulation but not by physical MPC.",
       "HOT routing preserves first-order accuracy under sensor corruption.",
       "RPT is load-bearing: K=3 absorption 0.814 vs 0.290 at K=1.",
@@ -632,7 +632,7 @@ export const VERSIONS: VersionDetail[] = [
       "Flat and reactive controls out-forage the architecture in standard shift, conflict and Gen3.",
     ],
     verdict:
-      "A genuine double dissociation with one residual bottleneck: workspace competition, broadcast, recurrence, AST and cognitive rollout are load-bearing; HOT calibration and shared attribution are not yet at target, and the architecture remains a stronger instrument than a forager.",
+      "A genuine ablation-based functional dissociation with one residual bottleneck: workspace competition, broadcast, recurrence, AST and cognitive rollout are load-bearing; HOT calibration and shared attribution are not yet at target, and the architecture remains a stronger instrument than a forager.",
     launchMode: "four modules · workspace · HOT · cognitive rollout",
   },
 ];

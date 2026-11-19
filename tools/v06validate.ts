@@ -48,7 +48,22 @@ interface Mechanism {
   ablation: Ablation;
 }
 
-const SEEDS = Array.from({ length: Number(process.env.SEEDS ?? 100) }, (_, i) => i + 1);
+function arg(name: string): string | undefined {
+  const index = process.argv.indexOf(`--${name}`);
+  return index >= 0 ? process.argv[index + 1] : undefined;
+}
+
+const SEED_START = Number(arg("seed-start") ?? process.env.SEED_START ?? 1);
+const SEED_COUNT = Number(arg("seeds") ?? process.env.SEEDS ?? 100);
+const SEEDS = Array.from({ length: SEED_COUNT }, (_, i) => i + SEED_START);
+const RESULTS_PATH = path.resolve(
+  arg("out") ?? process.env.OUT ?? "research/v06-results.json",
+);
+const ANALYSIS_PATH = path.resolve(
+  arg("analysis-out") ??
+    process.env.ANALYSIS_OUT ??
+    RESULTS_PATH.replace(/results\.json$/, "analysis.json"),
+);
 
 const MECHANISMS: Mechanism[] = [
   { key: "full", label: "V0.6 full", ablation: "none" },
@@ -525,7 +540,7 @@ function main(): void {
   }
 
   fs.writeFileSync(
-    path.resolve("research/v06-results.json"),
+    RESULTS_PATH,
     JSON.stringify(
       {
         metadata: {
@@ -807,9 +822,9 @@ function main(): void {
       ]),
     ),
   };
-  fs.writeFileSync(path.resolve("research/v06-analysis.json"), JSON.stringify(analysis, null, 2));
+  fs.writeFileSync(ANALYSIS_PATH, JSON.stringify(analysis, null, 2));
   console.log(
-    `\nWrote research/v06-results.json and research/v06-analysis.json in ${((Date.now() - started) / 1000).toFixed(1)}s (${count} runs).`,
+    `\nWrote ${RESULTS_PATH} and ${ANALYSIS_PATH} in ${((Date.now() - started) / 1000).toFixed(1)}s (${count} runs).`,
   );
 }
 

@@ -578,7 +578,7 @@ function fig4() {
   const w = 980;
   const h = 520;
   const body: string[] = [];
-  body.push(panelTitle(28, 30, "A", "The illusion–tracking–diagnostic trilemma"));
+  body.push(panelTitle(28, 30, "A", "The illusion–tracking–diagnostic trade-off"));
   body.push(
     text(28, 48, "PP-1 absorption (x) versus stationary MAE (y); marker area encodes 4-way attribution macro-F1.", {
       size: 9.5,
@@ -594,14 +594,22 @@ function fig4() {
   const xMin = -0.08;
   const xMax = 1.08;
   const xFor = (v: number) => left + ((v - xMin) / (xMax - xMin)) * width;
-  const yFor = (v: number) => top + height - ((v - 1.4) / (3.0 - 1.4)) * height;
+  const sweepFile = path.join(ROOT, "research", "hardening-sweep.json");
+  const sweep = fs.existsSync(sweepFile)
+    ? (JSON.parse(fs.readFileSync(sweepFile, "utf8")) as {
+        points: { suppression: number; absorption: { mean: number }; stationaryMae: { mean: number } }[];
+      })
+    : null;
+  const yMax = Math.max(3.0, ...(sweep?.points.map((point) => point.stationaryMae.mean) ?? [3])) + 0.15;
+  const yFor = (v: number) => top + height - ((v - 1.4) / (yMax - 1.4)) * height;
 
   [0, 0.25, 0.5, 0.75, 1].forEach((value) => {
     body.push(line(xFor(value), top + height, xFor(value), top, GRID, 0.8));
     body.push(line(xFor(value), top + height, xFor(value), top + height + 5, MUTED, 0.8));
     body.push(tickLabel(xFor(value), top + height + 16, value.toFixed(2)));
   });
-  [1.5, 2, 2.5, 3].forEach((value) => {
+  const yTicks = [1.5, 2, 2.5, 3, 3.5, 4, 4.5].filter((value) => value < yMax);
+  yTicks.forEach((value) => {
     body.push(line(left, yFor(value), left + width, yFor(value), GRID, 0.8));
     body.push(tickLabel(left - 8, yFor(value) + 3, value.toFixed(1)));
   });
@@ -617,6 +625,31 @@ function fig4() {
     { label: "V0.4", abs: absorption.v04, mae: mae.v04, f1: f1.v04, color: RED },
     { label: "V0.5", abs: absorption.v05, mae: mae.v05, f1: f1.v05, color: GREEN },
   ];
+
+  // Empirical 9-point suppression sweep (Experiment B), if it has been run.
+  if (sweep) {
+    const points = sweep.points
+      .map((point) => ({
+        x: xFor(point.absorption.mean),
+        y: yFor(point.stationaryMae.mean),
+        suppression: point.suppression,
+      }))
+      .sort((a, b) => a.suppression - b.suppression);
+    body.push(
+      `<polyline points="${points.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ")}" fill="none" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="4 3" />`,
+    );
+    points.forEach((point) => {
+      const t = point.suppression / 2;
+      const r = Math.round(154 + (166 - 154) * t);
+      const g = Math.round(107 + (64 - 107) * t);
+      const b = Math.round(31 + (42 - 31) * t);
+      body.push(circle(point.x, point.y, 3.2, `rgb(${r},${g},${b})`, "#ffffff", 0.8));
+    });
+    body.push(
+      text(left + 6, top + height + 48, "9-point suppression sweep (0 → 2), dashed", { size: 8.5, fill: GOLD }),
+    );
+  }
+
   tri.forEach((point) => {
     const r = 6 + (point.f1 - 0.45) * 90;
     body.push(circle(xFor(point.abs), yFor(point.mae), r, point.color, "#ffffff", 1.5));
@@ -679,7 +712,7 @@ function fig5() {
   const w = 980;
   const h = 432;
   const body: string[] = [];
-  body.push(panelTitle(28, 30, "A", "V0.6 double dissociation against four adversarial controls"));
+  body.push(panelTitle(28, 30, "A", "V0.6 ablation-based functional dissociation vs four controls"));
   body.push(
     text(28, 48, "100 paired seeds. Colour is min–max within each column; darker green is better.", {
       size: 9.5,

@@ -73,10 +73,11 @@ export class V04Agent {
       preparation?: boolean;
       preparationStrength?: number;
       attentionSchema?: boolean;
+      precisionSuppression?: number;
     } = {},
   ) {
     this.worldModel = new WorldModelV04(rng, priorRegime);
-    this.selfModel = new SelfModelV04(rng, priorRegime);
+    this.selfModel = new SelfModelV04(rng, priorRegime, options.precisionSuppression ?? 1);
     this.worldModelEnabled = options.worldModelEnabled ?? true;
     this.worldLearning = options.worldLearning ?? true;
     this.selfLearning = options.selfLearning ?? true;

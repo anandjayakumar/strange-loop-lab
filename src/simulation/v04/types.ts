@@ -441,6 +441,7 @@ export interface V04Options {
   preparation?: boolean;
   attentionSchema?: boolean;
   evidenceLink?: boolean;
+  precisionSuppression?: number;
   recordEvents: boolean;
   historyLimit: number;
 }

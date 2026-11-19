@@ -70,7 +70,7 @@ export class SelfModelV04 {
   private lastIntendedDelta = 0;
   private lastJump = 0;
 
-  constructor(rng: Rng, regime: PriorRegime) {
+  constructor(rng: Rng, regime: PriorRegime, private readonly suppressionScale = 1) {
     const ranges = PRIOR_RANGES[regime];
     this.movementCost = draw(rng, ranges.movementCost);
     this.roughCost = draw(rng, ranges.roughCost);
@@ -193,8 +193,11 @@ export class SelfModelV04 {
       0.06,
       1,
     );
+    // Experimental sweep only: an exponent of 1 is the frozen V0.4 rule.
+    // 0 disables the suppression term (V0.3-like gain); 2 strengthens it.
+    const suppressionSwept = Math.pow(suppression, this.suppressionScale);
     const precisionGain = clamp(
-      adaptiveGain * suppression,
+      adaptiveGain * suppressionSwept,
       0.04,
       0.94,
     );

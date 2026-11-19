@@ -22,7 +22,10 @@
     "validate:v05": "tsx tools/v05validate.ts",
     "paper:figures": "tsx tools/generatePaperFigures.ts",
     "paper:arxiv": "tsx tools/build-arxiv-submission.ts",
-    "validate:v06": "tsx tools/v06validate.ts"
+    "validate:v06": "tsx tools/v06validate.ts",
+    "validate:hardening": "tsx tools/hardeningValidate.ts",
+    "validate:holdout": "tsx tools/v06validate.ts --seed-start 10001 --seeds 100 --out research/v06-holdout-results.json --analysis-out research/v06-holdout-analysis.json",
+    "manifest": "tsx tools/reproManifest.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",

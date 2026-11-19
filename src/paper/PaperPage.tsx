@@ -49,7 +49,7 @@ export function PaperPage({ onNavigate }: { onNavigate: (target: string) => void
             <p className="mt-3 max-w-[72ch] text-[13.5px] leading-relaxed text-lab-muted">
               Epistemic probing, risk-sensitive metacognition and precision trade-offs in a white-box
               self-referential agent. Six architectures, 100 paired seeds per generation, a measured
-              Pareto trilemma, and a unified-architecture double dissociation.
+              observed three-way trade-off, and a unified-architecture ablation-based functional dissociation.
             </p>
           </div>
 

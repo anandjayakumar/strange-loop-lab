@@ -3,7 +3,7 @@
 <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#111111"/></marker>
 </defs>
 <rect width="980" height="520" fill="#ffffff"/>
-<text x="28" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#5b6169" text-anchor="start">A</text><text x="46" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#111111" text-anchor="start">The illusion–tracking–diagnostic trilemma</text>
+<text x="28" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#5b6169" text-anchor="start">A</text><text x="46" y="30" font-family="Helvetica, Arial, sans-serif" font-size="16.8" font-weight="700" fill="#111111" text-anchor="start">The illusion–tracking–diagnostic trade-off</text>
 <text x="28" y="48" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="400" fill="#5b6169" text-anchor="start" font-style="italic">PP-1 absorption (x) versus stationary MAE (y); marker area encodes 4-way attribution macro-F1.</text>
 <line x1="115.86206896551724" y1="414" x2="115.86206896551724" y2="84" stroke="#e3e0d8" stroke-width="0.8" />
 <line x1="115.86206896551724" y1="414" x2="115.86206896551724" y2="419" stroke="#5b6169" stroke-width="0.8" />
@@ -20,24 +20,41 @@
 <line x1="564.1379310344828" y1="414" x2="564.1379310344828" y2="84" stroke="#e3e0d8" stroke-width="0.8" />
 <line x1="564.1379310344828" y1="414" x2="564.1379310344828" y2="419" stroke="#5b6169" stroke-width="0.8" />
 <text x="564.1379310344828" y="430" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">1.00</text>
-<line x1="80" y1="393.375" x2="600" y2="393.375" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="72" y="396.375" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">1.5</text>
-<line x1="80" y1="290.25" x2="600" y2="290.25" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="72" y="293.25" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">2.0</text>
-<line x1="80" y1="187.125" x2="600" y2="187.125" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="72" y="190.125" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">2.5</text>
-<line x1="80" y1="84" x2="600" y2="84" stroke="#e3e0d8" stroke-width="0.8" />
-<text x="72" y="87" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">3.0</text>
+<line x1="80" y1="404.1080019967846" x2="600" y2="404.1080019967846" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="407.1080019967846" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">1.5</text>
+<line x1="80" y1="354.6480119807075" x2="600" y2="354.6480119807075" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="357.6480119807075" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">2.0</text>
+<line x1="80" y1="305.1880219646305" x2="600" y2="305.1880219646305" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="308.1880219646305" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">2.5</text>
+<line x1="80" y1="255.72803194855342" x2="600" y2="255.72803194855342" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="258.7280319485534" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">3.0</text>
+<line x1="80" y1="206.2680419324764" x2="600" y2="206.2680419324764" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="209.2680419324764" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">3.5</text>
+<line x1="80" y1="156.80805191639934" x2="600" y2="156.80805191639934" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="159.80805191639934" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">4.0</text>
+<line x1="80" y1="107.34806190032225" x2="600" y2="107.34806190032225" stroke="#e3e0d8" stroke-width="0.8" />
+<text x="72" y="110.34806190032225" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="middle">4.5</text>
 <line x1="80" y1="414" x2="600" y2="414" stroke="#5b6169" stroke-width="1" />
 <line x1="80" y1="84" x2="80" y2="414" stroke="#5b6169" stroke-width="1" />
 <text x="340" y="448" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#5b6169" text-anchor="middle">PP-1 pulse absorption</text>
 <text x="36" y="249" transform="rotate(-90 36 249)" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#5b6169" text-anchor="middle">stationary MAE</text>
-<circle cx="115.86206896551724" cy="356.0130272367401" r="19.86560067831188" fill="#1f4e79" stroke="#ffffff" stroke-width="1.5" />
-<text x="132" y="328.1474265584282" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#1f4e79" text-anchor="middle">V0.3  F1 0.604</text>
-<circle cx="487.7526795080709" cy="136.99340312729106" r="11.876586810524453" fill="#a6402a" stroke="#ffffff" stroke-width="1.5" />
-<text x="487.7526795080709" y="117.1168163167666" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#a6402a" text-anchor="middle">V0.4  F1 0.515</text>
-<circle cx="469.99999999999994" cy="281.14798349753124" r="17.407631802209956" fill="#2f6b45" stroke="#ffffff" stroke-width="1.5" />
-<text x="469.99999999999994" y="255.7403516953213" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#2f6b45" text-anchor="middle">V0.5  F1 0.577</text>
+<polyline points="190.9,407.5 319.7,398.5 407.9,369.5 453.7,330.0 487.0,281.1 507.3,219.5 522.7,183.7 529.7,126.6 533.1,98.8" fill="none" stroke="#9a6b1f" stroke-width="1.6" stroke-dasharray="4 3" />
+<circle cx="190.93284659118393" cy="407.4662289368272" r="3.2" fill="rgb(154,107,31)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="319.71096899063355" cy="398.4649643254842" r="3.2" fill="rgb(156,102,32)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="407.8572917201995" cy="369.498109921179" r="3.2" fill="rgb(157,96,34)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="453.67905569171546" cy="329.99921170018354" r="3.2" fill="rgb(159,91,35)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="486.96088113361736" cy="281.1443053021899" r="3.2" fill="rgb(160,86,37)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="507.2788867577483" cy="219.47813559955867" r="3.2" fill="rgb(162,80,38)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="522.6818311054783" cy="183.65494623425516" r="3.2" fill="rgb(163,75,39)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="529.708329132664" cy="126.55141424837274" r="3.2" fill="rgb(165,69,41)" stroke="#ffffff" stroke-width="0.8" />
+<circle cx="533.1085571178589" cy="98.8379970048232" r="3.2" fill="rgb(166,64,42)" stroke="#ffffff" stroke-width="0.8" />
+<text x="86" y="462" font-family="Helvetica, Arial, sans-serif" font-size="11.9" font-weight="400" fill="#9a6b1f" text-anchor="start">9-point suppression sweep (0 → 2), dashed</text>
+<circle cx="115.86206896551724" cy="386.18875060428246" r="19.86560067831188" fill="#1f4e79" stroke="#ffffff" stroke-width="1.5" />
+<text x="132" y="358.3231499259706" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#1f4e79" text-anchor="middle">V0.3  F1 0.604</text>
+<circle cx="487.7526795080709" cy="281.1443053021899" r="11.876586810524453" fill="#a6402a" stroke="#ffffff" stroke-width="1.5" />
+<text x="487.7526795080709" y="261.26771849166545" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#a6402a" text-anchor="middle">V0.4  F1 0.515</text>
+<circle cx="469.99999999999994" cy="350.2825754198516" r="17.407631802209956" fill="#2f6b45" stroke="#ffffff" stroke-width="1.5" />
+<text x="469.99999999999994" y="324.87494361764163" font-family="Helvetica, Arial, sans-serif" font-size="13.3" font-weight="700" fill="#2f6b45" text-anchor="middle">V0.5  F1 0.577</text>
 <text x="86" y="98" font-family="Helvetica, Arial, sans-serif" font-size="12.6" font-weight="400" fill="#5b6169" text-anchor="start" font-style="italic">better</text>
 <path d="M 90 114 L 90 106 L 98 106" fill="none" stroke="#5b6169" stroke-width="1.2" marker-end="url(#arrow)"/>
 <text x="596" y="406" font-family="Helvetica, Arial, sans-serif" font-size="11.9" font-weight="400" fill="#9a6b1f" text-anchor="end">V0.5 absorption: 20-seed pilot</text>
