@@ -1,20 +1,20 @@
-# V0.6.1 — Full-Rubric Refinement and the Four Mechanism Bottlenecks
+# V0.6 — Full-Rubric Refinement and the Four Mechanism Bottlenecks
 
 **Status:** complete. 87 conditions × 100 paired seeds = **8,700 episodes**.
 **Artefacts:** `research/v06-results.json`, `research/v06-analysis.json`, `research/v061_validation.log`, `research/v061_feedforward.json`.
-**Lab:** `/research?version=v06`. **Previous report:** the V0.6 draft of this document (archived in git history).
+**Lab:** `/research?version=v06`. **Previous report:** the earlier 45-condition V0.6 draft of this document (archived in git history).
 
 ---
 
-## 1. What changed in V0.6.1
+## 1. What changed in the final V0.6 run
 
-V0.6.1 is an in-place refinement of `src/simulation/v06/` and `tools/v06validate.ts`. It does not create
+This final V0.6 run is an in-place refinement of `src/simulation/v06/` and `tools/v06validate.ts`. It does not create
 a V0.7 engine. The five audit findings were addressed as follows.
 
 1. **Epistemic fork gain.** `SelfModelV06.learnOutcome` now performs a Kalman update on the rough-cost
    parameter. A workspace-broadcast diagnostic probe uses observation noise `R = 0.75`, so the first
    one or two probes collapse the false prior instead of nudging it. `forkSolved` rose from **40%**
-   (V0.6) to **84% [77, 91]**. The point estimate is one point below the 85% target; the 95% CI
+   in the earlier 45-condition draft to **84% [77, 91]**. The point estimate is one point below the 85% target; the 95% CI
    includes 85%.
 2. **RPT is load-bearing.** Pass 1 is raw bottom-up evidence; passes 2–3 integrate the workspace prior
    and re-weight channel precision. With `K = 1`, the filter runs in soft mode and the hard outlier
@@ -72,7 +72,7 @@ between quality-space step distance and next-tick mode switches. `postGlitchMae`
 
 ## 3. Table A — Seven-indicator scorecard
 
-| Indicator family | Metric | V0.6.1 full [95% CI] | Control / ablation [95% CI] | Paired Δ, $d_z$, $p$ | Target |
+| Indicator family | Metric | V0.6 full [95% CI] | Control / ablation [95% CI] | Paired Δ, $d_z$, $p$ | Target |
 |---|---|---|---|---|---|
 | **1. RPT-1/2 & PP-1** | convergence / entropy drop | **0.520 [0.476, 0.563]**; entropy drop **0.027 [0.020, 0.033]** | No-RPT: **0.000**; entropy drop **0.000** | Δ **+0.520 [0.477, 0.562]**, $d_z$ **2.30**, Holm $p=0.0020$ | — |
 | | PP-1 absorption | **0.814 [0.782, 0.842]** | No-RPT **0.290 [0.258, 0.324]**; feedforward **0.800 [0.771, 0.828]** | vs No-RPT **+0.524 [0.482, 0.567]**, $d_z$ **2.38**, $p=0.0020$; vs feedforward **+0.014 [−0.031, 0.059]**, $d_z$ **0.06**, raw $p=0.558$ | **PASS** >0.78 |
@@ -94,7 +94,7 @@ between quality-space step distance and next-tick mode switches. `postGlitchMae`
 
 | Condition | Exp1 absorption / MAE | Exp2 1−thrash / recovery | Exp3 macro-F1 / shift survival | Exp4 probed / solved / resources | Exp5 detection latency |
 |---|---|---|---|---|---|
-| **V0.6.1 full** | **0.814 / 1.431** | **0.949 / 19** | **0.502 / 100%** | **94% / 84% / 57.2** | **2.1** |
+| **V0.6 full** | **0.814 / 1.431** | **0.949 / 19** | **0.502 / 100%** | **94% / 84% / 57.2** | **2.1** |
 | **No-RPT (K=1)** | **0.290** (Δ **−0.524***); MAE **1.446** (Δ **+0.015***) | 0.941 (Δ −0.007 ns) / 25 | 0.520 / 100% | 96% / 39% (Δ **−0.45***) / 22.3 (Δ **−34.9***) | 5.3 (Δ +3.2 ns) |
 | **No-GWT bottleneck** | 0.790 (Δ −0.023 ns); MAE **1.625** (Δ **+0.194***) | **0.644** (Δ **−0.304***) / 23 | 0.621 / 100% | 89% / 75% (Δ −0.09 ns) / 52.1 | 2.4 |
 | **No-GWT broadcast** | 0.776 (Δ −0.037 ns); MAE 1.443 (Δ +0.012*) | **0.896** (Δ **−0.053***) / 13 | 0.579 / 100% | 88% / 34% (Δ **−0.50***) / 24.4 (Δ **−32.8***) | 1.3 |
@@ -108,7 +108,7 @@ between quality-space step distance and next-tick mode switches. `postGlitchMae`
 
 | Architecture | Standard & shift resources / survival | Conflict coherence / resources | Fork solved / resources | Gen 1 topology | Gen 2 non-linear | Gen 3 compound |
 |---|---|---|---|---|---|---|
-| **V0.6.1 full** | **33.84 [31.14, 36.93]**; 100/100 | **0.915**; **32.35 [29.96, 34.81]** | **84% [77, 91]**; **57.21 [51.16, 63.44]** | **57.38 [52.76, 62.05]**; 100/100 | **55.87 [51.23, 60.49]**; 100/100 | **32.69 [29.92, 36.10]**; 100/100 |
+| **V0.6 full** | **33.84 [31.14, 36.93]**; 100/100 | **0.915**; **32.35 [29.96, 34.81]** | **84% [77, 91]**; **57.21 [51.16, 63.44]** | **57.38 [52.76, 62.05]**; 100/100 | **55.87 [51.23, 60.49]**; 100/100 | **32.69 [29.92, 36.10]**; 100/100 |
 | **Reactive reflex** | **51.22 [47.09, 55.61]**; **99/100** | 0.831; **43.65 [40.01, 47.32]** | 4%; 3.53 | **59.92 [55.95, 64.09]**; 100/100 | **56.90 [52.66, 60.87]**; 100/100 | 2.65; 100/100 |
 | **Physical MPC (H=4)** | 30.50 [26.14, 35.05]; 100/100 | 0.665; 27.29 | 1%; 0.42 | 30.69 [26.98, 34.66]; 100/100 | 32.06 [27.64, 36.10]; 100/100 | 1.74; 100/100 |
 | **Flat blackboard** | 45.18 [41.27, 48.92]; 100/100 | 0.670; **41.51 [37.98, 44.89]** | 73%; 50.49 | 52.16 [47.97, 56.65]; 100/100 | 53.97 [49.53, 58.62]; 100/100 | **47.46 [42.62, 52.21]**; 100/100 |
@@ -125,7 +125,7 @@ the honest trade-off: coherence and probe competence are bought with caution.
 
 ### 6.1 Cross-version trilemma
 
-| Metric | V0.3 | V0.4 | V0.5 | V0.6.1 |
+| Metric | V0.3 | V0.4 | V0.5 | V0.6 |
 |---|---|---|---|---|
 | Stationary MAE (raw 1.92) | 1.68 | 2.74 | 2.04 | **1.431 [1.419, 1.445]** |
 | PP-1 absorption | 0.00 | 0.830 | 0.79 (pilot) | **0.814 [0.782, 0.842]** |

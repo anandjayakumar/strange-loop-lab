@@ -1,5 +1,5 @@
 /**
- * V0.6.1 full-rubric validation harness.
+ * V0.6 full-rubric validation harness.
  *
  *   npx tsx tools/v06validate.ts
  *   SEEDS=20 npx tsx tools/v06validate.ts
@@ -530,7 +530,7 @@ function main(): void {
       {
         metadata: {
           generatedAt: new Date().toISOString(),
-          version: "V0.6.1",
+          version: "V0.6",
           seeds: SEEDS,
           conditions: CONDITIONS,
           note: "Full 7x5 mechanism matrix plus common controls; latent labels evaluation-only.",
@@ -757,7 +757,7 @@ function main(): void {
   );
   const analysis = {
     generatedAt: new Date().toISOString(),
-    version: "V0.6.1",
+    version: "V0.6",
     counts: { runs: count, conditions: CONDITIONS.length, seeds: SEEDS.length },
     conditions: Object.fromEntries(
       CONDITIONS.map((condition) => [

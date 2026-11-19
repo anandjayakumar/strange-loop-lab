@@ -106,7 +106,7 @@ export const LAB_VERSIONS: LabVersion[] = [
   },
   {
     id: "v06",
-    label: "V0.6.1",
+    label: "V0.6",
     name: "Unified Cognitive Architecture",
     short: "Four modules · workspace · recursive self-simulation",
     era: "indicator properties under adversarial control",

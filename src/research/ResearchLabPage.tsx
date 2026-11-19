@@ -167,7 +167,7 @@ export function ResearchLabPage({
         <div className="mx-auto max-w-[1560px] px-5 pt-7 sm:px-8">
           <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3 pb-4">
             <div>
-              <div className="kicker">Interactive simulation lab · V0.1 → V0.6.1</div>
+              <div className="kicker">Interactive simulation lab · V0.1 → V0.6</div>
               <h1 className="display mt-2 text-[34px] leading-[0.98] sm:text-[44px]">
                 Six generations, <span className="italic text-lab-amber">one organism</span>
               </h1>

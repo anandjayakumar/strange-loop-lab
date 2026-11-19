@@ -6,7 +6,7 @@ More recently, in 2023, a coalition of nineteen leading neuroscientists, philoso
 
 We set out to test both ideas in the cleanest way possible. 
 
-Rather than using a massive, inscrutable Large Language Model—where it is impossible to tell genuine self-monitoring from clever text mimicry—we built **Strange Loop Lab**: a completely transparent, "white-box" digital organism living in a 2D survival world. Every thought, belief, error, and confidence score inside the organism’s brain is a simple, readable mathematical equation. And to keep ourselves honest, we ran every experiment across 100 identical parallel universes (random seeds), ruthlessly trying to break our own system across six evolutionary generations (**V0.1 through V0.6.1**).
+Rather than using a massive, inscrutable Large Language Model—where it is impossible to tell genuine self-monitoring from clever text mimicry—we built **Strange Loop Lab**: a completely transparent, "white-box" digital organism living in a 2D survival world. Every thought, belief, error, and confidence score inside the organism’s brain is a simple, readable mathematical equation. And to keep ourselves honest, we ran every experiment across 100 identical parallel universes (random seeds), ruthlessly trying to break our own system across six evolutionary generations (**V0.1 through V0.6**).
 
 What we discovered was a series of surprising lessons about why brains need self-models, how self-awareness creates its own psychological traps, and why even the smartest mind faces unavoidable trade-offs.
 
@@ -86,7 +86,7 @@ Even in a tiny digital creature, there is no single "perfect" brain setting. Eve
 
 ### Lesson 6: What the Whole Loop Buys — and What It Doesn’t
 
-**Version 0.6.1** stops adding survival tricks and asks a stricter question: are the self-referential mechanisms *actually necessary* for a cognitive capability, or do they just look impressive? We built four specialist modules (world, body, meta-diagnosis, curiosity), made them compete for one capacity-limited workspace, broadcast the winner back to everyone, and let the agent run a short internal simulation of its own future beliefs.
+**Version 0.6** stops adding survival tricks and asks a stricter question: are the self-referential mechanisms *actually necessary* for a cognitive capability, or do they just look impressive? We built four specialist modules (world, body, meta-diagnosis, curiosity), made them compete for one capacity-limited workspace, broadcast the winner back to everyone, and let the agent run a short internal simulation of its own future beliefs.
 
 The result is a **double dissociation**. Remove the competition and the agent thrashes between actions under conflict. Remove the broadcast and it loses binding even when the winner is unchanged. Remove the higher-order monitor and it can no longer tell whether its body, its energy sense, or its fatigue sense is wrong—and it starts rewriting its body model around a lying sensor. Remove the attention schema and it never recovers after a glitch. Remove the cognitive simulation and it refuses to pay for a diagnostic probe, because it cannot imagine that the probe will change what it knows. A conventional planner that simulates only physical states, with the same horizon, also refuses.
 

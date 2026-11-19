@@ -25,7 +25,7 @@ export const VERSION_LABEL: Record<VersionKey, string> = {
   v03: "V0.3",
   v04: "V0.4",
   v05: "V0.5",
-  v06: "V0.6.1",
+  v06: "V0.6",
 };
 
 export const VERSION_COLOR: Record<VersionKey, string> = {
@@ -177,9 +177,9 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "When four specialist modules can all write to the same blackboard at once, small disagreements turn into action flapping. Forcing them to compete for one capacity-limited workspace, and broadcasting only the winner, keeps the policy coherent under simultaneous sensory and metabolic conflict.",
     stats:
-      "V0.6.1 compound conflict, 100 paired seeds: action switching 0.051 with the bottleneck vs 0.356 without it (difference −0.304 [−0.344, −0.266], dz −1.53, Holm p = 0.0025); goal coherence 0.915 vs 0.666 (+0.249 [0.229, 0.269], dz 2.53). The flat blackboard is statistically indistinguishable from the no-bottleneck ablation, and it forages more (41.51 vs 32.35 resources).",
+      "V0.6 compound conflict, 100 paired seeds: action switching 0.051 with the bottleneck vs 0.356 without it (difference −0.304 [−0.344, −0.266], dz −1.53, Holm p = 0.0025); goal coherence 0.915 vs 0.666 (+0.249 [0.229, 0.269], dz 2.53). The flat blackboard is statistically indistinguishable from the no-bottleneck ablation, and it forages more (41.51 vs 32.35 resources).",
     evidence:
-      "V0.6.1 report §5.2; the effect is specific to the competition, not to the number of modules.",
+      "V0.6 report §5.2; the effect is specific to the competition, not to the number of modules.",
     tone: "good",
   },
   {
@@ -190,9 +190,9 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "Under a pessimistic prior, stepping onto the feared terrain looks like a large immediate loss. The agent only pays it when its rollout simulates the belief change the probe would produce — the future uncertainty drop and the decisions that become available afterwards. A planner that simulates only physical state, at the same horizon and compute budget, does not.",
     stats:
-      "V0.6.1 epistemic fork, 100 paired seeds: 94% of intact runs probe vs 1% without cognitive self-simulation (dz 3.63, p = 0.0020); 84% [77, 91] solve the fork vs 1%. Physical MPC probes 2% and solves 1%; the reactive control probes 4% and solves 4%. Removing HOT probes 100% and solves 90%, but the first probe is much later (182 vs 24 ticks). The full architecture is one point below the 85% target; the 95% CI includes it.",
+      "V0.6 epistemic fork, 100 paired seeds: 94% of intact runs probe vs 1% without cognitive self-simulation (dz 3.63, p = 0.0020); 84% [77, 91] solve the fork vs 1%. Physical MPC probes 2% and solves 1%; the reactive control probes 4% and solves 4%. Removing HOT probes 100% and solves 90%, but the first probe is much later (182 vs 24 ticks). The full architecture is one point below the 85% target; the 95% CI includes it.",
     evidence:
-      "V0.6.1 report §5.4. This is the clearest capability dissociation in the project.",
+      "V0.6 report §5.4. This is the clearest capability dissociation in the project.",
     tone: "good",
   },
   {
@@ -203,9 +203,9 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "When a sensory channel starts lying, a first-order learner that keeps trusting it rewrites its body model around the lie. A higher-order monitor that attributes the discrepancy to the channel can turn down plasticity exactly where the corruption enters, while leaving the accurate modules free to learn.",
     stats:
-      "V0.6.1 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.774 [0.747, 0.799] with HOT and 1.00 without it; first-order energy MAE is lower with HOT. Attribution macro-F1 is 0.502 vs 0.000, with recall physical 0.90, energy 0.63, fatigue 0.63, shared 0.39. Shadow AUROC remains below 0.75 on every shift.",
+      "V0.6 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.774 [0.747, 0.799] with HOT and 1.00 without it; first-order energy MAE is lower with HOT. Attribution macro-F1 is 0.502 vs 0.000, with recall physical 0.90, energy 0.63, fatigue 0.63, shared 0.39. Shadow AUROC remains below 0.75 on every shift.",
     evidence:
-      "V0.6.1 report §5.3. The monitor protects the model it monitors; attribution is weak for shared degradation (0.44) even though routing succeeds.",
+      "V0.6 report §5.3. The monitor protects the model it monitors; attribution is weak for shared degradation (0.44) even though routing succeeds.",
     tone: "good",
   },
   {
@@ -216,9 +216,9 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "A single feedforward pass is deliberately soft under cross-channel conflict. Three recurrent passes let the workspace prior and the corroborating somatic channels re-weight the energy channel, so a one-tick spike is absorbed while sustained real change is still tracked.",
     stats:
-      "V0.6.1 ambiguous-glitch suite, 100 seeds: absorption 0.814 [0.782, 0.842] with K=3 vs 0.290 [0.258, 0.324] with K=1 (+0.524 [0.482, 0.567], dz 2.38, Holm p = 0.0020); stationary MAE 1.431 vs 1.446 (full better by 0.015, dz −0.30, p = 0.0030). Against matched feedforward, full wins MAE (−0.022, dz −0.43, p = 0.0005) but not absorption (+0.014, p = 0.558).",
+      "V0.6 ambiguous-glitch suite, 100 seeds: absorption 0.814 [0.782, 0.842] with K=3 vs 0.290 [0.258, 0.324] with K=1 (+0.524 [0.482, 0.567], dz 2.38, Holm p = 0.0020); stationary MAE 1.431 vs 1.446 (full better by 0.015, dz −0.30, p = 0.0030). Against matched feedforward, full wins MAE (−0.022, dz −0.43, p = 0.0005) but not absorption (+0.014, p = 0.558).",
     evidence:
-      "V0.6.1 report Table A. The V0.6 null result was caused by K=1 already receiving the hard outlier clamp; the V0.6.1 soft K=1 pass removes that pre-emption.",
+      "V0.6 report Table A. The earlier null result was caused by K=1 already receiving the hard outlier clamp; the revised soft K=1 pass removes that pre-emption.",
     tone: "good",
   },
 ];
@@ -587,7 +587,7 @@ export const VERSIONS: VersionDetail[] = [
   },
   {
     key: "v06",
-    name: "V0.6.1 — the unified cognitive architecture",
+    name: "V0.6 — the unified cognitive architecture",
     tagline: "Are the self-referential mechanisms causally necessary for cognition?",
     flow: ["4 modules", "GWT ignition", "broadcast", "HOT", "AE-2 rollout", "action"],
     hypothesis:
