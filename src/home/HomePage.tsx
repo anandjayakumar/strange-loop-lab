@@ -8,13 +8,6 @@ import {
 import { hrefFor } from "../lib/router";
 import { ARTICLE, LESSON_CALLOUTS, READING_MINUTES, type ArticleSection, type LessonCallout } from "./article";
 
-const STATS = [
-  ["5", "Evolutionary Generations", "V0.1 – V0.5"],
-  ["100", "Paired Seeds / Condition", "19,400 total runs"],
-  ["67", "Automated Verification Tests", "deterministic"],
-  ["WB", "White-Box Non-Neural Architecture", "0 neural parameters"],
-];
-
 function RouteButton({
   to,
   onNavigate,
@@ -173,18 +166,6 @@ export function HomePage({ onNavigate }: { onNavigate: (target: string) => void 
             trap it needs a second level to escape.
           </p>
 
-          <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[3px] border border-[#ece6da]/15 bg-[#ece6da]/10 sm:grid-cols-4">
-            {STATS.map(([value, label, note]) => (
-              <div key={label} className="bg-[#12100c] px-4 py-4">
-                <div className="font-serif text-[34px] leading-none text-[#f6f1e6]">{value}</div>
-                <div className="mt-2 font-sans text-[8.5px] font-medium uppercase tracking-[0.16em] text-[#c9c0b0]">
-                  {label}
-                </div>
-                <div className="mt-1 font-serif text-[11.5px] italic text-[#8f8574]">{note}</div>
-              </div>
-            ))}
-          </div>
-
           <div className="mt-8 flex flex-wrap items-center gap-2.5">
             <RouteButton to="/research" onNavigate={onNavigate} variant="solid">
               <FlaskConical size={13} />
@@ -200,12 +181,6 @@ export function HomePage({ onNavigate }: { onNavigate: (target: string) => void 
               Read full manuscript
             </RouteButton>
           </div>
-
-          <p className="mt-5 max-w-[76ch] font-serif text-[12px] italic text-[#8f8574]">
-            Every number in this article comes from a seeded, deterministic run. The organism is a
-            predictor–controller, not a claim about consciousness, sentience or subjective
-            experience.
-          </p>
         </header>
 
         {/* ------------------------------------------------------------ article */}

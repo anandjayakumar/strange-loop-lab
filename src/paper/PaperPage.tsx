@@ -27,7 +27,11 @@ export function PaperPage({ onNavigate }: { onNavigate: (target: string) => void
   // The title lives in the page hero, and the reference list stays in the
   // downloadable manuscript and LaTeX source rather than the web view.
   const body = manuscript
-    ? manuscript.replace(/^# .*\n/, "").split("\n## References")[0]
+    ? manuscript
+        .replace(/^# .*\n/, "")
+        .replace(/^\s*\*\*Anand Jayakumar\*\*\s*\n/, "")
+        .split("\n## References")[0]
+        .replace(/\n---\n/, "\n")
     : "";
 
   return (
