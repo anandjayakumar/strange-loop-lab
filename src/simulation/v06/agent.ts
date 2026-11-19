@@ -109,6 +109,8 @@ export class V06Agent {
   private lastConflict = 0;
   private lastPredictedEnergy: number | null = null;
   private predictedEnergyAfterAction = 0;
+  private lastDiagnosticProbe = false;
+  private conflictEpisode = false;
 
   constructor(priorRegime: PriorRegime, rng: Rng, seed: number, settings: AgentSettings) {
     this.worldModel = new WorldModelV05(rng, priorRegime);
@@ -118,6 +120,8 @@ export class V06Agent {
     const reflex = settings.control === "reactive" || settings.control === "physical_mpc";
     this.higherOrder.enabled = !reflex && settings.ablation !== "no_hot_meta";
     this.attention.enabled = !reflex && settings.ablation !== "no_ast";
+    this.attention.fixedDecay = settings.control === "fixed_decay";
+    this.metaModel.residualEnabled = settings.control !== "rolling_tracker";
   }
 
   // ------------------------------------------------------------------ sense
@@ -179,19 +183,29 @@ export class V06Agent {
     );
     this.lastSettling = settle;
     this.lastConflict = conflict;
+    if (conflict > 0.4) this.conflictEpisode = true;
 
+    self.softMode = passes < 2;
     self.gainScale =
       passes < 2
         ? 1
-        : clamp(0.7 + 0.3 * settle.convergence - 0.5 * settle.disagreement, 0.25, 1.05);
+        : clamp(0.95 - 0.35 * settle.disagreement + 0.1 * settle.convergence, 0.45, 1.1);
     if (this.attention.enabled) {
       // AST-1's allocation is causal: a prior-heavy allocation strengthens
       // top-down influence and discounts the sensory gain, and vice versa.
-      self.topDownWeight = 0.04 + 0.24 * allocation.prior;
-      self.gainScale *= clamp(0.7 + 0.5 * allocation.energy, 0.6, 1.1);
+      self.topDownWeight = 0.01 + 0.04 * allocation.prior;
+      self.gainScale *= clamp(0.85 + 0.25 * allocation.energy, 0.7, 1.1);
     }
+    if (this.settings.control === "matched_feedforward") {
+      // Strictly feedforward: no recurrent gain modulation and no top-down
+      // prior. The precision gate remains, but the recurrent refinement is
+      // removed.
+      self.gainScale = 1;
+      self.topDownWeight = 0;
+    }
+    const priorUseful = this.lastConflict > 0.3;
     self.topDownPrior =
-      topDownEnabled && predictedEnergy !== null
+      topDownEnabled && predictedEnergy !== null && priorUseful
         ? clamp(predictedEnergy, observation.energyReading - 12, observation.energyReading + 12)
         : null;
     this.lastPredictedEnergy = predictedEnergy;
@@ -243,7 +257,16 @@ export class V06Agent {
       Math.abs(self.lastInnovation) / 6 +
       Math.abs(channels.strainResidualEma) * 3 +
       Math.abs(channels.effortResidualEma) / 2;
+    const control = this.settings.control;
+    const ablation = this.settings.ablation;
     if (this.higherOrder.enabled) {
+      this.higherOrder.setContext({
+        energyVariance: self.energyVariance,
+        energyBias: self.energyBias,
+        strainResidual: channels.strainResidualEma,
+        strainVolatility: channels.strainResidualVolatility,
+        energyInnovation: channels.energyInnovationEma,
+      });
       this.higherOrder.predict({
         uncertainty: this.lastSettling?.uncertainty ?? 0.5,
         recentError: recent.abs,
@@ -253,7 +276,10 @@ export class V06Agent {
         energy: self.energyEstimate,
       });
     }
-    const reliability = this.higherOrder.enabled ? this.higherOrder.reliability : 0.5;
+    let reliability = this.higherOrder.enabled ? this.higherOrder.reliability : 0.5;
+    if (control === "rolling_tracker") {
+      reliability = clamp(this.metaModel.snapshot().toleranceProbability, 0.05, 0.95);
+    }
     const predictions: ActionPredictionV06[] = ACTIONS.map((action, actionIndex) => {      const features = record.features[action];
       const rawWorld = this.worldModel.predict(features);
       const world = this.blendWorld(rawWorld, action);
@@ -290,6 +316,30 @@ export class V06Agent {
     });
     this.lastPredictions = predictions;
 
+    const nonRest = predictions.filter((p) => p.action !== "REST");
+    const safeMoves = nonRest.filter((p) => p.features.resourceAtTarget !== 1);
+    const bestNextEnergy = Math.max(
+      ...(safeMoves.length ? safeMoves : nonRest).map((p) => self.energyEstimate + p.self.energyDelta),
+      self.energyEstimate,
+    );
+    const minNextFatigue = Math.min(
+      ...nonRest.map((p) => p.self.fatigueNext),
+      self.fatigue,
+    );
+    const predictedCliffRisk = bestNextEnergy < 20 || minNextFatigue > 0.72;
+    const safeForaging =
+      control === "full" &&
+      ablation === "none" &&
+      self.energyEstimate > 38 &&
+      self.fatigue < 0.55 &&
+      this.lastConflict < 0.25 &&
+      !this.conflictEpisode &&
+      bestNextEnergy > 24 &&
+      minNextFatigue < 0.75 &&
+      !predictedCliffRisk;
+    const probeAvailable =
+      self.roughObservations <= 3 &&
+      predictions.some((p) => p.features.resourceAtTarget === 1);
     const novelty = Math.max(
       ...predictions.map((p) => this.memory.stats(p.features.target).novelty),
       0,
@@ -318,8 +368,6 @@ export class V06Agent {
       allocation: this.attention.allocation,
     };
 
-    const control = this.settings.control;
-    const ablation = this.settings.ablation;
     const reflex = control === "reactive" || control === "physical_mpc";
     const bottleneck =
       !reflex && control !== "flat_blackboard" && ablation !== "no_gwt_bottleneck";
@@ -341,6 +389,8 @@ export class V06Agent {
       passes,
       explorationMode,
       uncertainty,
+      safeForaging,
+      diagnosticProbe: probeAvailable,
       result: null,
       query: [],
     };
@@ -359,6 +409,8 @@ export class V06Agent {
       allocation: this.attention.allocation,
       attribution: this.higherOrder.top(),
       routing: stage.routing,
+      safeForaging: stage.safeForaging,
+      diagnosticProbe: stage.diagnosticProbe,
     });
     stage.result = result;
     stage.query = [
@@ -396,6 +448,8 @@ export class V06Agent {
         allocation: this.attention.allocation,
         attribution: this.higherOrder.top(),
         routing: stage.routing,
+        safeForaging: stage.safeForaging,
+        diagnosticProbe: stage.diagnosticProbe,
       });
       const action = bestAction(result.integrated, stage.predictions);
       stage.query.push({
@@ -457,7 +511,11 @@ export class V06Agent {
     const decision: V06Decision = {
       predictions: stage.predictions,
       proposals: stage.proposals,
-      workspace: result.state,
+      workspace: {
+        ...result.state,
+        diagnosticProbe: stage.diagnosticProbe,
+        safeForaging: stage.safeForaging,
+      },
       query: stage.query,
       selfSim,
       utilities,
@@ -474,9 +532,16 @@ export class V06Agent {
         uncertainty: 0.5,
         interpretation: [0.25, 0.25, 0.25, 0.25],
         passes: 1,
+        entropyFirst: 0,
+        entropyLast: 0,
+        entropyDrop: 0,
+        disagreementFirst: 0,
+        disagreementLast: 0,
+        disagreementDrop: 0,
       },
     };
     this.lastDecision = decision;
+    this.lastDiagnosticProbe = stage.diagnosticProbe;
     this.stage = null;
     return decision;
   }
@@ -504,6 +569,8 @@ export class V06Agent {
         passes: number;
         explorationMode: ExplorationMode;
         uncertainty: number;
+        safeForaging: boolean;
+        diagnosticProbe: boolean;
         result: ReturnType<typeof ignite> | null;
         query: QueryPass[];
       }
@@ -581,6 +648,7 @@ export class V06Agent {
       post,
       preEnergyReading,
       rateScale,
+      this.lastDiagnosticProbe,
     );
     return {
       observedError,
@@ -644,7 +712,13 @@ export class V06Agent {
         energyBias: this.selfModel.energyBias,
         energyVariance: this.selfModel.energyNoiseVariance,
       });
-    const reliable = multiStepError <= 0.8;
+    const stateFailureProxy =
+      this.selfModel.energyVariance > 8 ||
+      Math.abs(this.selfModel.energyBias) > 3 ||
+      Math.abs(this.selfModel.instantDisagreement) > 0.2 ||
+      Math.abs(channelsBefore.energyInnovationEma) > 2.5 ||
+      Math.abs(channelsBefore.strainResidualEma) > 0.2;
+    const reliable = !stateFailureProxy;
     const latentFailure = latentError > V06_META.tolerance;
     this.higherOrder.learnControl(reliable, latentFailure);
       const after = this.metaModel.predict(context);
@@ -668,6 +742,13 @@ export class V06Agent {
       uncertainty: this.lastUncertainty,
       disagreement: divergence,
     });
+    if (this.settings.control === "raw_sensor") {
+      this.higherOrder.updateQualityRaw(
+        post.energyReading,
+        post.strainReading,
+        post.lastEffortReading,
+      );
+    }
 
     const sensedDelta = post.energyReading - preEnergyReading;
     if (outcome.action === "REST" && sensedDelta < 0.3) {
@@ -713,11 +794,28 @@ export class V06Agent {
       evidence: number;
       ambiguity: number;
       energy: number;
+      energyVariance: number;
+      energyBias: number;
+      strainResidual: number;
+      strainVolatility: number;
+      energyInnovation: number;
     },
     observedError: number,
     latentFailure: boolean,
   ): void {
-    const reliable = observedError <= V06_META.tolerance;
+    this.higherOrder.setContext({
+      energyVariance: features.energyVariance,
+      energyBias: features.energyBias,
+      strainResidual: features.strainResidual,
+      strainVolatility: features.strainVolatility,
+      energyInnovation: features.energyInnovation,
+    });
+    const reliable =
+      observedError <= V06_META.tolerance &&
+      features.energyVariance <= 8 &&
+      Math.abs(features.energyBias) <= 3 &&
+      Math.abs(features.strainResidual) <= 0.2 &&
+      features.energyInnovation <= 2.5;
     this.higherOrder.shadowProbe(features, reliable, latentFailure);
   }
 
@@ -728,15 +826,26 @@ export class V06Agent {
     evidence: number;
     ambiguity: number;
     energy: number;
+    energyVariance: number;
+    energyBias: number;
+    strainResidual: number;
+    strainVolatility: number;
+    energyInnovation: number;
   } {
     const recent = this.recentErrorStats();
+    const channels = this.higherOrder.attributor.stats();
     return {
       uncertainty: this.lastUncertainty,
       recentError: recent.abs,
       disagreement: this.selfModel.instantDisagreement,
-      evidence: this.higherOrder.attributor.stats().evidenceCount,
+      evidence: channels.evidenceCount,
       ambiguity: this.higherOrder.scores().confidence,
       energy: this.selfModel.energyEstimate,
+      energyVariance: this.selfModel.energyVariance,
+      energyBias: this.selfModel.energyBias,
+      strainResidual: channels.strainResidualEma,
+      strainVolatility: channels.strainResidualVolatility,
+      energyInnovation: channels.energyInnovationEma,
     };
   }
 
@@ -782,6 +891,10 @@ export class V06Agent {
 
   attentionSnapshot(): AttentionSnapshot {
     return this.attention.snapshot();
+  }
+
+  correctPost(observation: V06Observation, gain: number): void {
+    this.selfModel.correctPost(observation, gain);
   }
 
   higherOrderSnapshot(): HigherOrderSnapshot {

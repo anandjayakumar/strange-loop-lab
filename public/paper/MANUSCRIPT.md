@@ -5,7 +5,7 @@
 
 ## Abstract
 
-Self-models are usually evaluated as predictors. We ask what happens when a self-model becomes part of the system it models. Strange Loop Lab is a deterministic, non-neural, white-box survival sandbox in which an agent in a 30 × 30 metabolic world learns a first-order model of its own body (M₁), a second-order model of M₁'s reliability (M₂), and — in later generations — a model of its own precision allocation. Across six architectural generations and **23,900 total simulation runs** (100 paired seeds per condition across 13 conditions in V0.1, 23 in V0.2, 52 in V0.3, 54 in V0.4, 52 in V0.5 and 45 in V0.6), we report five findings. (i) A learned self-model is behaviourally inert in a forgiving world: a frozen model with 0.09 self-state accuracy survives 99/100 runs and forages as well as a learned one (64.6 vs 61.0 resources, p = 0.057). Stakes are what make self-modeling matter. (ii) Naive second-order doubt is harmful: meta-on minus meta-off is **−6.84 [−11.11, −2.57]** resources in V0.2, because doubting the self-model disables exhaustion warnings. Asymmetric, risk-sensitive bounds reverse the sign to **+12.34 to +28.82** resources across regimes in V0.3, and **+13.75 to +28.37** in V0.5 (all p < 0.001). (iii) A causal first-order self-model creates a self-fulfilling epistemic trap. Pragmatic maximisation never samples the feared terrain (**0/100** escapes, **0.0** resources); breaking L1 (prediction→action) removes the phobia but yields a blind reactive walk. Second-order decision-value-of-information probing escapes in **66/100** (V0.3) and **74/100** (V0.5) with **zero deaths**, versus **93/100** for random exploration at **44.1** resources and one death. (iv) Precision gating buys illusion absorption at a measured cost: absorbing a top-down interoceptive pulse rises from **0.00** (V0.3) to **0.830** (V0.4), while stationary MAE rises from 1.68 to 2.74 and four-way attribution macro-F1 falls from 0.604 to 0.515. Selective transient gating (V0.5) recovers part of the cost (MAE 2.04; F1 0.577; absorption 0.79 in a 20-seed pilot) but no configuration dominates: the three targets form a **Pareto trilemma**. (v) A unified architecture (V0.6) adds four competing modules, a capacity-limited workspace with global broadcast, higher-order reliability monitoring, an attention schema and a bounded rollout that simulates the agent's own future beliefs. Each mechanism is ablated and compared with four matched-compute controls. The result is a double dissociation: removing the bottleneck raises policy thrashing from **0.057 to 0.296** and drops goal coherence from **0.91 to 0.68**; removing the attention schema makes post-conflict recovery never happen (**5 vs 256 ticks**); removing the higher-order monitor collapses four-way attribution (**macro-F1 0.553 → 0.000**) and abolishes plasticity routing; removing cognitive self-simulation makes an epistemic fork unsolvable (**probe rate 99% → 1%**, solved forks **40% → 1%**), while a physical-only MPC planner at the same horizon probes only **2%**. But within-tick recurrent settling is a null result for single-tick absorption (**0.823 vs 0.811**, p = 0.224), reliability calibration inverts under energy-channel corruption (AUROC 0.42), attribution is weak for shared degradation (44/100), and simpler controls out-forage the architecture in two of three unseen environments. All mechanisms are predictors and controllers with measurable behaviour. Nothing here is evidence of consciousness or subjective experience.
+Self-models are usually evaluated as predictors. We ask what happens when a self-model becomes part of the system it models. Strange Loop Lab is a deterministic, non-neural, white-box survival sandbox in which an agent in a 30 × 30 metabolic world learns a first-order model of its own body (M₁), a second-order model of M₁'s reliability (M₂), and — in later generations — a model of its own precision allocation. Across six architectural generations and **28,100 total simulation runs** (100 paired seeds per condition across 13 conditions in V0.1, 23 in V0.2, 52 in V0.3, 54 in V0.4, 52 in V0.5 and 87 in V0.6.1), we report five findings. (i) A learned self-model is behaviourally inert in a forgiving world: a frozen model with 0.09 self-state accuracy survives 99/100 runs and forages as well as a learned one (64.6 vs 61.0 resources, p = 0.057). Stakes are what make self-modeling matter. (ii) Naive second-order doubt is harmful: meta-on minus meta-off is **−6.84 [−11.11, −2.57]** resources in V0.2, because doubting the self-model disables exhaustion warnings. Asymmetric, risk-sensitive bounds reverse the sign to **+12.34 to +28.82** resources across regimes in V0.3, and **+13.75 to +28.37** in V0.5 (all p < 0.001). (iii) A causal first-order self-model creates a self-fulfilling epistemic trap. Pragmatic maximisation never samples the feared terrain (**0/100** escapes, **0.0** resources); breaking L1 (prediction→action) removes the phobia but yields a blind reactive walk. Second-order decision-value-of-information probing escapes in **66/100** (V0.3) and **74/100** (V0.5) with **zero deaths**, versus **93/100** for random exploration at **44.1** resources and one death. (iv) Precision gating buys illusion absorption at a measured cost: absorbing a top-down interoceptive pulse rises from **0.00** (V0.3) to **0.830** (V0.4), while stationary MAE rises from 1.68 to 2.74 and four-way attribution macro-F1 falls from 0.604 to 0.515. Selective transient gating (V0.5) recovers part of the cost (MAE 2.04; F1 0.577; absorption 0.79 in a 20-seed pilot) but no configuration dominates: the three targets form a **Pareto trilemma**. (v) A unified architecture (V0.6) adds four competing modules, a capacity-limited workspace with global broadcast, higher-order reliability monitoring, an attention schema and a bounded rollout that simulates the agent's own future beliefs. Each mechanism is ablated and compared with four matched-compute controls. The result is a double dissociation: removing the bottleneck raises policy thrashing from **0.051 to 0.356** and drops goal coherence from **0.915 to 0.666**; removing the attention schema makes post-conflict recovery never happen (**19 vs 256 ticks**); removing the higher-order monitor collapses four-way attribution (**macro-F1 0.502 → 0.000**) and abolishes plasticity routing; removing cognitive self-simulation makes an epistemic fork unsolvable (**probe rate 94% → 1%**, solved forks **84% → 1%**), while a physical-only MPC planner at the same horizon probes only **2%** and solves **1%**. Removing recurrent settling collapses single-tick absorption from **0.814** to **0.290** (p = 0.0020) while stationary MAE stays at 1.431. But HOT-2 shadow AUROC remains below 0.75 on every shift (0.43–0.59), four-way attribution macro-F1 is **0.502** with shared recall **0.39**, the fork is **84%** (one point below the 85% target), AST recovery gain is **0.036** (below +0.04), and flat or reactive controls out-forage the architecture in standard shift, conflict and the compound suite. All mechanisms are predictors and controllers with measurable behaviour. Nothing here is evidence of consciousness or subjective experience.
 
 ---
 
@@ -235,36 +235,33 @@ epistemic option value is the value of the decisions that a resolved uncertainty
 
 | Experiment | Intact | Key ablation | Contrast |
 | --- | --- | --- | --- |
-| 1. Ambiguous settling | absorption 0.823 | No-RPT 0.811 | +0.01 [0.00, 0.02], p = 0.224 (null) |
-| 2. Compound conflict | thrash 0.057, coherence 0.91 | No bottleneck 0.296, 0.68 | −0.24 [−0.27, −0.20], dz −1.33 |
-| 2. Post-conflict recovery | 5 ticks | No-AST 256 ticks | −250.7 [−251.7, −249.5], dz −44.4 |
-| 3. Sensor attribution | macro-F1 0.553 | No-HOT 0.000 | routing 0.58–0.88 vs 1.00 |
-| 4. Epistemic fork | 99% probe, 40% solved | No-AE 1%, 1% | +0.98 [0.95, 1.00], dz 6.96 |
-| 5. Contingency reversal | 4-tick detection | No-HOT 400 (never) | +396.2 [394.2, 397.7], dz 46.1 |
+| 1. Ambiguous settling | absorption 0.814 | No-RPT 0.290 | +0.524 [0.482, 0.567], dz 2.38, p = 0.0020 |
+| 2. Compound conflict | thrash 0.051, coherence 0.915 | No bottleneck 0.356, 0.666 | -0.304 [-0.344, -0.266], dz -1.53 |
+| 2. Post-conflict recovery | 19 ticks | No-AST 256 ticks | -236.9 [-245.3, -226.6], dz -4.86 |
+| 3. Sensor attribution | macro-F1 0.502 | No-HOT 0.000 | routing 0.85 vs 1.00 |
+| 4. Epistemic fork | 94% probe, 84% solved | No-AE 1%, 1% | +0.83 [0.75, 0.90], dz 2.20 |
+| 5. Contingency reversal | 2.1-tick detection | No-HOT 400 (never) | +397.9 [394.2, 397.7], dz 46.1 |
 
 The double dissociation is the central result. Capacity competition is necessary for policy
 coherence under simultaneous demands; broadcast is necessary for binding even when the winner is
 held fixed; the higher-order monitor is necessary for attribution, selective plasticity routing and
 first-order accuracy under sensor corruption; the attention schema is necessary for recovery; and
-cognitive self-simulation is necessary for paying the immediate cost of a diagnostic probe. A
-physical-only MPC planner with the same horizon and action space probes in only 3% of runs,
-which isolates the cognitive state prediction rather than the planning horizon.
+cognitive self-simulation is necessary for paying the immediate cost of a diagnostic probe, and
+recurrent settling is necessary for single-tick absorption. A physical-only MPC planner with the
+same horizon and action space probes in only 2% of runs and solves 1%, which isolates the cognitive
+state prediction rather than the planning horizon.
 
 ### 6.3 What failed
 
-Three results constrain the interpretation. First, within-tick recurrence does not improve
-single-tick absorption beyond the V0.5 precision gate (0.823 vs 0.811); it improves stationary
-tracking relative to matched feedforward (1.48 vs 1.64 MAE) but not illusion absorption. Second,
-reliability calibration inverts under energy-channel and shared corruption (AUROC 0.42 and 0.41):
-a head trained on observable residuals cannot distinguish a lying channel from a wrong model
-without a separate latent-error signal. Third, attribution is class-imbalanced: 97/100 for
-energy-channel corruption but only 44/100 for shared degradation, which is statistically close to
-an energy shift when the fatigue channel's variance is already low.
+Three results constrain the interpretation. First, the fork now solves 84% of runs but remains
+one point below the 85% target. Second, reliability calibration still fails: shadow AUROC is 0.46
+self, 0.59 energy, 0.43 fatigue and 0.58 shared, all below 0.75. Third, attribution is
+class-imbalanced: 0.502 macro-F1 with shared recall 0.39, even though physical recall is 0.90.
 
-Generalization is mixed. With zero re-tuning, the architecture wins the unseen compound suite
-(13.9 vs 3.0–7.9 resources) but loses the unseen-topology and non-linear suites to reactive and
-flat controls (31.8 vs 63.4 and 51.1; 29.9 vs 61.5 and 53.8). The architecture is a stronger
-instrument, not a better forager.
+Generalization is mixed. With zero re-tuning, the architecture wins the fork (84% vs 4% reactive,
+1% MPC, 73% flat, 31% feedforward) and conflict coherence (0.915 vs 0.666 flat, 0.831 reactive),
+but flat and reactive controls out-forage it in standard shift, conflict and the compound suite
+(32.7 vs 47.5 in Gen3). The architecture is a stronger instrument, not a better forager.
 
 *Table 3 (text).* RPT: 0 on Exp 1. GWT bottleneck: ++ on Exp 2. Broadcast: + on Exp 2, 0 on Exp 5.
 HOT: ++ on Exp 3, + on Exp 4, ++ on Exp 5. AST: + on Exp 1, ++ on Exp 2 recovery. AE-2: ++ on

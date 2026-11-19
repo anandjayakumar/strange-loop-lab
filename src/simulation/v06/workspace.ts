@@ -20,6 +20,10 @@ export interface IgniteOptions {
   hysteresis?: number;
   /** False for the flat blackboard: no selective plasticity routing. */
   routing?: boolean;
+  /** Viability is safe: keep foraging dominant and run diagnostics in parallel. */
+  safeForaging?: boolean;
+  /** The current coalition is considering an unverified diagnostic probe. */
+  diagnosticProbe?: boolean;
 }
 
 export interface IgnitionResult {
@@ -31,6 +35,7 @@ function precisionFor(
   base: PrecisionPlan,
   frame: ModuleId,
   quality: [number, number, number],
+  safeForaging: boolean,
 ): PrecisionPlan {
   const plan = { ...base };
   if (frame === "somatic") {
@@ -44,6 +49,14 @@ function precisionFor(
     plan.prior -= 0.04;
   } else {
     plan.prior += 0.04;
+  }
+  if (safeForaging) {
+    // Foraging remains the dominant driver, but diagnostic channels keep
+    // receiving precision in parallel: attribution and precision adjustment
+    // do not require pre-empting movement.
+    plan.energy += 0.08;
+    plan.strain += 0.06;
+    plan.epistemic += 0.1;
   }
   // Coherence is the quality-space axis most tied to cross-channel agreement;
   // when it is low, effort/consistency monitoring earns precision.
@@ -103,6 +116,12 @@ export function ignite(
     epistemic: 0,
   };
   for (const proposal of proposals) salience[proposal.module] = proposal.salience;
+  if (options.safeForaging) {
+    salience.somatic *= 0.3;
+    salience.meta *= 0.3;
+    salience.world *= 1.2;
+    salience.epistemic *= 1.1;
+  }
 
   let frame: ModuleId = proposals[0]?.module ?? "world";
   let bestScore = -Infinity;
@@ -115,6 +134,17 @@ export function ignite(
     if (score > bestScore) {
       bestScore = score;
       frame = proposal.module;
+    }
+  }
+
+  // Opportunity-gated ignition: when viability is safe, the workspace keeps
+  // a foraging/exploitation coalition dominant and lets diagnostic precision
+  // run in parallel through the broadcast. It does not force foraging when a
+  // predicted cliff risk is present; that path uses the ordinary competition.
+  if (options.safeForaging) {
+    const foraging = proposals.filter((p) => p.module === "world" || p.module === "epistemic");
+    if (foraging.length) {
+      frame = foraging.reduce((best, p) => (p.salience > best.salience ? p : best)).module;
     }
   }
 
@@ -133,6 +163,14 @@ export function ignite(
     }
   } else {
     for (const proposal of proposals) weights[proposal.module] = 1 / Math.max(1, proposals.length);
+  }
+  if (options.safeForaging) {
+    const otherForaging = frame === "world" ? "epistemic" : "world";
+    weights.world = frame === "world" ? 0.85 : 0.06;
+    weights.epistemic = frame === "epistemic" ? 0.85 : 0.06;
+    weights.somatic = 0.015;
+    weights.meta = 0.015;
+    if (frame !== "world" && frame !== "epistemic") weights[otherForaging] = 0.05;
   }
 
   const integrated = [0, 0, 0, 0, 0];
@@ -173,7 +211,7 @@ export function ignite(
       .sort((a, b) => b.u - a.u);
     broadcast[order[0].i] += V06.broadcastGain;
     if (order[1]) broadcast[order[1].i] += 0.35;
-    precision = precisionFor(options.allocation, frame, options.quality);
+    precision = precisionFor(options.allocation, frame, options.quality, options.safeForaging ?? false);
     learning = learningGains(frame, options.attribution);
   }
   if (options.routing === false) {
@@ -194,6 +232,8 @@ export function ignite(
       ignition,
       bottleneck: options.bottleneck,
       broadcastEnabled: options.broadcastEnabled,
+      diagnosticProbe: options.diagnosticProbe ?? false,
+      safeForaging: options.safeForaging ?? false,
     },
     integrated,
   };

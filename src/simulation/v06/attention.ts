@@ -35,6 +35,7 @@ function normalise(plan: PrecisionPlan): PrecisionPlan {
  */
 export class AttentionSchemaV06 {
   enabled = true;
+  fixedDecay = false;
   mode: AttentionMode = "monitoring";
   modeAge = 0;
   allocation: PrecisionPlan = {
@@ -89,6 +90,16 @@ export class AttentionSchemaV06 {
       this.predictedError = 0.3;
       this.observedError = input.observedError;
       this.mode = "monitoring";
+      return;
+    }
+    if (this.fixedDecay) {
+      // Passive fixed exponential-decay rule: release prior suppression on a
+      // schedule, without modelling the schema's own precision allocation.
+      if (input.disagreement > 0.1) this.quietTicks = 0;
+      else this.quietTicks++;
+      this.recovery = 0.85 * Math.exp(-this.quietTicks / 6);
+      this.mode = "monitoring";
+      this.observedError = input.observedError;
       return;
     }
     const a = this.allocation;

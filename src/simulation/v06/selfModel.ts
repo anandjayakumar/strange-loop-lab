@@ -43,6 +43,8 @@ export class SelfModelV06 {
   movementCost = 1.5;
   roughCost = 4;
   roughObservations = 0;
+  /** Kalman parameter variance for the unverified rough-terrain cost. */
+  roughVariance = 100;
   restGain = 1;
   collectGain = 18;
   fatigue = 0;
@@ -67,12 +69,14 @@ export class SelfModelV06 {
   disagreementFast = 0;
   disagreementEma = 0;
   sensorDistrust = 0;
+  sustainedConflict = 0;
   lastEffort: number | null = null;
   lastEffortCost: number | null = null;
   survivalHorizon = 0;
 
   /** RPT / PP-1 hooks, set by the engine before `observePre`. */
   gainScale = 1;
+  softMode = false;
   topDownPrior: number | null = null;
   topDownWeight = 0.12;
   learningGate = 1;
@@ -126,6 +130,7 @@ export class SelfModelV06 {
     const predicted = this.energyEstimate;
     this.energyVariance = clamp(this.energyVariance + 0.55, 0.2, 30);
     const innovation = corrected - predicted;
+    const expectedJump = this.lastJump;
 
     const innovationRatio = Math.max(
       0,
@@ -165,19 +170,29 @@ export class SelfModelV06 {
       0.24,
       0.9,
     );
-    const relief = clamp((this.disagreementEma - 0.25) / 0.4, 0, 1) * 0.7;
+    if (this.disagreementEma > 0.2) this.sustainedConflict++;
+    else this.sustainedConflict = Math.max(0, this.sustainedConflict - 1);
+    const relief = clamp((this.sustainedConflict - 4) / 6, 0, 1);
     const sigma = Math.sqrt(Math.max(1, this.energyNoiseVariance));
     const outlier = Math.abs(innovation) > Math.max(5, 2 * sigma);
-    const suppression = outlier
-      ? clamp(
-          0.12 +
-            0.88 *
-              Math.exp(-3.5 * clamp(instantDisagreement + 2.5 * this.sensorDistrust, 0, 1.8)) +
-            relief,
-          0.06,
-          1,
-        )
-      : 1;
+    const collectionJump = expectedJump > 0.5;
+    const effortCorroborated =
+      this.lastEffort !== null && Math.abs(this.lastEffort - this.movementCost) > 1.6;
+    void effortCorroborated;
+    void strainDisagreement;
+    const engage = outlier && !collectionJump;
+    const suppression = this.softMode
+      ? 1
+      : engage
+        ? clamp(
+            0.08 +
+              0.92 *
+                Math.exp(-5.0 * clamp(instantDisagreement + 2.5 * this.sensorDistrust, 0, 1.8)) +
+              relief,
+            0.02,
+            1,
+          )
+        : 1;
     const precisionGain = clamp(adaptiveGain * suppression, 0.04, 0.94);
     this.priorPrecision = priorPrecision;
     this.sensorPrecision = sensorPrecision;
@@ -238,6 +253,16 @@ export class SelfModelV06 {
     this.lastIntendedDelta = action === "REST" ? 0 : delta;
   }
 
+  /** Post-action interoceptive correction. Suppressed on pulse ticks. */
+  correctPost(observation: V06Observation, gain: number): void {
+    if (!this.initialized || gain <= 0) return;
+    const corrected = observation.energyReading - this.energyBias;
+    const innovation = corrected - this.energyEstimate;
+    this.energyEstimate = clamp(this.energyEstimate + gain * innovation, 0, 115);
+    const strain = clamp(observation.strainReading - this.fatigueBias, 0, 1.2);
+    this.fatigue = clamp(0.7 * this.fatigue + 0.3 * strain, 0, 1);
+  }
+
   predict(features: ActionFeatures): SelfPrediction {
     const moving = features.action !== "REST";
     const successFeatures = [
@@ -284,6 +309,7 @@ export class SelfModelV06 {
     post: V06Observation,
     preEnergyReading: number,
     rateScale: number,
+    diagnosticProbe = false,
   ): void {
     const scale = rateScale * this.learningGate;
     const observedDelta = post.energyReading - preEnergyReading;
@@ -295,11 +321,21 @@ export class SelfModelV06 {
 
     if (moving) {
       if (outcome.terrainRough) {
+        // Kalman parameter update on the unverified rough-cost prior. A
+        // diagnostic probe is a deliberate measurement of that parameter, so
+        // its observation noise is small and the gain is high. One or two
+        // probes collapse a strongly wrong prior instead of nudging it.
+        const P = Math.max(0.5, this.roughVariance);
+        const observationNoise = diagnosticProbe && this.roughObservations <= 3 ? 0.75 : 18;
+        const K = P / (P + observationNoise);
+        const effectiveGain =
+          diagnosticProbe && this.roughObservations <= 3 ? K : K * Math.max(0.6, scale);
         this.roughCost = clamp(
-          this.roughCost + 0.5 * scale * (effort - this.roughCost),
+          this.roughCost + effectiveGain * (effort - this.roughCost),
           0.08,
           30,
         );
+        this.roughVariance = Math.max(0.25, (1 - K) * P);
         this.roughObservations++;
       } else {
         this.movementCost = clamp(
@@ -331,6 +367,10 @@ export class SelfModelV06 {
         1,
         70,
       );
+      // A collection is a discrete, known event with a fresh post-action
+      // interoceptive reading. Reset the state estimate to that reading so a
+      // +20-energy windfall does not leave a multi-tick tracking lag.
+      this.energyEstimate = clamp(post.energyReading - this.energyBias, 0, 115);
     }
 
     const strain = clamp(post.strainReading - this.fatigueBias, 0, 1.2);
@@ -404,6 +444,7 @@ export class SelfModelV06 {
       movementCost: this.movementCost,
       roughCost: this.roughCost,
       roughObservations: this.roughObservations,
+      roughVariance: this.roughVariance,
       restGain: this.restGain,
       collectGain: this.collectGain,
       fatigue: this.fatigue,
@@ -438,6 +479,7 @@ export interface SelfModelV06Snapshot {
   movementCost: number;
   roughCost: number;
   roughObservations: number;
+  roughVariance: number;
   restGain: number;
   collectGain: number;
   fatigue: number;

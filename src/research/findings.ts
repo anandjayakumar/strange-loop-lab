@@ -177,7 +177,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "When four specialist modules can all write to the same blackboard at once, small disagreements turn into action flapping. Forcing them to compete for one capacity-limited workspace, and broadcasting only the winner, keeps the policy coherent under simultaneous sensory and metabolic conflict.",
     stats:
-      "V0.6 compound conflict, 100 paired seeds: action switching 0.057 with the bottleneck vs 0.296 without it (difference −0.24 [−0.27, −0.20], dz −1.33, Holm p = 0.002); goal coherence 0.91 vs 0.68 (+0.23 [0.21, 0.24], dz 2.57). The flat blackboard is statistically indistinguishable from the no-bottleneck ablation.",
+      "V0.6.1 compound conflict, 100 paired seeds: action switching 0.051 with the bottleneck vs 0.356 without it (difference −0.304 [−0.344, −0.266], dz −1.53, Holm p = 0.0025); goal coherence 0.915 vs 0.666 (+0.249 [0.229, 0.269], dz 2.53). The flat blackboard is statistically indistinguishable from the no-bottleneck ablation, and it forages more (41.51 vs 32.35 resources).",
     evidence:
       "V0.6 report §5.2; the effect is specific to the competition, not to the number of modules.",
     tone: "good",
@@ -190,7 +190,7 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "Under a pessimistic prior, stepping onto the feared terrain looks like a large immediate loss. The agent only pays it when its rollout simulates the belief change the probe would produce — the future uncertainty drop and the decisions that become available afterwards. A planner that simulates only physical state, at the same horizon and compute budget, does not.",
     stats:
-      "V0.6 epistemic fork, 100 paired seeds: 99% of intact runs probe vs 1% without cognitive self-simulation (dz 6.96, p = 0.002); 40% solve the fork vs 1%. Physical MPC probes 2% and solves 2%; the reactive control probes 4%. Removing HOT leaves probing at 97% but delays it (first probe 11 vs 49 ticks) and halves solved forks (20%).",
+      "V0.6.1 epistemic fork, 100 paired seeds: 94% of intact runs probe vs 1% without cognitive self-simulation (dz 3.63, p = 0.0020); 84% [77, 91] solve the fork vs 1%. Physical MPC probes 2% and solves 1%; the reactive control probes 4% and solves 4%. Removing HOT probes 100% and solves 90%, but the first probe is much later (182 vs 24 ticks). The full architecture is one point below the 85% target; the 95% CI includes it.",
     evidence:
       "V0.6 report §5.4. This is the clearest capability dissociation in the project.",
     tone: "good",
@@ -203,23 +203,23 @@ export const DISCOVERIES: Discovery[] = [
     plain:
       "When a sensory channel starts lying, a first-order learner that keeps trusting it rewrites its body model around the lie. A higher-order monitor that attributes the discrepancy to the channel can turn down plasticity exactly where the corruption enters, while leaving the accurate modules free to learn.",
     stats:
-      "V0.6 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.58–0.88 with HOT and 1.00 without it (dz −0.83 to −5.08, p = 0.002); first-order energy MAE is lower by 0.74–1.22 (dz −1.32 to −1.47, p = 0.002). Attribution macro-F1 is 0.553 vs 0.000.",
+      "V0.6.1 sensor-disruption suite, 100 seeds: the somatic learning gain during corruption is 0.85 with HOT and 1.00 without it; first-order energy MAE is lower with HOT. Attribution macro-F1 is 0.502 vs 0.000, with recall physical 0.90, energy 0.63, fatigue 0.63, shared 0.39. Shadow AUROC remains below 0.75 on every shift.",
     evidence:
       "V0.6 report §5.3. The monitor protects the model it monitors; attribution is weak for shared degradation (0.44) even though routing succeeds.",
     tone: "good",
   },
   {
-    id: "rpt-null",
+    id: "rpt-load-bearing",
     index: 9,
-    title: "Within-tick recurrence is not what absorbs the lie",
+    title: "Within-tick recurrence is what absorbs the lie",
     version: "v06",
     plain:
-      "Adding three recurrent settling passes and a top-down workspace prior did not make the agent better at ignoring a one-tick sensory spike. The V0.5 precision gate already does that work; recurrence mainly adds stationary tracking accuracy relative to a strictly feedforward control.",
+      "A single feedforward pass is deliberately soft under cross-channel conflict. Three recurrent passes let the workspace prior and the corroborating somatic channels re-weight the energy channel, so a one-tick spike is absorbed while sustained real change is still tracked.",
     stats:
-      "V0.6 ambiguous-glitch suite, 100 seeds: absorption 0.823 [0.811, 0.835] with RPT vs 0.811 [0.798, 0.823] without it (+0.01 [0.00, 0.02], dz 0.19, p = 0.224); stationary MAE 1.48 in both. The intact system beats matched feedforward on MAE by 0.16 (dz −0.67, p = 0.002), not on absorption.",
+      "V0.6.1 ambiguous-glitch suite, 100 seeds: absorption 0.814 [0.782, 0.842] with K=3 vs 0.290 [0.258, 0.324] with K=1 (+0.524 [0.482, 0.567], dz 2.38, Holm p = 0.0020); stationary MAE 1.431 vs 1.446 (full better by 0.015, dz −0.30, p = 0.0030). Against matched feedforward, full wins MAE (−0.022, dz −0.43, p = 0.0005) but not absorption (+0.014, p = 0.558).",
     evidence:
-      "V0.6 report §5.1. A pre-registered negative result, reported as such.",
-    tone: "bad",
+      "V0.6.1 report Table A. The V0.6 null result was caused by K=1 already receiving the hard outlier clamp; the V0.6.1 soft K=1 pass removes that pre-emption.",
+    tone: "good",
   },
 ];
 
@@ -248,7 +248,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "1.68", tone: "good" },
       v04: { text: "2.74", tone: "bad", note: "illusion cost" },
       v05: { text: "2.04", tone: "warn" },
-      v06: { text: "1.48", tone: "good" },
+      v06: { text: "1.431", tone: "good" },
     },
   },
   {
@@ -281,7 +281,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "+0.016…+0.024", tone: "good" },
       v04: { text: "+0.018…+0.027", tone: "good" },
       v05: { text: "0.027", tone: "good" },
-      v06: { text: "0.026", tone: "good", note: "meta Brier" },
+      v06: { text: "−0.003", tone: "bad", note: "rolling BSS" },
     },
   },
   {
@@ -292,7 +292,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "0.679–0.797", tone: "good" },
       v04: { text: "0.680–0.813", tone: "good" },
       v05: { text: "0.683–0.810", tone: "good" },
-      v06: { text: "0.55–0.73", tone: "good" },
+      v06: { text: "0.43–0.59", tone: "bad" },
     },
   },
   {
@@ -314,7 +314,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "0.604", tone: "good" },
       v04: { text: "0.515", tone: "bad" },
       v05: { text: "0.577", tone: "warn" },
-      v06: { text: "0.553", tone: "warn" },
+      v06: { text: "0.502", tone: "warn" },
     },
   },
   {
@@ -325,7 +325,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "0 / 86 / 66", tone: "good" },
       v04: { text: "0 / 86 / 65", tone: "good" },
       v05: { text: "0 / 93 / 74 (100 seeds)", tone: "warn" },
-      v06: { text: "fork 40% solved (99% probed)", tone: "warn" },
+      v06: { text: "fork 84% solved (94% probed)", tone: "warn" },
     },
   },
   {
@@ -336,7 +336,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "≈ 0", tone: "bad" },
       v04: { text: "0.830", tone: "good" },
       v05: { text: "0.79 (pilot)", tone: "warn" },
-      v06: { text: "0.823", tone: "good" },
+      v06: { text: "0.814", tone: "good" },
     },
   },
   {
@@ -347,7 +347,7 @@ export const MATRIX: MatrixRow[] = [
       v03: { text: "—", tone: "neutral" },
       v04: { text: "1.13 (p < 0.001)", tone: "good" },
       v05: { text: "direction preserved", tone: "warn" },
-      v06: { text: "5 vs 256 ticks (dz −44.4)", tone: "good" },
+      v06: { text: "19 vs 256 ticks (dz −4.86)", tone: "good" },
     },
   },
 ];
@@ -606,31 +606,33 @@ export const VERSIONS: VersionDetail[] = [
       { label: "Quality space", body: "q = (viability, certainty, coherence), smoothed at 0.72" },
     ],
     stats: [
-      { label: "Fork probe (full / no-AE)", value: "99% / 1%", note: "dz 6.96, p = 0.002", tone: "good" },
-      { label: "Fork solved", value: "40% [31, 50]", note: "MPC 2%, reactive 4%", tone: "good" },
-      { label: "Conflict thrash (full / no-bottleneck)", value: "0.057 / 0.296", note: "dz −1.33", tone: "good" },
-      { label: "Goal coherence", value: "0.91 vs 0.68", tone: "good" },
-      { label: "Post-conflict recovery", value: "5 vs 256 ticks", note: "dz −44.4", tone: "good" },
-      { label: "4-way attribution macro-F1", value: "0.553", note: "no-HOT 0.000; shared 0.44", tone: "warn" },
-      { label: "Somatic routing during sensor fault", value: "0.58–0.88", note: "no-HOT 1.00", tone: "good" },
-      { label: "Reliability AUROC (energy / shared)", value: "0.42 / 0.41", note: "inverted", tone: "bad" },
-      { label: "PP-1 absorption (RPT / no-RPT)", value: "0.823 / 0.811", note: "p = 0.224 (null)", tone: "warn" },
-      { label: "Stationary MAE", value: "1.48", note: "feedforward 1.64", tone: "good" },
+      { label: "Fork probe (full / no-AE)", value: "94% / 1%", note: "dz 3.63, p = 0.0020", tone: "good" },
+      { label: "Fork solved", value: "84% [77, 91]", note: "MPC 1%, reactive 4%", tone: "good" },
+      { label: "Conflict thrash (full / no-bottleneck)", value: "0.051 / 0.356", note: "dz -1.53", tone: "good" },
+      { label: "Goal coherence", value: "0.915 vs 0.666", tone: "good" },
+      { label: "Post-conflict recovery", value: "19 vs 256 ticks", note: "dz -4.86", tone: "good" },
+      { label: "4-way attribution macro-F1", value: "0.502", note: "no-HOT 0.000; shared 0.39", tone: "warn" },
+      { label: "Somatic routing during sensor fault", value: "0.85", note: "no-HOT 1.00", tone: "good" },
+      { label: "Reliability AUROC (energy / shared)", value: "0.59 / 0.58", note: "target 0.75 - fail", tone: "bad" },
+      { label: "PP-1 absorption (RPT / no-RPT)", value: "0.814 / 0.290", note: "p = 0.0020", tone: "good" },
+      { label: "Stationary MAE", value: "1.431", note: "feedforward 1.453", tone: "good" },
     ],
     successes: [
       "Capacity competition, broadcast, HOT, AST and AE-2 each show a double dissociation.",
       "The epistemic fork is solved by cognitive self-simulation but not by physical MPC.",
       "HOT routing preserves first-order accuracy under sensor corruption.",
-      "The unseen compound suite is won outright (13.9 vs 3.0–7.9 resources).",
+      "RPT is load-bearing: K=3 absorption 0.814 vs 0.290 at K=1.",
+      "The epistemic fork is solved on 84% of runs vs 1% without AE-2.",
     ],
     failures: [
-      "RPT does not improve single-tick absorption beyond the V0.5 precision gate.",
-      "Reliability calibration inverts under energy and shared sensor corruption.",
-      "Attribution is weak for shared degradation (44/100) and self disruption (61/100).",
-      "Unseen topology and non-linear suites are lost to reactive and flat controls.",
+      "HOT-2 shadow AUROC remains below 0.75 on every shift (self 0.46, energy 0.59, fatigue 0.43, shared 0.58).",
+      "4-way attribution macro-F1 is 0.502; shared recall is 0.39.",
+      "The fork solve rate is 84%, one point below the 85% target.",
+      "AST recovery gain is 0.036, below the +0.04 target, although recovery latency is 19 vs 256 ticks.",
+      "Flat and reactive controls out-forage the architecture in standard shift, conflict and Gen3.",
     ],
     verdict:
-      "A genuine double dissociation with a null result at its centre: the workspace, monitor, schema and cognitive rollout are load-bearing, while within-tick recurrence is not. The architecture is a stronger instrument, not a better forager.",
+      "A genuine double dissociation with one residual bottleneck: workspace competition, broadcast, recurrence, AST and cognitive rollout are load-bearing; HOT calibration and shared attribution are not yet at target, and the architecture remains a stronger instrument than a forager.",
     launchMode: "four modules · workspace · HOT · cognitive rollout",
   },
 ];

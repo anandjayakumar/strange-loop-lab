@@ -1003,6 +1003,19 @@ function MetricsPanel({
         <Stat label="convergence" value={m.settlingConvergence.toFixed(2)} sub="RPT passes" color="#634070" />
         <Stat label="somatic gain" value={somaticGain.toFixed(2)} sub="last 60 ticks" color="#1d5c67" />
       </div>
+      <div className="mt-3 grid grid-cols-3 gap-3 border-t border-lab-line pt-3 sm:grid-cols-6">
+        <Stat label="entropy drop" value={m.withinTickEntropyDrop.toFixed(3)} sub="K=1 → 3" color="#634070" />
+        <Stat label="rolling BSS" value={m.rollingBss.toFixed(3)} sub="vs 1-param base" color="#26467e" />
+        <Stat label="quality sep" value={m.qualitySpaceSeparability.toFixed(3)} sub={`raw ${m.rawSpaceSeparability.toFixed(3)}`} color="#39643f" />
+        <Stat label="post-glitch MAE" value={m.postGlitchMae.toFixed(2)} sub="late window" color="#b23f24" />
+        <Stat label="AST gain" value={m.astRecoveryGainDelta.toFixed(3)} sub="immediate − late" color="#1d5c67" />
+        <Stat
+          label="rel. AUROC"
+          value={m.reliabilityAuroc === null ? "—" : m.reliabilityAuroc.toFixed(2)}
+          sub="shadow / latent"
+          color="#634070"
+        />
+      </div>
       <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-2">
         <div>
           <div className="mono-label mb-1">energy · estimate</div>

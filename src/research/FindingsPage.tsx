@@ -680,10 +680,10 @@ export function FindingsPage({
             <div className="lg:col-span-5">
               <div className="grid grid-cols-2 gap-px overflow-hidden rounded-[3px] border border-lab-line bg-lab-line">
                 {[
-                  ["99%", "fork probes", "vs 1% without AE-2"],
-                  ["0.057", "conflict thrash", "vs 0.296 without bottleneck"],
-                  ["5", "ticks to recover", "vs 256 without AST"],
-                  ["0.553", "4-way macro-F1", "vs 0.000 without HOT"],
+                  ["94%", "fork probes", "vs 1% without AE-2"],
+                  ["0.051", "conflict thrash", "vs 0.356 without bottleneck"],
+                  ["19", "ticks to recover", "vs 256 without AST"],
+                  ["0.502", "4-way macro-F1", "vs 0.000 without HOT"],
                 ].map(([value, label, note]) => (
                   <div key={label} className="bg-lab-panel px-4 py-4">
                     <div className="num text-[28px] leading-none text-lab-text">{value}</div>
@@ -715,7 +715,7 @@ export function FindingsPage({
               </thead>
               <tbody>
                 {[
-                  ["RPT (K = 3)", "0 (null)", "—", "—", "—", "—"],
+                  ["RPT (K = 3)", "++", "—", "—", "—", "—"],
                   ["GWT bottleneck", "—", "++", "—", "—", "—"],
                   ["GWT broadcast", "—", "+", "—", "—", "0"],
                   ["HOT reliability", "—", "—", "++", "+", "++"],
@@ -751,31 +751,35 @@ export function FindingsPage({
               <ul className="mt-2 space-y-2 text-[12.5px] leading-relaxed text-lab-muted">
                 <li>
                   <span className="text-lab-text">Capacity competition.</span> Removing the
-                  bottleneck raises action switching from 0.057 to 0.296 and drops goal coherence
-                  from 0.91 to 0.68 (dz −1.33, p = 0.002). The flat blackboard is statistically
-                  indistinguishable from the no-bottleneck ablation.
+                  bottleneck raises action switching from 0.051 to 0.356 and drops goal coherence
+                  from 0.915 to 0.666 (dz −1.53, p = 0.0025). The flat blackboard is statistically
+                  indistinguishable from the no-bottleneck ablation, and it forages more.
+                </li>
+                <li>
+                  <span className="text-lab-text">Recurrent settling.</span> K=3 absorption is 0.814
+                  vs 0.290 at K=1 (Δ 0.524, dz 2.38, p = 0.0020); stationary MAE is 1.431 vs 1.446.
+                  The V0.6 null result was an artefact of letting K=1 receive the hard outlier clamp.
                 </li>
                 <li>
                   <span className="text-lab-text">Broadcast.</span> Removing the return path
-                  degrades coherence from 0.91 to 0.86 (dz 1.21, p = 0.002) without changing the
+                  degrades coherence from 0.915 to 0.842 (dz 1.13, p = 0.0025) without changing the
                   winner. The broadcast is doing work beyond selection.
                 </li>
                 <li>
                   <span className="text-lab-text">HOT monitoring.</span> Attribution macro-F1 falls
-                  from 0.553 to 0.000, somatic plasticity is no longer suppressed during sensor
-                  corruption (1.00 vs 0.58–0.88), and first-order MAE rises by 0.74–1.22 (p =
-                  0.002).
+                  from 0.502 to 0.000 and the somatic learning gain during corruption rises from 0.85
+                  to 1.00. First-order MAE is lower with HOT.
                 </li>
                 <li>
                   <span className="text-lab-text">Cognitive self-simulation.</span> The fork probe
-                  rate falls from 99% to 1% and solved forks from 40% to 1% (dz 0.76). Physical MPC
-                  (3%) and the reactive control (4%) also fail: modelling future physical state is
-                  not enough.
+                  rate falls from 94% to 1% and solved forks from 84% to 1% (dz 2.20). Physical MPC
+                  (2%/1%) and the reactive control (4%/4%) also fail: modelling future physical state
+                  is not enough.
                 </li>
                 <li>
                   <span className="text-lab-text">Attention schema.</span> Post-conflict recovery
-                  takes 5 ticks with AST-1 and never happens without it (dz −44.4), and AST also
-                  improves absorption by 0.03 and stationary MAE by 0.09.
+                  takes 19 ticks with AST-1 and never happens without it (Δ 237 ticks, dz −4.86). The
+                  V0.4-style recovery-gain target (0.036 vs 0.04) is not met.
                 </li>
               </ul>
             </div>
@@ -783,27 +787,25 @@ export function FindingsPage({
               <div className="label">what failed</div>
               <ul className="mt-2 space-y-2 text-[12.5px] leading-relaxed text-lab-muted">
                 <li>
-                  <span className="text-lab-text">RPT is a null result.</span> Absorption is 0.823
-                  with RPT and 0.811 without it (+0.01, p = 0.224); stationary MAE is unchanged.
-                  The V0.5 precision gate, not within-tick recurrence, carries the absorption.
+                  <span className="text-lab-text">HOT-2 latent AUROC still fails.</span> Shadow AUROC
+                  is 0.46 self, 0.59 energy, 0.43 fatigue and 0.58 shared; the target is 0.75 on every
+                  shift. A monitor trained on observable residuals still cannot separate a lying
+                  channel from a wrong model.
                 </li>
                 <li>
-                  <span className="text-lab-text">Calibration inverts under sensor corruption.</span>{" "}
-                  Reliability AUROC is 0.73 for self-disruption and 0.78 for fatigue, but 0.42 for
-                  energy and 0.41 for shared. Observed error and latent error dissociate when the
-                  channel itself is lying.
+                  <span className="text-lab-text">Attribution is class-imbalanced.</span> Macro-F1 is
+                  0.502, with recall physical 0.90, energy 0.63, fatigue 0.63 and shared 0.39. Shared
+                  degradation remains the hardest class.
                 </li>
                 <li>
-                  <span className="text-lab-text">Attribution is class-imbalanced.</span> Energy
-                  shifts are identified 97/100, but shared degradation only 44/100 and a self-model
-                  disruption 61/100. A shared shift is statistically close to an energy shift when
-                  the fatigue channel is already quiet.
+                  <span className="text-lab-text">The fork is one point short.</span> Solved 84%
+                  [77, 91] against the 85% target, with zero deaths. The CI includes 85%, but the
+                  point estimate does not clear it.
                 </li>
                 <li>
-                  <span className="text-lab-text">Generalization is mixed.</span> The architecture
-                  wins the compound suite (13.9 vs 3.0–7.9 resources) but loses to reactive and flat
-                  controls on unseen topology (31.8 vs 63.4 / 51.1) and non-linear dynamics (29.9
-                  vs 61.5 / 53.8).
+                  <span className="text-lab-text">Generalization is mixed.</span> Full wins the fork
+                  and conflict coherence, but flat and reactive out-forage it in standard shift,
+                  conflict and the compound suite (flat 47.5 vs full 32.7 in Gen3).
                 </li>
               </ul>
             </div>

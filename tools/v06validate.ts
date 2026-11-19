@@ -1,13 +1,13 @@
 /**
- * V0.6 validation harness.
+ * V0.6.1 full-rubric validation harness.
  *
  *   npx tsx tools/v06validate.ts
  *   SEEDS=20 npx tsx tools/v06validate.ts
  *
- * Five indicator experiments, six mechanism ablations, four adversarial
- * controls and three unseen-environment suites. 100 paired seeds by default.
- * Writes per-run summaries to research/v06-results.json and aggregates to
- * research/v06-analysis.json.
+ * Runs the complete 7-mechanism x 5-experiment double dissociation, the four
+ * adversarial controls on the common standard/shift, conflict, fork and three
+ * unseen suites, and the three additional rubric controls (rolling tracker,
+ * raw sensor vector, fixed decay). 100 paired seeds by default.
  */
 
 import fs from "node:fs";
@@ -22,7 +22,6 @@ import type {
   V06SeriesPoint,
 } from "../src/simulation/v06/types";
 import {
-  formatP,
   holm,
   meanOf,
   pairedComparison,
@@ -30,7 +29,7 @@ import {
   summarize,
 } from "./stats";
 
-type Experiment = "exp1" | "exp2" | "exp3" | "exp4" | "exp5" | "generalization";
+type Experiment = "exp1" | "exp2" | "exp3" | "exp4" | "exp5" | "gen";
 
 interface Condition {
   key: string;
@@ -43,62 +42,155 @@ interface Condition {
   horizon: number;
 }
 
+interface Mechanism {
+  key: string;
+  label: string;
+  ablation: Ablation;
+}
+
 const SEEDS = Array.from({ length: Number(process.env.SEEDS ?? 100) }, (_, i) => i + 1);
-const H900 = 900;
-const H700 = 700;
-const H600 = 600;
-const H1200 = 1200;
-const H800 = 800;
 
-const CONDITIONS: Condition[] = [
-  // ---------------------------------------------------------------- exp 1
-  { key: "e1_full", label: "Intact", experiment: "exp1", scenario: "glitch", horizon: H900 },
-  { key: "e1_no_rpt", label: "No-RPT", experiment: "exp1", scenario: "glitch", ablation: "no_rpt", horizon: H900 },
-  { key: "e1_no_ast", label: "No-AST", experiment: "exp1", scenario: "glitch", ablation: "no_ast", horizon: H900 },
-  { key: "e1_feedforward", label: "Matched feedforward", experiment: "exp1", scenario: "glitch", control: "matched_feedforward", horizon: H900 },
-
-  // ---------------------------------------------------------------- exp 2
-  { key: "e2_full", label: "Intact", experiment: "exp2", scenario: "conflict", horizon: H600 },
-  { key: "e2_no_bottleneck", label: "No bottleneck", experiment: "exp2", scenario: "conflict", ablation: "no_gwt_bottleneck", horizon: H600 },
-  { key: "e2_no_broadcast", label: "No broadcast", experiment: "exp2", scenario: "conflict", ablation: "no_gwt_broadcast", horizon: H600 },
-  { key: "e2_no_ast", label: "No-AST", experiment: "exp2", scenario: "conflict", ablation: "no_ast", horizon: H600 },
-  { key: "e2_flat", label: "Flat blackboard", experiment: "exp2", scenario: "conflict", control: "flat_blackboard", horizon: H600 },
-
-  // ---------------------------------------------------------------- exp 3
-  ...(["self", "energy_sensor", "fatigue_sensor", "shared"] as DisruptionKind[]).flatMap(
-    (disruption) =>
-      [
-        { key: `e3_full_${disruption}`, label: `Intact · ${disruption}`, experiment: "exp3" as const, scenario: "self_disruption" as const, disruption, horizon: H700 },
-        { key: `e3_no_hot_${disruption}`, label: `No-HOT · ${disruption}`, experiment: "exp3" as const, scenario: "self_disruption" as const, disruption, ablation: "no_hot_meta" as const, horizon: H700 },
-        { key: `e3_reactive_${disruption}`, label: `Reactive · ${disruption}`, experiment: "exp3" as const, scenario: "self_disruption" as const, disruption, control: "reactive" as const, horizon: H700 },
-      ],
-  ),
-
-  // ---------------------------------------------------------------- exp 4
-  { key: "e4_full", label: "Intact", experiment: "exp4", scenario: "epistemic_fork", horizon: H1200 },
-  { key: "e4_no_selfsim", label: "No cognitive self-sim", experiment: "exp4", scenario: "epistemic_fork", ablation: "no_cognitive_self_sim", horizon: H1200 },
-  { key: "e4_mpc", label: "Physical MPC", experiment: "exp4", scenario: "epistemic_fork", control: "physical_mpc", horizon: H1200 },
-  { key: "e4_reactive", label: "Reactive", experiment: "exp4", scenario: "epistemic_fork", control: "reactive", horizon: H1200 },
-  { key: "e4_no_hot", label: "No-HOT", experiment: "exp4", scenario: "epistemic_fork", ablation: "no_hot_meta", horizon: H1200 },
-
-  // ---------------------------------------------------------------- exp 5
-  { key: "e5_full", label: "Intact", experiment: "exp5", scenario: "contingency_reversal", horizon: H700 },
-  { key: "e5_no_broadcast", label: "No broadcast", experiment: "exp5", scenario: "contingency_reversal", ablation: "no_gwt_broadcast", horizon: H700 },
-  { key: "e5_no_hot", label: "No-HOT", experiment: "exp5", scenario: "contingency_reversal", ablation: "no_hot_meta", horizon: H700 },
-  { key: "e5_feedforward", label: "Matched feedforward", experiment: "exp5", scenario: "contingency_reversal", control: "matched_feedforward", horizon: H700 },
-
-  // ---------------------------------------------------------- generalization
-  ...(["unseen_topology", "unseen_nonlinear", "unseen_compound"] as V06Scenario[]).flatMap(
-    (scenario) =>
-      [
-        { key: `g_${scenario}_full`, label: "Intact", experiment: "generalization" as const, scenario, horizon: H800 },
-        { key: `g_${scenario}_reactive`, label: "Reactive", experiment: "generalization" as const, scenario, control: "reactive" as const, horizon: H800 },
-        { key: `g_${scenario}_mpc`, label: "Physical MPC", experiment: "generalization" as const, scenario, control: "physical_mpc" as const, horizon: H800 },
-        { key: `g_${scenario}_flat`, label: "Flat blackboard", experiment: "generalization" as const, scenario, control: "flat_blackboard" as const, horizon: H800 },
-        { key: `g_${scenario}_feedforward`, label: "Matched feedforward", experiment: "generalization" as const, scenario, control: "matched_feedforward" as const, horizon: H800 },
-      ],
-  ),
+const MECHANISMS: Mechanism[] = [
+  { key: "full", label: "V0.6 full", ablation: "none" },
+  { key: "no_rpt", label: "No-RPT (K=1)", ablation: "no_rpt" },
+  { key: "no_bottleneck", label: "No-GWT bottleneck", ablation: "no_gwt_bottleneck" },
+  { key: "no_broadcast", label: "No-GWT broadcast", ablation: "no_gwt_broadcast" },
+  { key: "no_hot", label: "No-HOT meta", ablation: "no_hot_meta" },
+  { key: "no_ast", label: "No-AST", ablation: "no_ast" },
+  { key: "no_selfsim", label: "No cognitive self-sim", ablation: "no_cognitive_self_sim" },
 ];
+
+const DISRUPTIONS: DisruptionKind[] = ["self", "energy_sensor", "fatigue_sensor", "shared"];
+
+const EXPERIMENTS: {
+  key: "exp1" | "exp2" | "exp3" | "exp4" | "exp5";
+  scenario: V06Scenario;
+  horizon: number;
+  disruptions?: DisruptionKind[];
+}[] = [
+  { key: "exp1", scenario: "glitch", horizon: 900 },
+  { key: "exp2", scenario: "conflict", horizon: 600 },
+  { key: "exp3", scenario: "self_disruption", horizon: 700, disruptions: DISRUPTIONS },
+  { key: "exp4", scenario: "epistemic_fork", horizon: 1200 },
+  { key: "exp5", scenario: "contingency_reversal", horizon: 700 },
+];
+
+const CONDITIONS: Condition[] = [];
+
+for (const mechanism of MECHANISMS) {
+  for (const experiment of EXPERIMENTS) {
+    if (experiment.disruptions) {
+      for (const disruption of experiment.disruptions) {
+        CONDITIONS.push({
+          key: `m_${mechanism.key}_${experiment.key}_${disruption}`,
+          label: `${mechanism.label} · ${experiment.key} · ${disruption}`,
+          experiment: experiment.key,
+          scenario: experiment.scenario,
+          ablation: mechanism.ablation,
+          disruption,
+          horizon: experiment.horizon,
+        });
+      }
+    } else {
+      CONDITIONS.push({
+        key: `m_${mechanism.key}_${experiment.key}`,
+        label: `${mechanism.label} · ${experiment.key}`,
+        experiment: experiment.key,
+        scenario: experiment.scenario,
+        ablation: mechanism.ablation,
+        horizon: experiment.horizon,
+      });
+    }
+  }
+}
+
+// Full architecture on the unseen suites (Table C).
+for (const [suffix, scenario] of [
+  ["gen_topology", "unseen_topology"],
+  ["gen_nonlinear", "unseen_nonlinear"],
+  ["gen_compound", "unseen_compound"],
+] as [string, V06Scenario][]) {
+  CONDITIONS.push({
+    key: `m_full_${suffix}`,
+    label: `V0.6 full · ${scenario}`,
+    experiment: "gen",
+    scenario,
+    ablation: "none",
+    horizon: 800,
+  });
+}
+
+// Four adversarial controls across the common benchmarks and unseen suites.
+const CONTROLS: ControlKind[] = [
+  "reactive",
+  "physical_mpc",
+  "flat_blackboard",
+  "matched_feedforward",
+];
+const CONTROL_BENCHMARKS: {
+  suffix: string;
+  experiment: Experiment;
+  scenario: V06Scenario;
+  disruption?: DisruptionKind;
+  horizon: number;
+}[] = [
+  { suffix: "standard_shift", experiment: "exp3", scenario: "self_disruption", disruption: "shared", horizon: 700 },
+  { suffix: "conflict", experiment: "exp2", scenario: "conflict", horizon: 600 },
+  { suffix: "fork", experiment: "exp4", scenario: "epistemic_fork", horizon: 1200 },
+  { suffix: "gen_topology", experiment: "gen", scenario: "unseen_topology", horizon: 800 },
+  { suffix: "gen_nonlinear", experiment: "gen", scenario: "unseen_nonlinear", horizon: 800 },
+  { suffix: "gen_compound", experiment: "gen", scenario: "unseen_compound", horizon: 800 },
+];
+for (const control of CONTROLS) {
+  for (const bench of CONTROL_BENCHMARKS) {
+    CONDITIONS.push({
+      key: `c_${control}_${bench.suffix}`,
+      label: `${control} · ${bench.suffix}`,
+      experiment: bench.experiment,
+      scenario: bench.scenario,
+      control,
+      disruption: bench.disruption,
+      horizon: bench.horizon,
+    });
+  }
+}
+
+// Three rubric controls.
+CONDITIONS.push(
+  {
+    key: "r_rolling_exp1",
+    label: "1-param rolling tracker · exp1",
+    experiment: "exp1",
+    scenario: "glitch",
+    control: "rolling_tracker",
+    horizon: 900,
+  },
+  {
+    key: "r_rolling_exp3",
+    label: "1-param rolling tracker · exp3 shared",
+    experiment: "exp3",
+    scenario: "self_disruption",
+    control: "rolling_tracker",
+    disruption: "shared",
+    horizon: 700,
+  },
+  {
+    key: "r_raw_exp1",
+    label: "Raw sensor vector · exp1",
+    experiment: "exp1",
+    scenario: "glitch",
+    control: "raw_sensor",
+    horizon: 900,
+  },
+  {
+    key: "r_fixed_exp1",
+    label: "Fixed exponential decay · exp1",
+    experiment: "exp1",
+    scenario: "glitch",
+    control: "fixed_decay",
+    horizon: 900,
+  },
+);
 
 interface RunSummary {
   experiment: Experiment;
@@ -113,11 +205,19 @@ interface RunSummary {
   selfMae: number;
   rawMae: number;
   stationaryMae: number;
+  conflictMae: number;
   absorption: number | null;
   pulses: number;
   convergence: number;
+  entropyDrop: number;
   qualityStability: number;
-  thrash: number;
+  qualitySep: number;
+  rawSep: number;
+  qualityModeCorr: number;
+  rawModeCorr: number;
+  rollingBss: number;
+  postGlitchMae: number;
+  astGain: number;
   windowThrash: number;
   coherence: number;
   binding: number;
@@ -130,10 +230,9 @@ interface RunSummary {
   relAuroc: number | null;
   attrTop: string;
   attrCorrect: boolean;
-  routingCorruption: number;
+  routing: number;
   probed: boolean;
   probeTick: number | null;
-  roughSteps: number;
   forkSolved: boolean;
   forkRegret: number;
   detectLatency: number | null;
@@ -143,59 +242,25 @@ interface RunSummary {
   computeUnits: number;
 }
 
-function windowPoints(
-  points: readonly V06SeriesPoint[],
-  from: number,
-  to: number,
-): V06SeriesPoint[] {
+function windowPoints(points: readonly V06SeriesPoint[], from: number, to: number) {
   return points.filter((p) => p.t >= from && p.t < to);
 }
 
-function windowMean(
-  points: readonly V06SeriesPoint[],
-  from: number,
-  to: number,
-  key: keyof V06SeriesPoint,
-): number {
+function windowMean(points: readonly V06SeriesPoint[], from: number, to: number, key: keyof V06SeriesPoint) {
   const slice = windowPoints(points, from, to).map((p) => Number(p[key]));
   return slice.length ? meanOf(slice) : NaN;
 }
 
-function windowAttribution(
-  points: readonly V06SeriesPoint[],
-  from: number,
-  to: number,
-): { top: string; scores: Record<string, number> } {
+function windowAttribution(points: readonly V06SeriesPoint[], from: number, to: number) {
   const slice = windowPoints(points, from, to);
-  if (!slice.length) return { top: "insufficient", scores: {} };
+  if (!slice.length) return { top: "insufficient" };
   const keys = ["physical", "energy_sensor", "fatigue_sensor", "shared", "insufficient"] as const;
-  const scores = Object.fromEntries(
-    keys.map((key) => [
-      key === "physical"
-        ? "physical"
-        : key === "energy_sensor"
-          ? "energy"
-          : key === "fatigue_sensor"
-            ? "fatigue"
-            : key,
-      meanOf(slice.map((p) => Number(p.attribution[key]))),
-    ]),
-  );
-  const entries = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const map: Record<string, string> = {
-    physical: "physical",
-    energy: "energy_sensor",
-    fatigue: "fatigue_sensor",
-    shared: "shared",
-    insufficient: "insufficient",
-  };
-  return { top: map[entries[0][0]] ?? "insufficient", scores };
+  const scores = Object.fromEntries(keys.map((key) => [key, meanOf(slice.map((p) => p.attribution[key]))]));
+  const top = (Object.entries(scores).sort((a, b) => b[1] - a[1])[0] ?? ["insufficient"])[0];
+  return { top };
 }
 
-function pulseAbsorption(points: readonly V06SeriesPoint[]): {
-  mean: number | null;
-  count: number;
-} {
+function pulseAbsorption(points: readonly V06SeriesPoint[]) {
   const values: number[] = [];
   for (let i = 1; i < points.length; i++) {
     if (!points[i].pulseActive) continue;
@@ -207,7 +272,7 @@ function pulseAbsorption(points: readonly V06SeriesPoint[]): {
   return { mean: values.length ? meanOf(values) : null, count: values.length };
 }
 
-function stationaryMae(points: readonly V06SeriesPoint[]): number {
+function stationaryMae(points: readonly V06SeriesPoint[]) {
   const pulseTicks = [120, 220, 620, 720];
   const values = points
     .filter((p) => !pulseTicks.some((t) => Math.abs(p.t - t) <= 2))
@@ -215,17 +280,28 @@ function stationaryMae(points: readonly V06SeriesPoint[]): number {
   return values.length ? meanOf(values) : NaN;
 }
 
-function switchRate(points: readonly V06SeriesPoint[], from: number, to: number): number {
+function conflictMae(points: readonly V06SeriesPoint[]) {
+  const collected = points.filter((p) => p.collected).map((p) => p.t);
+  const values = points
+    .filter(
+      (p) =>
+        p.t >= 330 &&
+        p.t < 390 &&
+        !collected.some((t) => Math.abs(p.t - t) <= 3),
+    )
+    .map((p) => p.energyError);
+  return values.length ? meanOf(values) : NaN;
+}
+
+function switchRate(points: readonly V06SeriesPoint[], from: number, to: number) {
   const slice = windowPoints(points, from, to);
   if (slice.length < 2) return 0;
   let switches = 0;
-  for (let i = 1; i < slice.length; i++) {
-    if (slice[i].action !== slice[i - 1].action) switches++;
-  }
+  for (let i = 1; i < slice.length; i++) if (slice[i].action !== slice[i - 1].action) switches++;
   return switches / (slice.length - 1);
 }
 
-function windowEntropy(points: readonly V06SeriesPoint[], from: number, to: number): number {
+function windowEntropy(points: readonly V06SeriesPoint[], from: number, to: number) {
   const slice = windowPoints(points, from, to);
   if (!slice.length) return 0;
   const counts = new Map<string, number>();
@@ -238,18 +314,12 @@ function windowEntropy(points: readonly V06SeriesPoint[], from: number, to: numb
   return entropy;
 }
 
-function detectionLatency(
-  points: readonly V06SeriesPoint[],
-  from: number,
-  acceptable: string[],
-  horizon: number,
-): number | null {
+function detectionLatency(points: readonly V06SeriesPoint[], from: number, acceptable: string[], horizon: number) {
   const match = points.find((p) => p.t >= from && acceptable.includes(p.attributionTop));
-  if (!match) return horizon - from;
-  return match.t - from;
+  return match ? match.t - from : horizon - from;
 }
 
-function recoveryLatency(points: readonly V06SeriesPoint[], from: number, horizon: number): number {
+function recoveryLatency(points: readonly V06SeriesPoint[], from: number, horizon: number) {
   const match = points.find((p) => p.t >= from && p.attentionRecovery > 0.2);
   return match ? match.t - from : horizon - from;
 }
@@ -283,7 +353,6 @@ function runEpisode(condition: Condition, seed: number): RunSummary {
       ? windowAttribution(points, 310, 400)
       : windowAttribution(points, 0, points.length);
   const expected = condition.disruption ? EXPECTED[condition.disruption] : undefined;
-
   const preCost = windowMean(points, 200, 300, "costError");
   const postCost = windowMean(points, 340, 520, "costError");
   const detect =
@@ -292,11 +361,9 @@ function runEpisode(condition: Condition, seed: number): RunSummary {
       : condition.experiment === "exp2"
         ? recoveryLatency(points, 344, condition.horizon)
         : null;
-
   const probes = points.filter((p) => p.terrainRough);
   const probeTick = probes.length ? probes[0].t : null;
-  const roughSteps = probes.length;
-  const probed = roughSteps > 0 || snapshot.selfModel.roughObservations > 0;
+  const probed = probes.length > 0 || snapshot.selfModel.roughObservations > 0;
   const forkSolved = probed && snapshot.metrics.resources >= 25;
 
   return {
@@ -312,11 +379,19 @@ function runEpisode(condition: Condition, seed: number): RunSummary {
     selfMae: metrics.selfEnergyMae,
     rawMae: metrics.rawEnergyMae,
     stationaryMae: stationaryMae(points),
+    conflictMae: condition.experiment === "exp2" ? conflictMae(points) : NaN,
     absorption: abs.mean,
     pulses: abs.count,
     convergence: metrics.settlingConvergence,
+    entropyDrop: metrics.withinTickEntropyDrop,
     qualityStability: metrics.qualityStability,
-    thrash: metrics.thrashRate,
+    qualitySep: metrics.qualitySpaceSeparability,
+    rawSep: metrics.rawSpaceSeparability,
+    qualityModeCorr: metrics.qualityModeSwitchCorrelation,
+    rawModeCorr: metrics.rawModeSwitchCorrelation,
+    rollingBss: metrics.rollingBss,
+    postGlitchMae: metrics.postGlitchMae,
+    astGain: metrics.astRecoveryGainDelta,
     windowThrash: switchRate(points, 300, 390),
     coherence: metrics.goalCoherence,
     binding: metrics.bindingAccuracy,
@@ -329,10 +404,9 @@ function runEpisode(condition: Condition, seed: number): RunSummary {
     relAuroc: metrics.reliabilityAuroc,
     attrTop: attrWindow.top,
     attrCorrect: expected ? attrWindow.top === expected : false,
-    routingCorruption: windowMean(points, 310, 380, "somaticGain"),
+    routing: metrics.routingCorruption,
     probed,
     probeTick,
-    roughSteps,
     forkSolved,
     forkRegret: Math.max(0, 90 - metrics.resources) / 90,
     detectLatency: detect,
@@ -343,11 +417,10 @@ function runEpisode(condition: Condition, seed: number): RunSummary {
   };
 }
 
-// ---------------------------------------------------------------- analysis
 function metric(run: RunSummary, key: keyof RunSummary): number {
-  const value = run[key];
-  if (typeof value === "boolean") return value ? 1 : 0;
-  return typeof value === "number" && Number.isFinite(value) ? value : NaN;
+  const v = run[key];
+  if (typeof v === "boolean") return v ? 1 : 0;
+  return typeof v === "number" && Number.isFinite(v) ? v : NaN;
 }
 
 function paired(a: RunSummary[], b: RunSummary[], key: keyof RunSummary, seedOffset: number) {
@@ -379,12 +452,7 @@ interface ContrastRow {
   n: number;
 }
 
-function contrast(
-  a: RunSummary[],
-  b: RunSummary[],
-  keys: (keyof RunSummary)[],
-  seedOffset: number,
-): ContrastRow[] {
+function contrast(a: RunSummary[], b: RunSummary[], keys: (keyof RunSummary)[], seedOffset: number): ContrastRow[] {
   const rows: ContrastRow[] = [];
   for (const key of keys) {
     const result = paired(a, b, key, seedOffset + rows.length);
@@ -400,22 +468,15 @@ function contrast(
       n: result.n,
     });
   }
-  const adjusted = holm(rows.map((row) => row.p));
-  rows.forEach((row, index) => (row.adjusted = adjusted[index]));
+  const adjusted = holm(rows.map((r) => r.p));
+  rows.forEach((row, i) => (row.adjusted = adjusted[i]));
   return rows;
 }
 
-function macroF1(
-  truth: string[],
-  predicted: string[],
-  labels: string[],
-): { macroF1: number; perClass: Record<string, { precision: number; recall: number; f1: number; support: number }> } {
+function macroF1(truth: string[], predicted: string[], labels: string[]) {
   const perClass: Record<string, { precision: number; recall: number; f1: number; support: number }> = {};
   for (const label of labels) {
-    let tp = 0;
-    let fp = 0;
-    let fn = 0;
-    let support = 0;
+    let tp = 0, fp = 0, fn = 0, support = 0;
     for (let i = 0; i < truth.length; i++) {
       const t = truth[i] === label;
       const p = predicted[i] === label;
@@ -429,7 +490,7 @@ function macroF1(
     const f1 = precision + recall ? (2 * precision * recall) / (precision + recall) : 0;
     perClass[label] = { precision, recall, f1, support };
   }
-  return { macroF1: meanOf(labels.map((label) => perClass[label].f1)), perClass };
+  return { macroF1: meanOf(labels.map((l) => perClass[l].f1)), perClass };
 }
 
 function summarizeCondition(runs: RunSummary[], keys: (keyof RunSummary)[], seedBase: number) {
@@ -437,7 +498,7 @@ function summarizeCondition(runs: RunSummary[], keys: (keyof RunSummary)[], seed
     keys.map((key, index) => [
       key,
       summarize(
-        runs.map((r) => metric(r, key)).filter((v) => Number.isFinite(v)),
+        runs.map((r) => metric(r, key)).filter(Number.isFinite),
         seedBase + index,
         1000,
       ),
@@ -469,10 +530,10 @@ function main(): void {
       {
         metadata: {
           generatedAt: new Date().toISOString(),
+          version: "V0.6.1",
           seeds: SEEDS,
           conditions: CONDITIONS,
-          architecture: "V0.6 unified cognitive architecture",
-          note: "Every entry is a per-run summary; latent labels are evaluation-only.",
+          note: "Full 7x5 mechanism matrix plus common controls; latent labels evaluation-only.",
         },
         results,
       },
@@ -482,265 +543,222 @@ function main(): void {
   );
 
   const byKey = (key: string) => results[key] ?? [];
-  const keysOf = (condition: Condition) => condition.key;
 
-  // ------------------------------------------------------------- condition summary
   console.log("\n=== CONDITION SUMMARY ===");
   for (const condition of CONDITIONS) {
-    const runs = byKey(keysOf(condition));
+    const runs = byKey(condition.key);
     const res = summarize(runs.map((r) => r.resources), 11, 1000);
     const self = summarize(runs.map((r) => r.selfMae), 12, 1000);
     const alive = runs.filter((r) => r.alive).length;
     console.log(
-      `${condition.key.padEnd(28)} res ${res.mean.toFixed(1)} [${res.ciLow.toFixed(1)},${res.ciHigh.toFixed(1)}] self ${self.mean.toFixed(2)} alive ${alive}/${runs.length} attr ${runs[0].attrTop}`,
+      `${condition.key.padEnd(34)} res ${res.mean.toFixed(1)} [${res.ciLow.toFixed(1)},${res.ciHigh.toFixed(1)}] self ${self.mean.toFixed(2)} alive ${alive}/${runs.length} attr ${runs[0].attrTop}`,
     );
   }
 
-  // ------------------------------------------------------------- exp 1
-  console.log("\n=== EXP 1: AMBIGUOUS MULTI-CHANNEL SETTLING ===");
-  const exp1Keys: (keyof RunSummary)[] = ["absorption", "stationaryMae", "convergence", "qualityStability", "selfMae"];
-  for (const key of ["e1_full", "e1_no_rpt", "e1_no_ast", "e1_feedforward"]) {
-    const runs = byKey(key);
+  // ---------------------------------------------------------------- exp 1
+  console.log("\n=== EXP 1: AMBIGUOUS SETTLING / PP-1 ===");
+  const exp1Keys: (keyof RunSummary)[] = ["absorption", "stationaryMae", "convergence", "entropyDrop"];
+  for (const mechanism of MECHANISMS) {
+    const runs = byKey(`m_${mechanism.key}_exp1`);
     const absorption = summarize(
       runs.map((r) => r.absorption).filter((v): v is number => v !== null),
       21,
       1000,
     );
-    const stationary = summarize(runs.map((r) => r.stationaryMae), 22, 1000);
-    const conv = summarize(runs.map((r) => r.convergence), 23, 1000);
+    const mae = summarize(runs.map((r) => r.stationaryMae), 22, 1000);
+    const ent = summarize(runs.map((r) => r.entropyDrop), 23, 1000);
     console.log(
-      `${key.padEnd(18)} absorption ${absorption.mean.toFixed(3)} [${absorption.ciLow.toFixed(3)},${absorption.ciHigh.toFixed(3)}] stationaryMAE ${stationary.mean.toFixed(2)} conv ${conv.mean.toFixed(2)}`,
+      `${mechanism.key.padEnd(14)} absorption ${absorption.mean.toFixed(3)} [${absorption.ciLow.toFixed(3)},${absorption.ciHigh.toFixed(3)}] MAE ${mae.mean.toFixed(2)} [${mae.ciLow.toFixed(2)},${mae.ciHigh.toFixed(2)}] entropyDrop ${ent.mean.toFixed(3)}`,
     );
   }
-  const exp1Contrasts = {
-    no_rpt: contrast(byKey("e1_full"), byKey("e1_no_rpt"), exp1Keys, 31),
-    no_ast: contrast(byKey("e1_full"), byKey("e1_no_ast"), exp1Keys, 41),
-    feedforward: contrast(byKey("e1_full"), byKey("e1_feedforward"), exp1Keys, 51),
-  };
-  for (const [label, rows] of Object.entries(exp1Contrasts)) {
-    console.log(`\nfull vs ${label}`);
-    for (const row of rows) {
-      console.log(
-        `  ${row.metric.padEnd(16)} ${row.diff >= 0 ? "+" : ""}${row.diff.toFixed(2)} [${row.ciLow.toFixed(2)},${row.ciHigh.toFixed(2)}] dz ${row.dz.toFixed(2)} p=${formatP(row.adjusted)}`,
-      );
-    }
+  const exp1Contrasts: Record<string, ContrastRow[]> = {};
+  for (const mechanism of MECHANISMS.slice(1)) {
+    exp1Contrasts[mechanism.key] = contrast(
+      byKey("m_full_exp1"),
+      byKey(`m_${mechanism.key}_exp1`),
+      exp1Keys,
+      101,
+    );
   }
 
-  // ------------------------------------------------------------- exp 2
-  console.log("\n=== EXP 2: COMPETITION, BINDING & SEQUENTIAL QUERYING ===");
-  for (const key of ["e2_full", "e2_no_bottleneck", "e2_no_broadcast", "e2_no_ast", "e2_flat"]) {
-    const runs = byKey(key);
-    const thrash = summarize(runs.map((r) => r.windowThrash), 61, 1000);
-    const coherence = summarize(runs.map((r) => r.coherence), 62, 1000);
-    const binding = summarize(runs.map((r) => r.binding), 63, 1000);
-    const recovery = summarize(
-      runs.map((r) => r.detectLatency ?? NaN).filter((v) => Number.isFinite(v)),
-      64,
-      1000,
-    );
+  // ---------------------------------------------------------------- exp 2
+  console.log("\n=== EXP 2: COMPOUND CONFLICT ===");
+  const exp2Keys: (keyof RunSummary)[] = ["windowThrash", "coherence", "conflictMae", "detectLatency", "resources"];
+  for (const mechanism of MECHANISMS) {
+    const runs = byKey(`m_${mechanism.key}_exp2`);
+    const thrash = summarize(runs.map((r) => r.windowThrash), 31, 1000);
+    const coh = summarize(runs.map((r) => r.coherence), 32, 1000);
+    const mae = summarize(runs.map((r) => r.conflictMae), 33, 1000);
+    const lat = summarize(runs.map((r) => r.detectLatency ?? NaN).filter(Number.isFinite), 34, 1000);
     console.log(
-      `${key.padEnd(18)} thrash ${thrash.mean.toFixed(3)} coherence ${coherence.mean.toFixed(2)} binding ${binding.mean.toFixed(2)} recovery ${recovery.mean.toFixed(0)}`,
+      `${mechanism.key.padEnd(14)} 1-thrash ${(1 - thrash.mean).toFixed(3)} coherence ${coh.mean.toFixed(3)} conflictMAE ${mae.mean.toFixed(2)} recovery ${lat.mean.toFixed(0)}`,
     );
   }
-  const exp2Keys: (keyof RunSummary)[] = ["windowThrash", "coherence", "binding", "actionEntropy", "detectLatency"];
-  const exp2Contrasts = {
-    no_bottleneck: contrast(byKey("e2_full"), byKey("e2_no_bottleneck"), exp2Keys, 71),
-    no_broadcast: contrast(byKey("e2_full"), byKey("e2_no_broadcast"), exp2Keys, 81),
-    no_ast: contrast(byKey("e2_full"), byKey("e2_no_ast"), exp2Keys, 91),
-    flat: contrast(byKey("e2_full"), byKey("e2_flat"), exp2Keys, 101),
-  };
-  for (const [label, rows] of Object.entries(exp2Contrasts)) {
-    console.log(`\nfull vs ${label}`);
-    for (const row of rows) {
-      console.log(
-        `  ${row.metric.padEnd(16)} ${row.diff >= 0 ? "+" : ""}${row.diff.toFixed(2)} [${row.ciLow.toFixed(2)},${row.ciHigh.toFixed(2)}] dz ${row.dz.toFixed(2)} p=${formatP(row.adjusted)}`,
-      );
-    }
+  const exp2Contrasts: Record<string, ContrastRow[]> = {};
+  for (const mechanism of MECHANISMS.slice(1)) {
+    exp2Contrasts[mechanism.key] = contrast(
+      byKey("m_full_exp2"),
+      byKey(`m_${mechanism.key}_exp2`),
+      exp2Keys,
+      201,
+    );
   }
 
-  // ------------------------------------------------------------- exp 3
-  console.log("\n=== EXP 3: METACOGNITIVE CALIBRATION & ATTRIBUTION ===");
-  const exp3Labels = ["physical", "energy_sensor", "fatigue_sensor", "shared", "insufficient"];
-  const exp3 = { full: { truth: [] as string[], pred: [] as string[] }, no_hot: { truth: [] as string[], pred: [] as string[] }, reactive: { truth: [] as string[], pred: [] as string[] } };
-  for (const disruption of ["self", "energy_sensor", "fatigue_sensor", "shared"]) {
-    for (const [variant, key] of [
-      ["full", `e3_full_${disruption}`],
-      ["no_hot", `e3_no_hot_${disruption}`],
-      ["reactive", `e3_reactive_${disruption}`],
-    ] as const) {
-      const runs = byKey(key);
+  // ---------------------------------------------------------------- exp 3
+  console.log("\n=== EXP 3: 4-WAY ATTRIBUTION / HOT ===");
+  const labels = ["physical", "energy_sensor", "fatigue_sensor", "shared", "insufficient"];
+  const exp3Stats: Record<string, { truth: string[]; pred: string[]; correct: number; n: number; relAuroc: number[]; routing: number[] }> = {};
+  for (const mechanism of MECHANISMS) {
+    exp3Stats[mechanism.key] = { truth: [], pred: [], correct: 0, n: 0, relAuroc: [], routing: [] };
+    for (const disruption of DISRUPTIONS) {
+      const runs = byKey(`m_${mechanism.key}_exp3_${disruption}`);
       const expected = EXPECTED[disruption];
       for (const run of runs) {
-        exp3[variant].truth.push(expected);
-        exp3[variant].pred.push(run.attrTop);
+        exp3Stats[mechanism.key].truth.push(expected);
+        exp3Stats[mechanism.key].pred.push(run.attrTop);
+        if (run.attrCorrect) exp3Stats[mechanism.key].correct++;
+        exp3Stats[mechanism.key].n++;
+        if (run.relAuroc !== null && Number.isFinite(run.relAuroc)) exp3Stats[mechanism.key].relAuroc.push(run.relAuroc);
+        if (Number.isFinite(run.routing)) exp3Stats[mechanism.key].routing.push(run.routing);
       }
-      const correct = runs.filter((r) => r.attrCorrect).length;
-      const ci = proportionCI(correct, runs.length);
-      const rel = summarize(
-        runs.map((r) => r.relAuroc).filter((v): v is number => v !== null),
-        111,
-        1000,
-      );
-      const route = summarize(runs.map((r) => r.routingCorruption), 112, 1000);
-      console.log(
-        `${key.padEnd(30)} correct ${correct}/${runs.length} [${(ci[0] * 100).toFixed(0)},${(ci[1] * 100).toFixed(0)}] relAUROC ${rel.mean.toFixed(2)} routing ${route.mean.toFixed(2)}`,
-      );
     }
   }
-  const f1 = {
-    full: macroF1(exp3.full.truth, exp3.full.pred, exp3Labels),
-    no_hot: macroF1(exp3.no_hot.truth, exp3.no_hot.pred, exp3Labels),
-    reactive: macroF1(exp3.reactive.truth, exp3.reactive.pred, exp3Labels),
-  };
-  console.log(
-    `\n4-way attribution macro-F1: full ${f1.full.macroF1.toFixed(3)} · no-HOT ${f1.no_hot.macroF1.toFixed(3)} · reactive ${f1.reactive.macroF1.toFixed(3)}`,
-  );
-
-  const exp3Keys: (keyof RunSummary)[] = ["metaBrier", "metaAuroc", "relBrier", "relAuroc", "routingCorruption", "selfMae"];
+  const exp3F1: Record<string, ReturnType<typeof macroF1>> = {};
+  for (const mechanism of MECHANISMS) {
+    const stats = exp3Stats[mechanism.key];
+    exp3F1[mechanism.key] = macroF1(stats.truth, stats.pred, labels);
+    const ci = proportionCI(stats.correct, stats.n);
+    const rel = summarize(stats.relAuroc, 41, 1000);
+    const route = summarize(stats.routing, 42, 1000);
+    console.log(
+      `${mechanism.key.padEnd(14)} macro-F1 ${exp3F1[mechanism.key].macroF1.toFixed(3)} correct ${stats.correct}/${stats.n} [${(ci[0] * 100).toFixed(0)},${(ci[1] * 100).toFixed(0)}] relAUROC ${rel.mean.toFixed(2)} routing ${route.mean.toFixed(2)}`,
+    );
+  }
+  console.log("full per-class recall", Object.fromEntries(
+    Object.entries(exp3F1.full.perClass).map(([k, v]) => [k, v.recall.toFixed(2)]),
+  ));
   const exp3Contrasts: Record<string, ContrastRow[]> = {};
-  for (const disruption of ["self", "energy_sensor", "fatigue_sensor", "shared"]) {
-    exp3Contrasts[`${disruption}_no_hot`] = contrast(
-      byKey(`e3_full_${disruption}`),
-      byKey(`e3_no_hot_${disruption}`),
-      exp3Keys,
-      120,
-    );
-    exp3Contrasts[`${disruption}_reactive`] = contrast(
-      byKey(`e3_full_${disruption}`),
-      byKey(`e3_reactive_${disruption}`),
-      exp3Keys,
-      140,
-    );
-  }
-  for (const [label, rows] of Object.entries(exp3Contrasts)) {
-    console.log(`\nfull vs ${label}`);
-    for (const row of rows) {
-      console.log(
-        `  ${row.metric.padEnd(18)} ${row.diff >= 0 ? "+" : ""}${row.diff.toFixed(2)} [${row.ciLow.toFixed(2)},${row.ciHigh.toFixed(2)}] dz ${row.dz.toFixed(2)} p=${formatP(row.adjusted)}`,
-      );
+  for (const mechanism of MECHANISMS.slice(1)) {
+    const rows: ContrastRow[] = [];
+    for (const disruption of DISRUPTIONS) {
+      const a = byKey(`m_full_exp3_${disruption}`);
+      const b = byKey(`m_${mechanism.key}_exp3_${disruption}`);
+      const pair = contrast(a, b, ["relAuroc", "routing", "metaBrier", "metaAuroc", "selfMae"], 301);
+      rows.push(...pair.map((row) => ({ ...row, metric: `${disruption}:${row.metric}` })));
     }
+    const adjusted = holm(rows.map((r) => r.p));
+    rows.forEach((row, i) => (row.adjusted = adjusted[i]));
+    exp3Contrasts[mechanism.key] = rows;
   }
 
-  // ------------------------------------------------------------- exp 4
-  console.log("\n=== EXP 4: THE EPISTEMIC FORK ===");
-  for (const key of ["e4_full", "e4_no_selfsim", "e4_mpc", "e4_reactive", "e4_no_hot"]) {
-    const runs = byKey(key);
+  // ---------------------------------------------------------------- exp 4
+  console.log("\n=== EXP 4: EPISTEMIC FORK ===");
+  const exp4Keys: (keyof RunSummary)[] = ["probed", "forkSolved", "resources", "probeTick", "forkRegret"];
+  for (const mechanism of MECHANISMS) {
+    const runs = byKey(`m_${mechanism.key}_exp4`);
     const probed = runs.filter((r) => r.probed).length;
     const solved = runs.filter((r) => r.forkSolved).length;
     const ci = proportionCI(solved, runs.length);
-    const tick = summarize(
-      runs.map((r) => r.probeTick ?? NaN).filter((v) => Number.isFinite(v)),
-      151,
-      1000,
-    );
-    const res = summarize(runs.map((r) => r.resources), 152, 1000);
+    const tick = summarize(runs.map((r) => r.probeTick ?? NaN).filter(Number.isFinite), 51, 1000);
+    const res = summarize(runs.map((r) => r.resources), 52, 1000);
     console.log(
-      `${key.padEnd(18)} probed ${(100 * probed / runs.length).toFixed(0)}% solved ${(100 * solved / runs.length).toFixed(0)}% [${(ci[0] * 100).toFixed(0)},${(ci[1] * 100).toFixed(0)}] firstProbe ${Number.isFinite(tick.mean) ? tick.mean.toFixed(0) : "—"} res ${res.mean.toFixed(1)}`,
+      `${mechanism.key.padEnd(14)} probed ${(100 * probed / runs.length).toFixed(0)}% solved ${(100 * solved / runs.length).toFixed(0)}% [${(ci[0] * 100).toFixed(0)},${(ci[1] * 100).toFixed(0)}] firstProbe ${Number.isFinite(tick.mean) ? tick.mean.toFixed(0) : "—"} res ${res.mean.toFixed(1)}`,
     );
   }
-  const exp4Keys: (keyof RunSummary)[] = ["probed", "forkSolved", "resources", "forkRegret", "probeTick"];
-  const exp4Contrasts = {
-    no_selfsim: contrast(byKey("e4_full"), byKey("e4_no_selfsim"), exp4Keys, 161),
-    mpc: contrast(byKey("e4_full"), byKey("e4_mpc"), exp4Keys, 171),
-    reactive: contrast(byKey("e4_full"), byKey("e4_reactive"), exp4Keys, 181),
-    no_hot: contrast(byKey("e4_full"), byKey("e4_no_hot"), exp4Keys, 191),
-  };
-  for (const [label, rows] of Object.entries(exp4Contrasts)) {
-    console.log(`\nfull vs ${label}`);
-    for (const row of rows) {
-      console.log(
-        `  ${row.metric.padEnd(16)} ${row.diff >= 0 ? "+" : ""}${row.diff.toFixed(2)} [${row.ciLow.toFixed(2)},${row.ciHigh.toFixed(2)}] dz ${row.dz.toFixed(2)} p=${formatP(row.adjusted)}`,
-      );
-    }
+  const exp4Contrasts: Record<string, ContrastRow[]> = {};
+  for (const mechanism of MECHANISMS.slice(1)) {
+    exp4Contrasts[mechanism.key] = contrast(
+      byKey("m_full_exp4"),
+      byKey(`m_${mechanism.key}_exp4`),
+      exp4Keys,
+      401,
+    );
   }
 
-  // ------------------------------------------------------------- exp 5
-  console.log("\n=== EXP 5: ACTION–PERCEPTION CONTINGENCY REVERSAL ===");
-  for (const key of ["e5_full", "e5_no_broadcast", "e5_no_hot", "e5_feedforward"]) {
-    const runs = byKey(key);
-    const latency = summarize(
-      runs.map((r) => r.detectLatency ?? NaN).filter((v) => Number.isFinite(v)),
-      201,
-      1000,
-    );
-    const pre = summarize(runs.map((r) => r.preCostMae), 202, 1000);
-    const post = summarize(runs.map((r) => r.postCostMae), 203, 1000);
-    const recal = summarize(runs.map((r) => r.recalibration), 204, 1000);
+  // ---------------------------------------------------------------- exp 5
+  console.log("\n=== EXP 5: CONTINGENCY REVERSAL ===");
+  const exp5Keys: (keyof RunSummary)[] = ["detectLatency", "postCostMae", "recalibration", "resources"];
+  for (const mechanism of MECHANISMS) {
+    const runs = byKey(`m_${mechanism.key}_exp5`);
+    const lat = summarize(runs.map((r) => r.detectLatency ?? NaN).filter(Number.isFinite), 61, 1000);
+    const post = summarize(runs.map((r) => r.postCostMae), 62, 1000);
+    const rec = summarize(runs.map((r) => r.recalibration), 63, 1000);
     console.log(
-      `${key.padEnd(18)} latency ${latency.mean.toFixed(0)} pre ${pre.mean.toFixed(2)} post ${post.mean.toFixed(2)} recal ${recal.mean.toFixed(2)} [${recal.ciLow.toFixed(2)},${recal.ciHigh.toFixed(2)}]`,
+      `${mechanism.key.padEnd(14)} latency ${lat.mean.toFixed(1)} postCost ${post.mean.toFixed(2)} recal ${rec.mean.toFixed(2)} [${rec.ciLow.toFixed(2)},${rec.ciHigh.toFixed(2)}]`,
     );
   }
-  const exp5Keys: (keyof RunSummary)[] = ["detectLatency", "preCostMae", "postCostMae", "recalibration", "resources"];
-  const exp5Contrasts = {
-    no_broadcast: contrast(byKey("e5_full"), byKey("e5_no_broadcast"), exp5Keys, 211),
-    no_hot: contrast(byKey("e5_full"), byKey("e5_no_hot"), exp5Keys, 221),
-    feedforward: contrast(byKey("e5_full"), byKey("e5_feedforward"), exp5Keys, 231),
-  };
-  for (const [label, rows] of Object.entries(exp5Contrasts)) {
-    console.log(`\nfull vs ${label}`);
-    for (const row of rows) {
-      console.log(
-        `  ${row.metric.padEnd(16)} ${row.diff >= 0 ? "+" : ""}${row.diff.toFixed(2)} [${row.ciLow.toFixed(2)},${row.ciHigh.toFixed(2)}] dz ${row.dz.toFixed(2)} p=${formatP(row.adjusted)}`,
-      );
-    }
+  const exp5Contrasts: Record<string, ContrastRow[]> = {};
+  for (const mechanism of MECHANISMS.slice(1)) {
+    exp5Contrasts[mechanism.key] = contrast(
+      byKey("m_full_exp5"),
+      byKey(`m_${mechanism.key}_exp5`),
+      exp5Keys,
+      501,
+    );
   }
 
-  // ------------------------------------------------------------- generalization
-  console.log("\n=== GENERALIZATION (ZERO RE-TUNING) ===");
-  const genKeys: (keyof RunSummary)[] = ["resources", "alive", "selfMae", "thrash", "coherence"];
-  const genContrasts: Record<string, ContrastRow[]> = {};
-  for (const scenario of ["unseen_topology", "unseen_nonlinear", "unseen_compound"]) {
-    const full = byKey(`g_${scenario}_full`);
-    const res = summarize(full.map((r) => r.resources), 241, 1000);
-    const alive = full.filter((r) => r.alive).length;
-    console.log(
-      `${scenario.padEnd(20)} full res ${res.mean.toFixed(1)} [${res.ciLow.toFixed(1)},${res.ciHigh.toFixed(1)}] alive ${alive}/${full.length}`,
-    );
-    for (const control of ["reactive", "mpc", "flat", "feedforward"]) {
-      genContrasts[`${scenario}_${control}`] = contrast(
-        full,
-        byKey(`g_${scenario}_${control}`),
-        genKeys,
-        251,
-      );
-      const other = summarize(byKey(`g_${scenario}_${control}`).map((r) => r.resources), 242, 1000);
-      console.log(
-        `  vs ${control.padEnd(12)} res ${other.mean.toFixed(1)} [${other.ciLow.toFixed(1)},${other.ciHigh.toFixed(1)}]`,
-      );
-    }
-  }
-
-  // ------------------------------------------------------------- capability matrix
-  const matrix: Record<string, Record<string, number | null>> = {};
-  const matrixMetric: Record<Experiment, keyof RunSummary> = {
-    exp1: "absorption",
-    exp2: "windowThrash",
-    exp3: "relAuroc",
-    exp4: "probeTick",
-    exp5: "detectLatency",
-    generalization: "resources",
-  };
-  const matrixConditions: Record<Experiment, string[]> = {
-    exp1: ["e1_full", "e1_no_rpt", "e1_no_ast", "e1_feedforward"],
-    exp2: ["e2_full", "e2_no_bottleneck", "e2_no_broadcast", "e2_no_ast", "e2_flat"],
-    exp3: ["e3_full_self", "e3_no_hot_self", "e3_reactive_self"],
-    exp4: ["e4_full", "e4_no_selfsim", "e4_mpc", "e4_reactive", "e4_no_hot"],
-    exp5: ["e5_full", "e5_no_broadcast", "e5_no_hot", "e5_feedforward"],
-    generalization: ["g_unseen_compound_full", "g_unseen_compound_reactive", "g_unseen_compound_mpc", "g_unseen_compound_flat", "g_unseen_compound_feedforward"],
-  };
-  for (const experiment of Object.keys(matrixConditions) as Experiment[]) {
-    matrix[experiment] = {};
-    for (const key of matrixConditions[experiment]) {
+  // ---------------------------------------------------------------- table C
+  console.log("\n=== TABLE C: CONTROLS ===");
+  const tableC: Record<string, Record<string, { resources: ReturnType<typeof summarize>; alive: number; n: number }>> = {};
+  const architectures: { key: string; label: string }[] = [
+    { key: "m_full", label: "V0.6 full" },
+    { key: "c_reactive", label: "Reactive" },
+    { key: "c_physical_mpc", label: "Physical MPC" },
+    { key: "c_flat_blackboard", label: "Flat blackboard" },
+    { key: "c_matched_feedforward", label: "Matched feedforward" },
+  ];
+  for (const arch of architectures) {
+    tableC[arch.label] = {};
+    for (const bench of CONTROL_BENCHMARKS) {
+      const fullBenchKey: Record<string, string> = {
+        standard_shift: "m_full_exp3_shared",
+        conflict: "m_full_exp2",
+        fork: "m_full_exp4",
+        gen_topology: "m_full_gen_topology",
+        gen_nonlinear: "m_full_gen_nonlinear",
+        gen_compound: "m_full_gen_compound",
+      };
+      const key =
+        arch.key === "m_full"
+          ? fullBenchKey[bench.suffix]
+          : `${arch.key}_${bench.suffix}`;
       const runs = byKey(key);
-      const values = runs
-        .map((r) => metric(r, matrixMetric[experiment]))
-        .filter((v) => Number.isFinite(v));
-      matrix[experiment][key] = values.length ? meanOf(values) : null;
+      if (!runs.length) continue;
+      tableC[arch.label][bench.suffix] = {
+        resources: summarize(runs.map((r) => r.resources), 71, 1000),
+        alive: runs.filter((r) => r.alive).length,
+        n: runs.length,
+      };
+      console.log(
+        `${arch.label.padEnd(22)} ${bench.suffix.padEnd(16)} res ${tableC[arch.label][bench.suffix].resources.mean.toFixed(2)} [${tableC[arch.label][bench.suffix].resources.ciLow.toFixed(2)},${tableC[arch.label][bench.suffix].resources.ciHigh.toFixed(2)}] alive ${runs.filter((r) => r.alive).length}/${runs.length}`,
+      );
     }
   }
 
+  // ---------------------------------------------------------------- table A extras
+  console.log("\n=== TABLE A CONTROLS ===");
+  for (const key of ["m_full_exp1", "r_rolling_exp1", "r_raw_exp1", "r_fixed_exp1", "r_rolling_exp3"]) {
+    const runs = byKey(key);
+    const q = summarize(runs.map((r) => r.qualitySep), 81, 1000);
+    const raw = summarize(runs.map((r) => r.rawSep), 82, 1000);
+    const qm = summarize(runs.map((r) => r.qualityModeCorr), 83, 1000);
+    const rm = summarize(runs.map((r) => r.rawModeCorr), 84, 1000);
+    const bss = summarize(runs.map((r) => r.rollingBss), 85, 1000);
+    const glitch = summarize(runs.map((r) => r.postGlitchMae), 86, 1000);
+    const gain = summarize(runs.map((r) => r.astGain), 87, 1000);
+    console.log(
+      `${key.padEnd(20)} qSep ${q.mean.toFixed(3)} rawSep ${raw.mean.toFixed(3)} qMode ${qm.mean.toFixed(3)} rawMode ${rm.mean.toFixed(3)} rollingBSS ${bss.mean.toFixed(3)} postGlitchMAE ${glitch.mean.toFixed(2)} astGain ${gain.mean.toFixed(3)}`,
+    );
+  }
+
+  // ---------------------------------------------------------------- write analysis
+  const exp3Macro = Object.fromEntries(
+    MECHANISMS.map((m) => [m.key, exp3F1[m.key]]),
+  );
   const analysis = {
     generatedAt: new Date().toISOString(),
+    version: "V0.6.1",
+    counts: { runs: count, conditions: CONDITIONS.length, seeds: SEEDS.length },
     conditions: Object.fromEntries(
       CONDITIONS.map((condition) => [
         condition.key,
@@ -751,42 +769,43 @@ function main(): void {
           summary: summarizeCondition(
             byKey(condition.key),
             [
-              "resources",
-              "ticks",
-              "selfMae",
-              "rawMae",
-              "stationaryMae",
-              "convergence",
-              "thrash",
-              "coherence",
-              "metaBrier",
-              "metaAuroc",
-              "relAuroc",
-              "routingCorruption",
-              "probeTick",
+              "resources", "ticks", "selfMae", "rawMae", "stationaryMae", "conflictMae",
+              "convergence", "entropyDrop", "qualityStability", "qualitySep", "rawSep",
+              "qualityModeCorr", "rawModeCorr", "rollingBss", "postGlitchMae", "astGain",
+              "windowThrash", "coherence", "metaBrier", "metaAuroc", "relAuroc",
+              "routing", "probeTick", "detectLatency",
             ],
-            301,
+            601,
           ),
         },
       ]),
     ),
     exp1: { contrasts: exp1Contrasts },
     exp2: { contrasts: exp2Contrasts },
-    exp3: {
-      macroF1: {
-        full: f1.full.macroF1,
-        no_hot: f1.no_hot.macroF1,
-        reactive: f1.reactive.macroF1,
-      },
-      perClass: f1,
-      contrasts: exp3Contrasts,
-    },
+    exp3: { macroF1: exp3Macro, contrasts: exp3Contrasts },
     exp4: { contrasts: exp4Contrasts },
     exp5: { contrasts: exp5Contrasts },
-    generalization: { contrasts: genContrasts },
-    capabilityMatrix: matrix,
-    capabilityMetric: matrixMetric,
-    counts: { runs: count, conditions: CONDITIONS.length, seeds: SEEDS.length },
+    tableC,
+    capabilityMatrix: Object.fromEntries(
+      MECHANISMS.map((m) => [
+        m.key,
+        {
+          absorption: summarize(
+            byKey(`m_${m.key}_exp1`).map((r) => r.absorption).filter((v): v is number => v !== null),
+            91,
+            1000,
+          ).mean,
+          oneMinusThrash: 1 - summarize(byKey(`m_${m.key}_exp2`).map((r) => r.windowThrash), 92, 1000).mean,
+          macroF1: exp3F1[m.key].macroF1,
+          solved: summarize(byKey(`m_${m.key}_exp4`).map((r) => (r.forkSolved ? 1 : 0)), 93, 1000).mean,
+          latency: summarize(
+            byKey(`m_${m.key}_exp5`).map((r) => r.detectLatency ?? NaN).filter(Number.isFinite),
+            94,
+            1000,
+          ).mean,
+        },
+      ]),
+    ),
   };
   fs.writeFileSync(path.resolve("research/v06-analysis.json"), JSON.stringify(analysis, null, 2));
   console.log(

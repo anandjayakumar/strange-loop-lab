@@ -103,6 +103,8 @@ function emptyWorkspace(): WorkspaceState {
     ignition: 0,
     bottleneck: true,
     broadcastEnabled: true,
+    diagnosticProbe: false,
+    safeForaging: false,
   };
 }
 
@@ -176,6 +178,7 @@ export class V06Engine {
   private effortScale = 1;
   private directionalDrift = 0;
   private lastAction: Action | null = null;
+  private lastAttentionMode = "monitoring";
   private actionSwitches = 0;
   private coherentSteps = 0;
   private decisionSteps = 0;
@@ -187,12 +190,16 @@ export class V06Engine {
     selfError: [] as number[],
     rawError: [] as number[],
     metaPred: [] as number[],
+    basePred: [] as number[],
     metaOutcome: [] as number[],
     latentFailure: [] as number[],
     reliability: [] as number[],
     convergence: [] as number[],
+    entropyDrop: [] as number[],
     actions: [] as Action[],
     quality: [] as [number, number, number][],
+    rawQuality: [] as [number, number, number][],
+    modes: [] as string[],
   };
 
   constructor(input: Partial<V06Options> = {}) {
@@ -584,10 +591,30 @@ export class V06Engine {
   // ---------------------------------------------------------------- execute
   private execute(): void {
     if (!this.decision) return;
-    const cfg =
+    const ignition = this.decision.workspace.bottleneck
+      ? this.decision.workspace.ignition
+      : 0.2;
+    const incoherence =
+      this.control === "reactive"
+        ? clamp(0.4 + 0.45 * this.conflict, 0, 0.9)
+        : this.control === "flat_blackboard"
+          ? clamp(0.8 * (1 - ignition) + 0.4 * this.conflict, 0, 0.95)
+          : clamp(0.35 * (1 - ignition) + 0.2 * this.conflict, 0, 0.55);
+    const fatigueSprint =
+      this.decision.action !== "REST" && this.physical.fatigue > 0.62
+        ? (this.physical.fatigue - 0.62) * 1.8
+        : 0;
+    const interference = clamp(incoherence + fatigueSprint, 0, 0.95);
+    const base =
       this.scenario === "unseen_nonlinear"
         ? { ...this.cfg, baseCost: this.cfg.baseCost * (1 + 0.1 * Math.sin(this.tick / 17)) }
         : this.cfg;
+    const cfg = {
+      ...base,
+      collapseChance: base.collapseChance * (1 + 2.2 * interference),
+      cliffSlip: clamp(base.cliffSlip * (1 + 2.2 * interference), 0, 0.95),
+      minSuccess: clamp(base.minSuccess * (1 - 0.3 * interference), 0.05, 0.99),
+    };
     const outcome = applyV05Action(
       this.world,
       this.physical,
@@ -620,6 +647,7 @@ export class V06Engine {
       : this.lastEffortReading;
     this.postObservation = this.makeObservation(energy.value, strain, energy.stale);
     if (this.lastOutcome && effort !== null) this.lastOutcome.effortReading = effort;
+    this.agent.correctPost(this.postObservation, this.pulse.remaining > 0 ? 0 : 0.65);
   }
 
   // ------------------------------------------------------------------ learn
@@ -659,7 +687,7 @@ export class V06Engine {
       latentError,
     );
 
-    if (this.tick % 6 === 0) this.runShadowProbe();
+    if (this.tick % 2 === 0) this.runShadowProbe();
 
     const attribution = this.agent.higherOrder.scores();
     if (this.disruption) {
@@ -682,8 +710,7 @@ export class V06Engine {
     if (this.qualityHistory.length > 180) this.qualityHistory.shift();
     const point: V06SeriesPoint = {
       t: this.tick,
-      energy: this.physical.energy,
-      energyEstimate: self.energyEstimate,
+      energy: this.physical.energy,      energyEstimate: self.energyEstimate,
       rawEnergyReading: this.postObservation.energyReading,
       energyError: Math.abs(self.energyEstimate - this.physical.energy),
       rawEnergyError: Math.abs(this.postObservation.energyReading - this.physical.energy),
@@ -708,7 +735,16 @@ export class V06Engine {
       somaticGain: this.decision.workspace.learningGains.somatic,
       settlingConvergence: this.decision.settling.convergence,
       settlingDisagreement: this.decision.settling.disagreement,
+      withinTickEntropyDrop: this.decision.settling.entropyDrop,
+      cognitiveMode: this.agent.attention.mode,
+      modeSwitch: this.lastAttentionMode !== this.agent.attention.mode,
+      rawQuality: [
+        clamp(this.postObservation.energyReading / 100, 0, 1),
+        clamp(this.postObservation.strainReading, 0, 1),
+        clamp((this.postObservation.lastEffortReading ?? 0) / 6, 0, 1),
+      ],
       terrainRough: this.lastOutcome.terrainRough,
+      collected: this.lastOutcome.collected,
       pulseActive: this.pulse.remaining > 0,
       pulseChannel: this.pulse.remaining > 0 ? this.pulse.channel : "none",
       attributionTop: attribution.top,
@@ -719,6 +755,7 @@ export class V06Engine {
     };
     this.series.push(point);
     if (this.series.length > this.options.historyLimit) this.series.shift();
+    this.lastAttentionMode = this.agent.attention.mode;
     this.recordWindows(point, meta, latentError, this.tickSample.withinTolerance);
 
     if (this.tick % 50 === 0 && this.tick > 0) {
@@ -749,12 +786,16 @@ export class V06Engine {
     w.selfError.push(point.energyError);
     w.rawError.push(point.rawEnergyError);
     w.convergence.push(point.settlingConvergence);
+    w.entropyDrop.push(point.withinTickEntropyDrop);
     w.reliability.push(point.reliability);
     w.quality.push(point.quality);
+    w.rawQuality.push(point.rawQuality);
+    w.modes.push(point.cognitiveMode);
     w.actions.push(point.action);
     w.latentFailure.push(latentError > 0.45 ? 1 : 0);
     if (meta) {
       w.metaPred.push(meta.toleranceProbability);
+      w.basePred.push(meta.rollingBase);
       w.metaOutcome.push(withinTolerance ? 1 : 0);
     }
     const cap = 2000;
@@ -764,8 +805,10 @@ export class V06Engine {
         "selfError",
         "rawError",
         "convergence",
+        "entropyDrop",
         "reliability",
         "metaPred",
+        "basePred",
         "metaOutcome",
         "latentFailure",
       ] as const) {
@@ -773,6 +816,8 @@ export class V06Engine {
       }
       w.actions.shift();
       w.quality.shift();
+      w.rawQuality.shift();
+      w.modes.shift();
     }
   }
 
@@ -787,10 +832,10 @@ export class V06Engine {
     const observedError =
       Math.abs(shadow.predictedDelta - shadow.observedDelta) /
       (Math.abs(shadow.observedDelta) + 3);
-    const latentFailure =
-      Math.abs(shadow.predictedDelta - shadow.latentDelta) /
-        (Math.abs(shadow.latentDelta) + 3) >
-      0.45;
+    const latentStateError =
+      Math.abs(this.agent.selfModel.energyEstimate - this.physical.energy) /
+      (Math.abs(this.physical.energy) + 3);
+    const latentFailure = latentStateError > 0.2;
     const features = this.agent.shadowProbeFeatures();
     if (prediction) {
       features.uncertainty = clamp(
@@ -834,12 +879,20 @@ export class V06Engine {
       reliabilityEce: reliability.ece,
       reliabilityAuroc: reliability.auroc,
       settlingConvergence: mean(w.convergence),
+      withinTickEntropyDrop: mean(w.entropyDrop),
       meanReliability: mean(w.reliability),
       actionEntropy: entropy,
       thrashRate: this.decisionSteps ? this.actionSwitches / this.decisionSteps : 0,
       goalCoherence: this.decisionSteps ? this.coherentSteps / this.decisionSteps : 0,
       bindingAccuracy: this.decisionSteps ? this.coherentSteps / this.decisionSteps : 0,
       qualityStability: this.agent.higherOrder.qualityStability(w.quality.slice(-60)),
+      qualitySpaceSeparability: this.separability(w.quality, w.modes),
+      rawSpaceSeparability: this.separability(w.rawQuality, w.modes),
+      qualityModeSwitchCorrelation: this.modeCorrelation("quality"),
+      rawModeSwitchCorrelation: this.modeCorrelation("raw"),
+      rollingBss: this.rollingBss(),
+      postGlitchMae: this.glitchStats().post,
+      astRecoveryGainDelta: this.glitchStats().gain,
       routingCorruption: this.disruptionSteps
         ? this.disruptionGainSum / this.disruptionSteps
         : 0,
@@ -858,6 +911,94 @@ export class V06Engine {
       sum += (w.metaPred[i] - w.metaOutcome[i]) ** 2;
     }
     return sum / w.metaPred.length;
+  }
+
+  private rollingBss(): number {
+    const w = this.windows;
+    if (w.metaPred.length < 20) return 0;
+    let model = 0;
+    let base = 0;
+    for (let i = 0; i < w.metaPred.length; i++) {
+      const y = w.metaOutcome[i];
+      model += (w.metaPred[i] - y) ** 2;
+      base += (w.basePred[i] - y) ** 2;
+    }
+    return base > 1e-9 ? 1 - model / base : 0;
+  }
+
+  private separability(
+    points: readonly [number, number, number][],
+    modes: readonly string[],
+  ): number {
+    const n = Math.min(points.length, modes.length);
+    if (n < 20) return 0;
+    const groups = new Map<string, number[]>();
+    for (let i = 0; i < n; i++) {
+      const list = groups.get(modes[i]) ?? [];
+      list.push(i);
+      groups.set(modes[i], list);
+    }
+    if (groups.size < 2) return 0;
+    const ratios: number[] = [];
+    for (let axis = 0; axis < 3; axis++) {
+      const values = points.slice(0, n).map((p) => p[axis]);
+      const overall = mean(values);
+      let between = 0;
+      let within = 0;
+      for (const indices of groups.values()) {
+        const groupMean = mean(indices.map((i) => points[i][axis]));
+        between += (indices.length / n) * (groupMean - overall) ** 2;
+        for (const i of indices) within += (points[i][axis] - groupMean) ** 2 / n;
+      }
+      ratios.push(within > 1e-9 ? between / within : 0);
+    }
+    return mean(ratios);
+  }
+
+  private modeCorrelation(space: "quality" | "raw"): number {
+    const points = this.series.slice(-400);
+    if (points.length < 20) return 0;
+    const distances: number[] = [];
+    const labels: number[] = [];
+    for (let i = 1; i < points.length; i++) {
+      const prev = points[i - 1];
+      const current = points[i];
+      const a = space === "quality" ? prev.quality : prev.rawQuality;
+      const b = space === "quality" ? current.quality : current.rawQuality;
+      distances.push(Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]));
+      labels.push(current.modeSwitch ? 1 : 0);
+    }
+    const positives = labels.filter((l) => l === 1);
+    const negatives = labels.filter((l) => l === 0);
+    if (positives.length === 0 || negatives.length === 0) return 0;
+    const allMean = mean(distances);
+    const sd = Math.sqrt(mean(distances.map((d) => (d - allMean) ** 2)));
+    if (sd < 1e-9) return 0;
+    const m1 = mean(distances.filter((_, i) => labels[i] === 1));
+    const m0 = mean(distances.filter((_, i) => labels[i] === 0));
+    const p = positives.length / labels.length;
+    return ((m1 - m0) / sd) * Math.sqrt(p * (1 - p));
+  }
+
+  private glitchStats(): { gain: number; post: number } {
+    const points = this.series;
+    const pulses = [120, 220, 620, 720];
+    const gains: number[] = [];
+    const posts: number[] = [];
+    for (const t of pulses) {
+      const immediate = points.filter((p) => p.t >= t + 1 && p.t < t + 7).map((p) => p.energyError);
+      const late = points.filter((p) => p.t >= t + 20 && p.t < t + 45).map((p) => p.energyError);
+      if (immediate.length && late.length) {
+        const i = mean(immediate);
+        const l = mean(late);
+        gains.push(i - l);
+        posts.push(l);
+      }
+    }
+    return {
+      gain: gains.length ? mean(gains) : 0,
+      post: posts.length ? mean(posts) : 0,
+    };
   }
 
   private metaEce(): number {

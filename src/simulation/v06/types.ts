@@ -86,7 +86,10 @@ export type ControlKind =
   | "reactive"
   | "physical_mpc"
   | "flat_blackboard"
-  | "matched_feedforward";
+  | "matched_feedforward"
+  | "rolling_tracker"
+  | "raw_sensor"
+  | "fixed_decay";
 
 export const CONTROL_LABELS: Record<ControlKind, string> = {
   full: "V0.6 full",
@@ -94,6 +97,9 @@ export const CONTROL_LABELS: Record<ControlKind, string> = {
   physical_mpc: "Physical MPC (H = 4)",
   flat_blackboard: "Flat blackboard",
   matched_feedforward: "Matched feedforward",
+  rolling_tracker: "1-param rolling tracker",
+  raw_sensor: "Raw sensor vector",
+  fixed_decay: "Fixed decay precision",
 };
 
 export type V06Scenario =
@@ -162,6 +168,10 @@ export interface WorkspaceState {
   ignition: number;
   bottleneck: boolean;
   broadcastEnabled: boolean;
+  /** The ignited coalition is proposing an unverified diagnostic probe. */
+  diagnosticProbe: boolean;
+  /** Viability is safe enough that the workspace should not pre-empt foraging. */
+  safeForaging: boolean;
 }
 
 export interface QueryPass {
@@ -259,6 +269,14 @@ export interface V06Metrics {
   goalCoherence: number;
   bindingAccuracy: number;
   qualityStability: number;
+  qualitySpaceSeparability: number;
+  rawSpaceSeparability: number;
+  qualityModeSwitchCorrelation: number;
+  rawModeSwitchCorrelation: number;
+  withinTickEntropyDrop: number;
+  rollingBss: number;
+  postGlitchMae: number;
+  astRecoveryGainDelta: number;
   routingCorruption: number;
   computeUnits: number;
   attributionTop: AttributionKind;
@@ -294,7 +312,12 @@ export interface V06SeriesPoint {
   somaticGain: number;
   settlingConvergence: number;
   settlingDisagreement: number;
+  withinTickEntropyDrop: number;
+  cognitiveMode: string;
+  modeSwitch: boolean;
+  rawQuality: [number, number, number];
   terrainRough: boolean;
+  collected: boolean;
   pulseActive: boolean;
   pulseChannel: "none" | "energy" | "strain" | "both";
   attributionTop: AttributionKind;

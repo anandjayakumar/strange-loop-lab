@@ -11,7 +11,14 @@ interface CalibrationRecord {
   latentFailure: boolean;
 }
 
-const FEATURES = 6;
+const FEATURES = 11;
+
+function softmax(values: readonly number[]): number[] {
+  const max = Math.max(...values);
+  const exps = values.map((v) => Math.exp(clamp(v - max, -30, 0)));
+  const total = exps.reduce((a, b) => a + b, 0);
+  return exps.map((v) => v / total);
+}
 
 /**
  * HOT-1..4: higher-order monitoring.
@@ -46,11 +53,27 @@ export class HigherOrderMonitor {
   qualityVelocity = 0;
   shadowProbes = 0;
   private lastFeatures: number[] = [];
+  private extra = {
+    energyVariance: 5,
+    energyBias: 0,
+    strainResidual: 0,
+    strainVolatility: 0,
+    energyInnovation: 0,
+  };
+
+  setContext(extra: {
+    energyVariance: number;
+    energyBias: number;
+    strainResidual: number;
+    strainVolatility: number;
+    energyInnovation: number;
+  }): void {
+    this.extra = extra;
+  }
 
   constructor() {
     this.controlWeights = new Array(FEATURES).fill(0);
-    this.shadowWeights = new Array(FEATURES).fill(0);
-    this.controlWeights[0] = 0.4;
+    this.shadowWeights = new Array(FEATURES).fill(0);    this.controlWeights[0] = 0.4;
     this.shadowWeights[0] = 0.4;
   }
 
@@ -69,6 +92,11 @@ export class HigherOrderMonitor {
       clamp(input.disagreement / 1.6, 0, 1),
       1 - Math.exp(-input.evidence / 12),
       clamp(1 - input.energy / 100, 0, 1),
+      clamp(this.extra.energyVariance / 20, 0, 1),
+      clamp(Math.abs(this.extra.energyBias) / 10, 0, 1),
+      clamp(Math.abs(this.extra.strainResidual) * 3, 0, 1),
+      clamp(this.extra.strainVolatility * 4, 0, 1),
+      clamp(this.extra.energyInnovation / 6, 0, 1),
     ];
   }
 
@@ -128,7 +156,7 @@ export class HigherOrderMonitor {
   }, label: boolean, latentFailure: boolean): void {
     if (!this.enabled) return;
     const x = this.features(features);
-    const predicted = clamp(sigmoid(dot(this.shadowWeights, x)), 0.03, 0.97);
+    const predicted = clamp(sigmoid(dot(this.controlWeights, x)), 0.03, 0.97);
     const y = label ? 1 : 0;
     const error = y - predicted;
     for (let i = 0; i < this.shadowWeights.length; i++) {
@@ -168,7 +196,71 @@ export class HigherOrderMonitor {
         evidenceCount: 0,
       };
     }
-    return this.attributor.scores();
+    const z = this.attributor.signature();
+    const stats = this.attributor.stats();
+    const evidence = stats.evidenceCount;
+    const commonEnergy = z[1];
+    const commonStrain = z[3];
+    const moveEnergy = z[0];
+    const peakMove = z[4];
+    const moveStrain = z[2];
+    const effort = z[6];
+    const bias = clamp(Math.abs(stats.energySensorBias) / 8, 0, 1);
+    const strainBias = clamp(Math.abs(stats.strainResidualEma) / 0.35, 0, 1);
+    const slip = clamp((stats.slipBrierEma - 0.15) / 0.3, 0, 1);
+    const both = Math.min(commonEnergy, commonStrain);
+    const scores = {
+      physical:
+        1.8 * peakMove +
+        1.2 * moveEnergy +
+        0.8 * effort +
+        0.5 * slip +
+        0.4 * moveStrain -
+        0.8 * commonEnergy -
+        0.9 * commonStrain,
+      energy_sensor:
+        1.4 * commonEnergy +
+        1.0 * bias +
+        0.25 * moveEnergy -
+        1.3 * commonStrain -
+        0.5 * peakMove +
+        0.15 * effort,
+      fatigue_sensor:
+        1.7 * commonStrain +
+        0.9 * strainBias -
+        1.2 * commonEnergy -
+        0.4 * moveStrain,
+      shared:
+        3.0 * both +
+        1.0 * Math.min(bias, strainBias) +
+        0.45 * (commonEnergy + commonStrain) / 2 -
+        0.2 * Math.max(moveEnergy, peakMove),
+    };
+    const kinds = Object.keys(scores) as (keyof typeof scores)[];
+    const logits = kinds.map((kind) => scores[kind] / 0.32);
+    const insufficient = evidence < 10 ? 2 : -8;
+    logits.push(insufficient);
+    const probs = softmax(logits);
+    const all = [
+      "physical",
+      "energy_sensor",
+      "fatigue_sensor",
+      "shared",
+      "insufficient",
+    ] as const;
+    let top = 0;
+    for (let i = 1; i < probs.length; i++) if (probs[i] > probs[top]) top = i;
+    const sorted = [...probs].sort((a, b) => b - a);
+    return {
+      physical: probs[0],
+      energy_sensor: probs[1],
+      fatigue_sensor: probs[2],
+      shared: probs[3],
+      insufficient: probs[4],
+      top: all[top],
+      confidence: clamp(sorted[0] - sorted[1], 0, 1),
+      evidenceCount: evidence,
+    };
   }
 
   top(): AttributionKind {
@@ -191,6 +283,22 @@ export class HigherOrderMonitor {
       0.72 * this.quality[0] + 0.28 * target[0],
       0.72 * this.quality[1] + 0.28 * target[1],
       0.72 * this.quality[2] + 0.28 * target[2],
+    ];
+    this.qualityVelocity = Math.hypot(
+      next[0] - this.quality[0],
+      next[1] - this.quality[1],
+      next[2] - this.quality[2],
+    );
+    this.quality = next;
+    return next;
+  }
+
+  /** Raw unintegrated sensor vector: no smoothing, no cross-channel fusion. */
+  updateQualityRaw(energyReading: number, strainReading: number, effortReading: number | null): [number, number, number] {
+    const next: [number, number, number] = [
+      clamp(energyReading / 100, 0, 1),
+      clamp(strainReading, 0, 1),
+      clamp((effortReading ?? 0) / 6, 0, 1),
     ];
     this.qualityVelocity = Math.hypot(
       next[0] - this.quality[0],
@@ -262,6 +370,11 @@ export class HigherOrderMonitor {
       auroc: this.auroc(this.shadowRecords),
       n: this.shadowProbes,
     };
+  }
+
+  /** Evaluation-only shadow records for pooled AUROC. */
+  shadowRecordData(): { predicted: number; latentFailure: boolean }[] {
+    return this.shadowRecords.map((r) => ({ predicted: r.predicted, latentFailure: r.latentFailure }));
   }
 
   /** Rolling variance of the quality coordinate, used as an attractor index. */

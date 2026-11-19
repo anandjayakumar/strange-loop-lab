@@ -25,6 +25,12 @@ export interface SettleResult {
   uncertainty: number;
   interpretation: number[];
   passes: number;
+  entropyFirst: number;
+  entropyLast: number;
+  entropyDrop: number;
+  disagreementFirst: number;
+  disagreementLast: number;
+  disagreementDrop: number;
 }
 
 const STATES = ["stable", "low energy", "strained", "ambiguous"] as const;
@@ -115,10 +121,15 @@ export class RecurrentSettler {
 
     let h = this.state;
     const deltas: number[] = [];
+    let firstEntropy = 0;
     let lastEntropy = 0;
     const k = Math.max(1, passes);
     for (let pass = 0; pass < k; pass++) {
-      const next = this.step(h, bottomUp, input.topDown, input.topDownEnabled);
+      // Pass 1 is deliberately raw bottom-up evidence. Passes 2 and 3
+      // integrate the workspace prior and re-weight channel precision; this
+      // is what makes K=3 a refinement rather than a repetition.
+      const topDownEnabled = input.topDownEnabled && pass > 0;
+      const next = this.step(h, bottomUp, input.topDown, topDownEnabled);
       let delta = 0;
       for (let i = 0; i < h.length; i++) delta += Math.abs(next[i] - h[i]);
       deltas.push(delta / h.length);
@@ -126,6 +137,7 @@ export class RecurrentSettler {
         this.readout.map((row) => row.reduce((acc, w, i) => acc + w * next[i], 0) * 1.6),
       );
       const hEntropy = entropy(interpretation);
+      if (pass === 0) firstEntropy = hEntropy;
       lastEntropy = hEntropy;
       h = next;
     }
@@ -136,6 +148,9 @@ export class RecurrentSettler {
     const lastDelta = deltas[deltas.length - 1] ?? 0;
     const convergence =
       k < 2 ? 0 : clamp(1 - lastDelta / Math.max(1e-6, firstDelta), 0, 1);
+    const entropyDrop = k < 2 ? 0 : clamp(firstEntropy - lastEntropy, 0, 1);
+    const disagreementDrop =
+      k < 2 ? 0 : clamp(1 - lastDelta / Math.max(1e-6, firstDelta), 0, 1);
     // Recurrence is persistent but slow, so the sheet cannot carry a single
     // tick's spike into the next tick.
     this.state = h.map((value, i) => 0.65 * this.state[i] + 0.35 * value);
@@ -143,9 +158,19 @@ export class RecurrentSettler {
       latent: h,
       convergence,
       disagreement: lastDelta,
-      uncertainty: clamp(0.5 * lastEntropy + 0.5 * (1 - convergence), 0, 1),
+      uncertainty: clamp(
+        0.5 * lastEntropy + 0.5 * (1 - convergence) - 0.25 * entropyDrop,
+        0,
+        1,
+      ),
       interpretation,
       passes: k,
+      entropyFirst: firstEntropy,
+      entropyLast: lastEntropy,
+      entropyDrop,
+      disagreementFirst: firstDelta,
+      disagreementLast: lastDelta,
+      disagreementDrop,
     };
   }
 }
